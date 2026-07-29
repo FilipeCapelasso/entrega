@@ -3,7 +3,7 @@
 <head>
 <!--
   ===========================================================================
-  ENTREGA TÉCNICA HONDA — GRUPO STAR MOTOS
+  ENTREGA HONDA — GRUPO STAR MOTOS
   Site completo em um único arquivo. Não precisa instalar nada.
 
   COMO USAR (4 passos):
@@ -11,17 +11,15 @@
   1) SUPABASE
      Crie um projeto em supabase.com, abra o SQL Editor, cole o arquivo
      supabase.sql inteiro e clique em RUN. Antes de rodar, troque a senha
-     que está marcada com  << TROCAR >>  dentro daquele arquivo.
+     marcada com  << TROCAR >>  dentro daquele arquivo.
 
   2) CHAVES
      Em Project Settings > API copie a URL e a chave "anon public" e cole
      no bloco CONFIG lá embaixo (procure por supabaseUrl e supabaseKey).
 
-  3) SEUS DADOS
-     No mesmo bloco CONFIG troque nome, cargo, empresa e descrição.
-     Para a sua foto, envie o arquivo (ex.: foto.jpg) para o mesmo
-     repositório e escreva  foto: 'foto.jpg'.
-     Se deixar em branco, aparecem as suas iniciais.
+  3) EQUIPE E TEXTOS
+     No mesmo bloco CONFIG troque os nomes da equipe, a concessionária e
+     os textos. Tudo o que aparece no site está lá.
 
   4) PUBLICAR
      Suba este index.html no GitHub, entre em Settings > Pages e escolha
@@ -32,21 +30,23 @@
   por exemplo  https://seuusuario.github.io/seusite/#admin
   Ele pede a senha que você definiu no passo 1.
 
-  OBSERVAÇÃO SOBRE A MARCA: o símbolo em formato de asa foi desenhado para
-  este projeto. O logotipo oficial da Honda é marca registrada — use o
-  arquivo oficial apenas se a concessionária autorizar.
+  SOBRE O EMBLEMA: o símbolo de estrela foi desenhado para este projeto e
+  representa a Star Motos. Ele NÃO é o logotipo da Honda — a asa da Honda é
+  marca registrada e só pode ser usada com autorização da concessionária.
+  Se você tiver o arquivo oficial liberado, coloque-o no repositório e
+  escreva o nome dele em  CONFIG.logo  (ex.: 'logo.png').
   ===========================================================================
 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#05070B">
 <meta name="robots" content="noindex, nofollow">
-<title>Entrega Técnica Honda | Grupo Star Motos</title>
-<meta name="description" content="Parabéns pela sua nova conquista. Avalie o atendimento da entrega técnica e confira as dicas de cuidados e revisões da sua Honda.">
+<title>Entrega Honda | Grupo Star Motos</title>
+<meta name="description" content="Sua nova Honda saiu da concessionária com tudo em ordem. Avalie o atendimento da sala de entrega e da entrega técnica, e confira as dicas de cuidados e revisões.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 96'%3E%3Cg fill='%23E4E9F0'%3E%3Cpath d='M126 16H216L188 46H126Z'/%3E%3Cpath d='M126 54H180L156 80H126Z'/%3E%3C/g%3E%3Cg fill='%23E4E9F0' transform='translate(240 0) scale(-1 1)'%3E%3Cpath d='M126 16H216L188 46H126Z'/%3E%3Cpath d='M126 54H180L156 80H126Z'/%3E%3C/g%3E%3Crect x='117' y='10' width='6' height='76' rx='3' fill='%23E4002B'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M60 8 105 34 105 86 60 112 15 86 15 34Z' fill='none' stroke='%23C3CAD4' stroke-width='6'/%3E%3Cpath d='M60 31 66.8 48.7 85.7 49.7 70.9 61.6 75.9 79.8 60 69.5 44.1 79.8 49.1 61.6 34.3 49.7 53.2 48.7Z' fill='%23E4002B'/%3E%3C/svg%3E">
 
 <style>
 /* ==========================================================================
@@ -59,97 +59,81 @@
   --display:'Archivo',system-ui,sans-serif;
   --body:'Manrope',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --raio:20px;
-  --blur:22px;
+  --raio:20px; --blur:22px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;background:var(--ink);-webkit-text-size-adjust:100%}
-body{
-  font-family:var(--body);color:var(--chrome);background:var(--ink);
-  line-height:1.6;overflow-x:hidden;text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
-}
+body{font-family:var(--body);color:var(--chrome);background:var(--ink);line-height:1.6;
+  overflow-x:hidden;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
 h1,h2,h3,h4{font-family:var(--display);color:var(--chrome-bright);letter-spacing:-.02em;line-height:1.08}
 img{max-width:100%;display:block}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;border:0;background:none}
+a{color:inherit}
 ::selection{background:rgba(228,0,43,.85);color:#fff}
 :focus-visible{outline:2px solid var(--racing);outline-offset:3px;border-radius:6px}
 [hidden]{display:none !important}
-
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--ink)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#28303d,#12161f);border-radius:99px;border:2px solid var(--ink)}
 ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--racing-deep),#28303d)}
 
-/* ---------- utilitários ---------- */
 .envolucro{width:100%;max-width:1180px;margin-inline:auto;padding-inline:20px}
 .eyebrow{font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.32em;color:var(--chrome-dim)}
 .cromo{background:linear-gradient(178deg,#fff 0%,#dbe2ea 38%,#8d96a5 72%,#eef2f7 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.vidro{
-  position:relative;
+.vidro{position:relative;
   background:linear-gradient(150deg,rgba(255,255,255,.055),rgba(255,255,255,.012) 45%,rgba(255,255,255,0)),rgba(11,14,20,.72);
   backdrop-filter:blur(var(--blur)) saturate(140%);-webkit-backdrop-filter:blur(var(--blur)) saturate(140%);
   border:1px solid rgba(255,255,255,.075);border-radius:var(--raio);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 70px -45px rgba(0,0,0,.95);
-}
-.fio::before{
-  content:'';position:absolute;inset:0 auto auto 0;height:1px;width:100%;opacity:.65;border-radius:99px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45) 18%,rgba(228,0,43,.85) 50%,rgba(255,255,255,.45) 82%,transparent);
-}
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 70px -45px rgba(0,0,0,.95)}
+.fio::before{content:'';position:absolute;inset:0 auto auto 0;height:1px;width:100%;opacity:.65;border-radius:99px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45) 18%,rgba(228,0,43,.85) 50%,rgba(255,255,255,.45) 82%,transparent)}
 
-/* ---------- botões ---------- */
-.btn{
-  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;
   border-radius:99px;padding:16px 34px;font-family:var(--display);font-size:.86rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.18em;color:#fff;transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s;
+  text-transform:uppercase;letter-spacing:.18em;color:#fff;text-decoration:none;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s;
   background:linear-gradient(100deg,var(--racing-deep) 0%,var(--racing) 50%,var(--racing-bright) 100%);
-  box-shadow:0 18px 45px -18px rgba(228,0,43,.75),inset 0 1px 0 rgba(255,255,255,.35);
-}
-.btn::after{
-  content:'';position:absolute;inset:0;transform:translateX(-130%) skewX(-16deg);transition:transform .85s cubic-bezier(.22,1,.36,1);
-  background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);
-}
+  box-shadow:0 18px 45px -18px rgba(228,0,43,.75),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn::after{content:'';position:absolute;inset:0;transform:translateX(-130%) skewX(-16deg);
+  transition:transform .85s cubic-bezier(.22,1,.36,1);
+  background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%)}
 .btn:hover{transform:translateY(-2px);box-shadow:0 24px 55px -18px rgba(228,0,43,.9)}
 .btn:hover::after{transform:translateX(130%) skewX(-16deg)}
 .btn:active{transform:translateY(0) scale(.985)}
 .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
-.btn-fantasma{
-  display:inline-flex;align-items:center;gap:8px;border:1px solid var(--edge);background:rgba(255,255,255,.03);
+.btn-fantasma{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--edge);background:rgba(255,255,255,.03);
   border-radius:99px;padding:10px 20px;font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;
-  letter-spacing:.2em;color:var(--chrome-dim);transition:.3s;
-}
+  letter-spacing:.2em;color:var(--chrome-dim);text-decoration:none;transition:.3s}
 .btn-fantasma:hover{border-color:rgba(228,0,43,.6);color:var(--chrome-bright)}
 .btn-fantasma[disabled]{opacity:.4;cursor:not-allowed}
 
-/* ---------- campos ---------- */
-.campo{
-  width:100%;border:1px solid var(--edge);background:rgba(11,14,20,.7);border-radius:14px;
-  padding:14px 16px;color:var(--chrome-bright);transition:.3s;font-size:1rem;
-}
+.campo{width:100%;border:1px solid var(--edge);background:rgba(11,14,20,.7);border-radius:14px;
+  padding:14px 16px;color:var(--chrome-bright);transition:.3s;font-size:1rem}
 .campo::placeholder{color:rgba(124,134,149,.6)}
 .campo:focus{outline:none;border-color:rgba(228,0,43,.7);box-shadow:0 0 0 4px rgba(228,0,43,.14)}
 textarea.campo{resize:none;min-height:120px}
 .erro{color:var(--racing-glow);font-size:.875rem;margin-top:8px}
 
-/* ---------- fundo ambiente ---------- */
 #fundo{position:fixed;inset:0;z-index:-2;pointer-events:none}
 #fundo canvas{position:absolute;inset:0;width:100%;height:100%}
-.grade{
-  position:absolute;inset:0;opacity:.7;
+.grade{position:absolute;inset:0;opacity:.7;
   background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
-  background-size:64px 64px;
-}
+  background-size:64px 64px}
 .halo{position:absolute;border-radius:50%;filter:blur(80px);
   background:radial-gradient(circle at center,rgba(228,0,43,.28),rgba(228,0,43,0) 68%)}
 .halo-1{left:-160px;top:-8%;width:560px;height:560px}
 .halo-2{right:-200px;top:42%;width:620px;height:620px;opacity:.7}
 .vinheta{position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%,transparent 35%,rgba(5,7,11,.85) 100%)}
-
-/* ---------- barra de progresso ---------- */
 #progresso{position:fixed;top:0;left:0;height:2px;width:0;z-index:40;
   background:linear-gradient(90deg,var(--racing-deep),var(--racing-bright));box-shadow:0 0 12px rgba(228,0,43,.8)}
+
+/* ---------- emblema ---------- */
+.emblema{display:block}
+.emblema .aro{fill:none;stroke:url(#cromo);stroke-width:5}
+.emblema .estrela{fill:url(#rubi)}
+.emblema .risco{stroke:url(#cromo);stroke-width:3;stroke-linecap:round}
 
 /* ==========================================================================
    INTRO
@@ -163,15 +147,13 @@ textarea.campo{resize:none;min-height:120px}
   border-radius:50%;filter:blur(90px);opacity:0;transition:opacity 1.8s ease,transform 1.8s ease;
   background:radial-gradient(circle,rgba(228,0,43,.3),rgba(228,0,43,0) 68%)}
 #intro.fase-brilho .intro-halo{opacity:.9;transform:translate(-50%,-50%) scale(1)}
-
 #pular{position:absolute;top:16px;right:16px;z-index:3;opacity:0;animation:aparecer .6s ease 1.2s forwards}
-
 .palco{position:relative;z-index:2;display:grid;place-items:center;width:100%}
-.marca-intro{position:relative;width:min(78vw,400px);opacity:0;transform:scale(.84);filter:blur(16px);
+.marca-intro{position:relative;width:min(52vw,230px);opacity:0;transform:scale(.84);filter:blur(16px);
   animation:marcaEntra 1.7s cubic-bezier(.16,1,.3,1) forwards}
 .marca-intro svg{filter:drop-shadow(0 18px 40px rgba(0,0,0,.9))}
 @keyframes marcaEntra{to{opacity:1;transform:scale(1);filter:blur(0)}}
-.brilho{position:absolute;inset:-40% auto;top:-40%;height:180%;width:46%;pointer-events:none;opacity:0;
+.brilho{position:absolute;top:-40%;height:180%;width:46%;pointer-events:none;opacity:0;
   mix-blend-mode:screen;filter:blur(6px);transform:translateX(-160%) skewX(-14deg);
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.85) 42%,rgba(255,60,92,.95) 54%,transparent)}
 #intro.fase-brilho .brilho{opacity:1;animation:varrer 1.5s cubic-bezier(.4,0,.2,1) forwards}
@@ -181,12 +163,11 @@ textarea.campo{resize:none;min-height:120px}
 #intro.fase-transicao .raio{animation:rasgar .9s cubic-bezier(.65,0,.35,1) forwards}
 @keyframes rasgar{0%{width:0;opacity:0}45%{opacity:1}100%{width:150vw;opacity:0}}
 #intro.fase-transicao .marca-intro{opacity:0;transform:scale(1.08);filter:blur(12px);transition:.7s cubic-bezier(.22,1,.36,1)}
-
 #mensagem{display:none;width:100%;max-width:660px;text-align:center;position:relative;z-index:2}
 #intro.fase-mensagem .palco{display:none}
 #intro.fase-mensagem #mensagem{display:block;animation:aparecer .9s ease forwards}
 #mensagem .topo{display:flex;flex-direction:column;align-items:center;gap:18px;opacity:0;animation:subir .8s ease .1s forwards}
-#mensagem .topo svg{width:92px;opacity:.8}
+#mensagem .topo .emblema{width:64px}
 .linhas{margin-top:40px;display:flex;flex-direction:column;gap:18px}
 .linha{opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s cubic-bezier(.22,1,.36,1);
   font-size:1rem;line-height:1.7;color:rgba(195,202,212,.88);text-wrap:pretty}
@@ -207,76 +188,100 @@ textarea.campo{resize:none;min-height:120px}
    ========================================================================== */
 #site{opacity:0;transition:opacity .9s ease .25s}
 #site.visivel{opacity:1}
-section{padding-block:clamp(72px,10vw,120px)}
-
+section{padding-block:clamp(64px,9vw,110px)}
 .revelar{opacity:0;transform:translateY(28px);filter:blur(8px);
   transition:opacity .75s cubic-bezier(.22,1,.36,1),transform .75s cubic-bezier(.22,1,.36,1),filter .75s}
 .revelar.dentro{opacity:1;transform:none;filter:none}
-
-.titulo-secao{max-width:660px;margin-inline:auto;text-align:center}
+.titulo-secao{max-width:680px;margin-inline:auto;text-align:center}
 .titulo-secao .marcador{display:flex;align-items:center;justify-content:center;gap:12px}
 .marcador i{height:1px;width:32px;background:linear-gradient(90deg,transparent,var(--racing));display:block}
 .marcador i+i{background:linear-gradient(270deg,transparent,var(--racing))}
-.titulo-secao h2{margin-top:20px;font-size:clamp(1.75rem,5.4vw,2.75rem);font-weight:800;text-wrap:balance}
+.titulo-secao h2{margin-top:20px;font-size:clamp(1.75rem,5.4vw,2.6rem);font-weight:800;text-wrap:balance}
 .titulo-secao p{margin-top:16px;color:var(--chrome-dim);text-wrap:pretty}
+.bloco-rot{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.bloco-rot svg{width:16px;height:16px;color:var(--racing);flex:none}
+.malha{display:grid;gap:18px}
+@media(min-width:820px){.malha-3{grid-template-columns:repeat(3,1fr)}.malha-2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:640px){.malha-auto{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}}
+.cartao{position:relative;padding:26px;height:100%;overflow:hidden;
+  transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .5s}
+.cartao:hover{transform:translateY(-6px);box-shadow:0 18px 50px -18px rgba(228,0,43,.65)}
+.cartao::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;pointer-events:none;opacity:0;
+  transition:opacity .5s;background:radial-gradient(circle,rgba(228,0,43,.22),transparent 70%);
+  left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%)}
+.cartao:hover::after{opacity:1}
+.cartao>*{position:relative;z-index:1}
+.cartao.destacado{box-shadow:inset 0 0 0 1px rgba(228,0,43,.3)}
+.icone-cx{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(228,0,43,.4);
+  background:rgba(228,0,43,.12);color:var(--racing-glow);flex:none}
+.icone-cx svg{width:20px;height:20px}
 
 /* ---------- hero ---------- */
-.hero{display:grid;gap:48px;align-items:center;padding-top:clamp(80px,12vw,112px)}
-@media(min-width:1024px){.hero{grid-template-columns:.85fr 1fr;gap:64px}}
-.retrato{position:relative;width:100%;max-width:400px;margin-inline:auto;
-  opacity:0;transform:translateY(40px);filter:blur(14px);animation:subirBlur .95s cubic-bezier(.22,1,.36,1) .1s forwards}
-@keyframes subirBlur{to{opacity:1;transform:none;filter:none}}
-@media(min-width:1024px){.retrato{margin-inline:0}}
-.moldura{position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;border:1px solid rgba(255,255,255,.1);
-  background:var(--carbon);box-shadow:0 30px 70px -40px rgba(0,0,0,.95)}
-.moldura img{width:100%;height:100%;object-fit:cover}
-.monograma{width:100%;height:100%;display:grid;place-items:center;font-family:var(--display);font-size:5rem;font-weight:800;
-  color:rgba(238,242,247,.14);background:radial-gradient(circle at 50% 30%,rgba(228,0,43,.22),transparent 60%),var(--carbon)}
-.moldura::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,var(--ink),rgba(5,7,11,.25) 55%,transparent)}
-.selo-vivo{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;display:flex;align-items:center;justify-content:space-between;
-  gap:12px;border-radius:16px;padding:12px 16px;
-  background:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.02)),rgba(18,22,31,.86);
-  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.1)}
-.selo-vivo b{display:block;font-family:var(--display);font-size:.9rem;color:var(--chrome-bright);margin-top:4px}
-.selo-vivo span.rot{font-family:var(--mono);font-size:.625rem;letter-spacing:.24em;text-transform:uppercase;color:var(--racing-glow)}
-.ponto{position:relative;width:10px;height:10px;border-radius:50%;background:var(--racing);flex:none}
-.ponto::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--racing);animation:ping 1.8s cubic-bezier(0,0,.2,1) infinite}
-@keyframes ping{75%,100%{transform:scale(2.4);opacity:0}}
-
-.hero h1{margin-top:16px;font-size:clamp(2.4rem,9vw,3.7rem);font-weight:800;text-wrap:balance}
-.cargo{display:inline-flex;align-items:center;gap:12px;margin-top:18px;border:1px solid rgba(228,0,43,.35);
-  background:rgba(228,0,43,.1);border-radius:99px;padding:9px 18px;font-family:var(--display);font-weight:700;
-  font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;color:var(--chrome-bright)}
-.cargo i{width:6px;height:6px;border-radius:50%;background:var(--racing);display:block}
-.hero .sobre{margin-top:26px;max-width:36em;font-size:1.05rem;color:rgba(195,202,212,.88);text-wrap:pretty}
-.selos{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;list-style:none}
-.selos li{display:flex;align-items:center;gap:8px;border:1px solid var(--edge);background:rgba(255,255,255,.03);
-  border-radius:99px;padding:9px 16px;font-size:.9rem;color:var(--chrome-dim);transition:.3s}
-.selos li:hover{border-color:rgba(228,0,43,.5);color:var(--chrome-bright);transform:translateY(-2px)}
-.selos svg{width:16px;height:16px;color:var(--racing);flex:none}
-
-.odometro{margin-top:34px;border-top:1px solid rgba(40,48,61,.7);padding-top:26px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-end}
-.digitos{display:flex;gap:5px}
-.digito{font-family:var(--mono);font-size:1.5rem;color:var(--chrome-bright);background:var(--carbon);
-  border:1px solid rgba(40,48,61,.8);border-radius:8px;padding:6px 10px;
+.hero{text-align:center;padding-top:clamp(80px,13vw,120px);padding-bottom:clamp(40px,6vw,64px)}
+.hero .emblema{width:88px;margin-inline:auto;opacity:0;transform:translateY(20px);
+  animation:subir .9s cubic-bezier(.22,1,.36,1) .05s forwards}
+.hero h1{margin-top:26px;font-size:clamp(2.1rem,7vw,3.6rem);font-weight:800;text-wrap:balance}
+.hero .sobre{margin:24px auto 0;max-width:44em;font-size:1.05rem;color:rgba(195,202,212,.88);text-wrap:pretty}
+.acoes-hero{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:34px}
+.odometro{margin-top:44px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.odometro .rot{font-family:var(--mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.24em;color:var(--chrome-dim)}
+.digitos{display:flex;gap:6px}
+.digito{font-family:var(--mono);font-size:1.6rem;color:var(--chrome-bright);background:var(--carbon);
+  border:1px solid rgba(40,48,61,.8);border-radius:8px;padding:6px 11px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -8px 18px -12px rgba(228,0,43,.8)}
-.odometro .rot{font-family:var(--mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.2em;color:var(--chrome-dim);display:block;margin-bottom:8px}
-.odometro .un{font-family:var(--mono);color:var(--chrome-dim);font-size:.8rem;align-self:center}
+.odometro .un{font-family:var(--mono);font-size:.8rem;color:var(--chrome-dim)}
 
-.descer{display:flex;flex-direction:column;align-items:center;gap:8px;width:fit-content;margin:56px auto 0;
-  color:var(--chrome-dim);text-decoration:none;transition:.3s}
-.descer:hover{color:var(--chrome-bright)}
-.descer svg{width:16px;height:16px;animation:flutuar 6s ease-in-out infinite}
-@keyframes flutuar{50%{transform:translateY(-6px)}}
+/* ---------- equipe ---------- */
+.pessoa{text-align:center;padding:30px 24px}
+.pessoa .inicial{width:64px;height:64px;margin:0 auto 18px;border-radius:18px;display:grid;place-items:center;
+  font-family:var(--display);font-size:1.5rem;font-weight:800;color:var(--chrome-bright);
+  background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.02)),var(--carbon);
+  border:1px solid rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.pessoa.destacado .inicial{border-color:rgba(228,0,43,.5);
+  background:linear-gradient(150deg,rgba(228,0,43,.35),rgba(228,0,43,.08)),var(--carbon)}
+.pessoa h3{font-size:1.2rem}
+.pessoa .papel{display:inline-block;margin-top:12px;border:1px solid rgba(228,0,43,.35);background:rgba(228,0,43,.1);
+  border-radius:99px;padding:6px 14px;font-family:var(--display);font-weight:700;font-size:.7rem;
+  text-transform:uppercase;letter-spacing:.14em;color:var(--chrome-bright)}
+.pessoa .detalhe{margin-top:14px;font-size:.92rem;color:var(--chrome-dim);text-wrap:pretty}
+
+/* ---------- jornada ---------- */
+.jornada{position:relative;list-style:none;margin-top:8px}
+.jornada::before{content:'';position:absolute;left:19px;top:8px;bottom:8px;width:2px;border-radius:2px;
+  background:linear-gradient(180deg,rgba(228,0,43,.85),rgba(228,0,43,.15))}
+.jornada li{position:relative;padding-left:60px;padding-bottom:28px}
+.jornada li:last-child{padding-bottom:0}
+.marco{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  font-family:var(--mono);font-size:.75rem;color:var(--chrome-bright);background:var(--carbon);
+  border:1px solid rgba(40,48,61,.9);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 6px var(--ink)}
+.jornada li.forte .marco{border-color:rgba(228,0,43,.6);color:#fff;
+  background:linear-gradient(150deg,var(--racing),var(--racing-deep))}
+.jornada h3{font-size:1.05rem}
+.jornada p{margin-top:6px;font-size:.94rem;color:var(--chrome-dim);text-wrap:pretty}
+
+/* ---------- faixa de frases ---------- */
+.faixa{position:relative;overflow:hidden;padding-block:26px;border-block:1px solid rgba(40,48,61,.7);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.faixa-trilho{display:flex;width:max-content;gap:48px;animation:correr 42s linear infinite}
+.faixa:hover .faixa-trilho{animation-play-state:paused}
+.faixa span{display:flex;align-items:center;gap:48px;font-family:var(--display);font-weight:700;
+  font-size:clamp(1rem,2.6vw,1.35rem);color:rgba(195,202,212,.72);white-space:nowrap}
+.faixa span i{width:6px;height:6px;border-radius:50%;background:var(--racing);display:block;flex:none}
+@keyframes correr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ---------- avaliação ---------- */
 #avaliacao{scroll-margin-top:20px}
-.formulario{margin-top:48px;padding:clamp(22px,4vw,40px);overflow:hidden}
-.divisor{border-top:1px solid rgba(40,48,61,.6);margin-top:36px;padding-top:36px}
+.formulario{margin-top:44px;padding:clamp(22px,4vw,40px);overflow:hidden}
+.divisor{border-top:1px solid rgba(40,48,61,.6);margin-top:34px;padding-top:34px}
 .rot-campo{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}
 .contador{font-family:var(--mono);font-size:.6875rem;color:rgba(124,134,149,.7)}
-
-.estrelas{display:flex;flex-direction:column;align-items:center;gap:22px}
+.etapa-nota{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+  border:1px solid rgba(40,48,61,.7);background:rgba(11,14,20,.5);border-radius:16px;padding:18px 20px}
+.etapa-nota+.etapa-nota{margin-top:14px}
+.etapa-nota .quem{max-width:26em}
+.etapa-nota h4{font-size:1rem}
+.etapa-nota p{margin-top:4px;font-size:.85rem;color:var(--chrome-dim)}
 .trilha{display:flex;align-items:center;gap:8px}
 @media(min-width:480px){.trilha{gap:14px}}
 .zero{border:1px solid var(--edge);border-radius:99px;padding:8px 14px;font-family:var(--mono);font-size:.6875rem;
@@ -284,15 +289,18 @@ section{padding-block:clamp(72px,10vw,120px)}
 .zero:hover{border-color:rgba(228,0,43,.6);color:var(--chrome-bright)}
 .zero.marcada{border-color:var(--racing);background:rgba(228,0,43,.2);color:var(--chrome-bright)}
 .estrela{padding:4px;border-radius:12px;transition:transform .28s cubic-bezier(.22,1,.36,1)}
-.estrela svg{width:44px;height:44px;display:block;transition:filter .3s;pointer-events:none}
+.estrela svg{width:44px;height:44px;display:block;pointer-events:none;transition:filter .3s}
 .estrela svg path{fill:rgba(255,255,255,.04);stroke:rgba(255,255,255,.22);stroke-width:1.1;stroke-linejoin:round;
   transition:fill .25s ease,stroke .25s ease}
 .estrela.cheia svg path{fill:url(#estrelaCheia);stroke:rgba(255,255,255,.55)}
-@media(min-width:480px){.estrela svg{width:56px;height:56px}}
 .estrela:hover{transform:scale(1.14) rotate(-4deg)}
 .estrela:active{transform:scale(.92)}
 .estrela.cheia{transform:translateY(-2px) scale(1.04)}
 .estrela.cheia svg{filter:drop-shadow(0 6px 22px rgba(228,0,43,.75))}
+@media(min-width:480px){.grande .estrela svg{width:56px;height:56px}}
+.mini .estrela svg{width:30px;height:30px}
+.mini .zero{padding:6px 11px;font-size:.625rem}
+.estrelas-geral{display:flex;flex-direction:column;align-items:center;gap:20px}
 .reacao{min-height:92px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .reacao .emoji{font-size:3rem;line-height:1;filter:drop-shadow(0 10px 24px rgba(228,0,43,.45))}
 .reacao p{font-size:.9rem;color:var(--chrome-dim)}
@@ -302,7 +310,6 @@ section{padding-block:clamp(72px,10vw,120px)}
 .alerta{display:flex;align-items:center;gap:10px;margin-top:24px;border:1px solid rgba(228,0,43,.4);
   background:rgba(228,0,43,.1);border-radius:14px;padding:12px 16px;font-size:.9rem;color:var(--chrome-bright)}
 
-/* ---------- sucesso ---------- */
 #sucesso{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:24px;opacity:0;transition:opacity .45s}
 #sucesso.visivel{opacity:1}
 #sucesso .fundo{position:absolute;inset:0;background:rgba(5,7,11,.8);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
@@ -320,21 +327,9 @@ section{padding-block:clamp(72px,10vw,120px)}
 
 /* ---------- dicas ---------- */
 #dicas{scroll-margin-top:20px}
-.bloco-rot{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.bloco-rot svg{width:16px;height:16px;color:var(--racing)}
-.malha{display:grid;gap:18px}
-@media(min-width:820px){.malha-3{grid-template-columns:repeat(3,1fr)}.malha-2{grid-template-columns:repeat(2,1fr)}}
-.cartao{position:relative;padding:26px;height:100%;overflow:hidden;transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .5s}
-.cartao:hover{transform:translateY(-6px);box-shadow:0 18px 50px -18px rgba(228,0,43,.65)}
-.cartao::after{content:'';position:absolute;width:280px;height:280px;border-radius:50%;pointer-events:none;opacity:0;
-  transition:opacity .5s;background:radial-gradient(circle,rgba(228,0,43,.22),transparent 70%);
-  left:var(--mx,50%);top:var(--my,50%);transform:translate(-50%,-50%)}
-.cartao:hover::after{opacity:1}
-.cartao>*{position:relative;z-index:1}
-.cartao.destacado{box-shadow:inset 0 0 0 1px rgba(228,0,43,.3)}
-.cartao-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .ordem{font-family:var(--mono);font-size:.6875rem;letter-spacing:.2em;text-transform:uppercase;color:var(--racing-glow)}
-.cartao h3{margin-top:8px;font-size:1.25rem;font-weight:700}
+.cartao h3{margin-top:8px;font-size:1.25rem}
+.cartao-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .chip-num{font-family:var(--mono);font-size:.75rem;color:var(--chrome-bright);background:var(--carbon);
   border:1px solid rgba(40,48,61,.8);border-radius:8px;padding:6px 10px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -8px 18px -12px rgba(228,0,43,.8)}
@@ -355,9 +350,6 @@ section{padding-block:clamp(72px,10vw,120px)}
 .nota-legal{display:flex;gap:12px;align-items:flex-start;margin-top:18px;border:1px solid rgba(228,0,43,.25);
   background:rgba(228,0,43,.07);border-radius:18px;padding:20px;font-size:.92rem;color:rgba(195,202,212,.92);text-wrap:pretty}
 .nota-legal svg{width:16px;height:16px;color:var(--racing);flex:none;margin-top:4px}
-.icone-cx{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid rgba(228,0,43,.4);
-  background:rgba(228,0,43,.12);color:var(--racing-glow)}
-.icone-cx svg{width:20px;height:20px}
 .cartao-largo{padding:clamp(24px,4vw,36px)}
 .cartao-largo h3{font-size:clamp(1.4rem,3.4vw,1.7rem);margin-top:20px}
 .cartao-largo .texto{margin-top:16px;color:rgba(195,202,212,.85);text-wrap:pretty}
@@ -368,18 +360,30 @@ section{padding-block:clamp(72px,10vw,120px)}
   border-radius:10px;padding:10px 12px;font-size:.9rem;transition:.3s}
 .topicos li:hover{border-color:rgba(228,0,43,.5);color:var(--chrome-bright)}
 .topicos svg{width:14px;height:14px;color:var(--racing);flex:none}
+.dica h3{font-size:1.1rem;margin-top:16px}
+.dica p{margin-top:8px;font-size:.93rem;color:var(--chrome-dim);text-wrap:pretty}
+.lembrete{display:grid;gap:20px;align-items:center;padding:clamp(24px,4vw,34px)}
+@media(min-width:760px){.lembrete{grid-template-columns:1fr auto}}
+.lembrete h3{font-size:1.3rem}
+.lembrete p{margin-top:8px;font-size:.93rem;color:var(--chrome-dim);text-wrap:pretty}
+.lembrete .entrada{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+.lembrete .campo{max-width:200px}
+.resultado{border:1px solid rgba(228,0,43,.35);background:rgba(228,0,43,.08);border-radius:16px;padding:20px 24px;
+  text-align:center;min-width:min(100%,260px)}
+.resultado .rot{font-family:var(--mono);font-size:.625rem;letter-spacing:.2em;text-transform:uppercase;color:var(--chrome-dim)}
+.resultado .valor{font-family:var(--display);font-size:1.6rem;font-weight:800;color:var(--chrome-bright);margin-top:8px}
+.resultado .obs{font-size:.8rem;color:var(--chrome-dim);margin-top:6px}
 
-/* ---------- rodapé ---------- */
 footer{position:relative;border-top:1px solid rgba(40,48,61,.7);padding-block:64px;text-align:center;overflow:hidden}
 footer .halo{left:50%;top:100%;width:720px;height:420px;transform:translate(-50%,-50%)}
-footer svg.marca{width:80px;margin-inline:auto;opacity:.7}
+footer .emblema{width:64px;margin-inline:auto;opacity:.75}
 footer .frases{margin-top:32px;display:flex;flex-direction:column;gap:8px}
 footer .frases p:first-child{font-family:var(--display);font-size:clamp(1.4rem,4.6vw,1.9rem);font-weight:800}
 footer .frases p+p{color:var(--chrome-dim)}
 footer .risco{width:96px;height:1px;margin:40px auto 0;background:linear-gradient(90deg,transparent,var(--racing),transparent)}
 footer .assinatura{margin-top:32px;font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;
-  letter-spacing:.28em;color:rgba(124,134,149,.8)}
-footer .assinatura+p{margin-top:8px;font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;
+  letter-spacing:.24em;color:rgba(124,134,149,.85);text-wrap:balance}
+footer .assinatura+p{margin-top:10px;font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;
   letter-spacing:.2em;color:rgba(124,134,149,.6)}
 
 /* ==========================================================================
@@ -388,7 +392,7 @@ footer .assinatura+p{margin-top:8px;font-family:var(--mono);font-size:.6875rem;t
 #painel{min-height:100dvh;padding:40px 20px}
 .painel-cabecalho{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
   border-bottom:1px solid rgba(40,48,61,.7);padding-bottom:24px}
-.painel-cabecalho svg.marca{width:56px;opacity:.8}
+.painel-cabecalho .emblema{width:44px;opacity:.85}
 .painel-cabecalho h1{font-size:1.5rem;font-weight:800;margin-top:6px;display:flex;align-items:center;gap:10px}
 .painel-cabecalho h1 svg{width:20px;height:20px;color:var(--racing)}
 .entrar{max-width:420px;margin:64px auto;padding:32px}
@@ -406,7 +410,6 @@ footer .assinatura+p{margin-top:8px;font-family:var(--mono);font-size:.6875rem;t
 .busca input{padding-left:36px;padding-block:10px;font-size:.9rem;min-width:min(280px,70vw)}
 .datas{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;width:100%;border-top:1px solid rgba(40,48,61,.6);
   margin-top:16px;padding-top:16px}
-.datas label{font-size:.85rem}
 .datas .campo{margin-top:8px;padding-block:10px;font-size:.9rem}
 .kpis{display:grid;gap:16px;margin-top:24px}
 @media(min-width:640px){.kpis{grid-template-columns:1fr 1fr}}
@@ -444,7 +447,7 @@ footer .assinatura+p{margin-top:8px;font-family:var(--mono);font-size:.6875rem;t
 .comentarios .txt{margin-top:8px;font-size:.9rem;color:rgba(195,202,212,.85)}
 .comentarios time{display:block;margin-top:8px;font-family:var(--mono);font-size:.65rem;color:var(--chrome-dim)}
 .rolagem{overflow-x:auto}
-table{width:100%;min-width:620px;border-collapse:collapse;font-size:.9rem}
+table{width:100%;min-width:720px;border-collapse:collapse;font-size:.9rem}
 th{text-align:left;padding:12px;font-family:var(--mono);font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--chrome-dim);border-bottom:1px solid rgba(40,48,61,.7)}
 td{padding:12px;border-bottom:1px solid rgba(40,48,61,.4)}
@@ -465,26 +468,34 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
   .revelar{opacity:1;transform:none;filter:none}
+  .faixa-trilho{animation:none}
 }
 </style>
 </head>
 <body>
 
-<!-- gradientes usados por todos os SVGs da página -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="cromo" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#FFFFFF"/><stop offset="42%" stop-color="#DCE3EB"/>
       <stop offset="72%" stop-color="#8C95A4"/><stop offset="100%" stop-color="#F2F5F9"/>
     </linearGradient>
-    <linearGradient id="nucleo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#FF2247"/><stop offset="100%" stop-color="#9E001E"/>
+    <linearGradient id="rubi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FF5C74"/><stop offset="55%" stop-color="#E4002B"/><stop offset="100%" stop-color="#9E001E"/>
     </linearGradient>
     <linearGradient id="estrelaCheia" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFFFFF"/><stop offset="38%" stop-color="#FF5C74"/><stop offset="100%" stop-color="#C4002A"/>
     </linearGradient>
   </defs>
 </svg>
+
+<template id="tpl-emblema">
+  <svg class="emblema" viewBox="0 0 120 120" role="img" aria-label="Emblema Star Motos">
+    <path class="aro" d="M60 8 105 34 105 86 60 112 15 86 15 34Z"/>
+    <path class="estrela" d="M60 31 66.8 48.7 85.7 49.7 70.9 61.6 75.9 79.8 60 69.5 44.1 79.8 49.1 61.6 34.3 49.7 53.2 48.7Z"/>
+    <path class="risco" d="M34 92 L86 92" opacity=".55"/>
+  </svg>
+</template>
 
 <div id="fundo">
   <div class="grade"></div>
@@ -502,25 +513,13 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
   <button id="pular" class="btn-fantasma" type="button">Pular</button>
 
   <div class="palco">
-    <div class="marca-intro">
-      <svg viewBox="0 0 240 96" role="img" aria-label="Marca da concessionária" style="width:100%;height:auto">
-        <g fill="url(#cromo)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <g fill="url(#cromo)" transform="translate(240 0) scale(-1 1)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <rect x="117" y="10" width="6" height="76" rx="3" fill="url(#nucleo)"/>
-      </svg>
-      <span class="brilho"></span>
-    </div>
+    <div class="marca-intro" id="marca-intro"><span class="brilho"></span></div>
     <span class="raio"></span>
   </div>
 
   <div id="mensagem">
-    <div class="topo">
-      <svg viewBox="0 0 240 96" aria-hidden="true">
-        <g fill="url(#cromo)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <g fill="url(#cromo)" transform="translate(240 0) scale(-1 1)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <rect x="117" y="10" width="6" height="76" rx="3" fill="url(#nucleo)"/>
-      </svg>
-      <span class="eyebrow">Entrega técnica concluída</span>
+    <div class="topo" id="marca-mensagem">
+      <span class="eyebrow">Entrega concluída</span>
     </div>
     <div class="linhas" id="linhas"></div>
     <div id="acao">
@@ -535,53 +534,55 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
 <!-- ======================= SITE ======================= -->
 <main id="site" hidden>
 
-  <!-- HERO -->
   <section class="envolucro hero" id="topo">
-    <div class="retrato">
-      <div class="moldura" id="moldura"></div>
-      <div class="selo-vivo">
-        <div>
-          <span class="rot">Ao vivo na sua garagem</span>
-          <b>Moto 0 km entregue</b>
-        </div>
-        <span class="ponto"></span>
-      </div>
+    <div id="marca-hero"></div>
+    <span class="eyebrow" id="empresa-topo"></span>
+    <h1 class="cromo" id="titulo-hero"></h1>
+    <p class="sobre" id="descricao-equipe"></p>
+    <div class="acoes-hero">
+      <a class="btn" href="#avaliacao">Avaliar atendimento</a>
+      <a class="btn-fantasma" href="#dicas">Dicas da minha Honda</a>
     </div>
-
-    <div>
-      <span class="eyebrow revelar" id="empresa-topo"></span>
-      <h1 class="revelar"><span class="cromo" id="nome-entregador"></span></h1>
-      <div class="revelar"><span class="cargo"><i></i><span id="cargo-entregador"></span></span></div>
-      <p class="sobre revelar" id="descricao-entregador"></p>
-
-      <ul class="selos revelar">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Checklist completo</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.6 6.6L3 18l3 3 5.1-5.1a5 5 0 0 0 6.6-6.6l-2.9 2.9-2.1-2.1 2.9-2.9z"/></svg>Ajustes verificados</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 15 5l4-1 1 4 3 3-3 3 1 4-4-1-3 3-3-3-4 1-1-4-3-3 3-3-1-4 4 1z"/><path d="m9 12 2 2 4-4"/></svg>Orientações entregues</li>
-      </ul>
-
-      <div class="odometro revelar">
-        <div>
-          <span class="rot">Odômetro na entrega</span>
-          <div class="digitos"><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span></div>
-        </div>
-        <span class="un">km · a história começa agora</span>
-      </div>
+    <div class="odometro">
+      <span class="rot">Odômetro na entrega</span>
+      <div class="digitos"><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span></div>
+      <span class="un">km · a sua história começa agora</span>
     </div>
   </section>
 
-  <a class="descer" href="#avaliacao">
-    <span class="eyebrow">Avaliar atendimento</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-  </a>
+  <!-- EQUIPE -->
+  <section id="equipe">
+    <div class="envolucro">
+      <div class="titulo-secao">
+        <div class="marcador revelar"><i></i><span class="eyebrow">Quem atendeu você</span><i></i></div>
+        <h2 class="revelar"><span class="cromo">A equipe que cuidou da sua entrega</span></h2>
+        <p class="revelar">Da conferência dos documentos à primeira partida do motor, cada etapa passou por alguém preparado para deixar tudo certo.</p>
+      </div>
+      <div class="malha malha-3" id="equipe-cartoes" style="margin-top:48px"></div>
+    </div>
+  </section>
+
+  <!-- JORNADA -->
+  <section id="jornada" style="padding-top:0">
+    <div class="envolucro" style="max-width:820px">
+      <div class="bloco-rot revelar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        <span class="eyebrow">Sua jornada hoje</span>
+      </div>
+      <ol class="jornada" id="jornada-lista"></ol>
+    </div>
+  </section>
+
+  <!-- FAIXA DE FRASES -->
+  <div class="faixa" aria-hidden="true"><div class="faixa-trilho" id="faixa-trilho"></div></div>
 
   <!-- AVALIAÇÃO -->
   <section id="avaliacao">
-    <div class="envolucro" style="max-width:760px">
+    <div class="envolucro" style="max-width:780px">
       <div class="titulo-secao">
         <div class="marcador revelar"><i></i><span class="eyebrow">Sua opinião</span><i></i></div>
         <h2 class="revelar">⭐ <span class="cromo">Como foi seu atendimento?</span></h2>
-        <p class="revelar">Sua opinião é muito importante para mim. Ela me ajuda a melhorar cada vez mais meu atendimento.</p>
+        <p class="revelar">Sua opinião é muito importante para nós. Avalie desde a sala de entrega, onde foram feitas as assinaturas e o seguro, até a entrega técnica da sua motocicleta. É assim que melhoramos a cada cliente.</p>
       </div>
 
       <form class="vidro fio formulario revelar" id="form-avaliacao" novalidate>
@@ -592,8 +593,29 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
         </div>
 
         <div class="divisor">
-          <div class="estrelas">
-            <div class="trilha" id="trilha" role="radiogroup" aria-label="Nota do atendimento, de 0 a 5 estrelas"></div>
+          <span class="eyebrow">Etapas do atendimento <span style="text-transform:none;letter-spacing:0">(opcional)</span></span>
+          <div style="margin-top:16px">
+            <div class="etapa-nota">
+              <div class="quem">
+                <h4 id="rot-etapa-sala">Sala de entrega</h4>
+                <p id="det-etapa-sala">Assinaturas, documentação e seguro</p>
+              </div>
+              <div class="trilha mini" id="trilha-sala" role="radiogroup" aria-label="Nota da sala de entrega"></div>
+            </div>
+            <div class="etapa-nota">
+              <div class="quem">
+                <h4 id="rot-etapa-entrega">Entrega técnica</h4>
+                <p id="det-etapa-entrega">Orientações, checklist e primeira partida</p>
+              </div>
+              <div class="trilha mini" id="trilha-entrega" role="radiogroup" aria-label="Nota da entrega técnica"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divisor">
+          <p class="eyebrow" style="text-align:center">Experiência geral <span style="color:var(--racing)">*</span></p>
+          <div class="estrelas-geral" style="margin-top:20px">
+            <div class="trilha grande" id="trilha-geral" role="radiogroup" aria-label="Nota geral do atendimento, de 0 a 5 estrelas"></div>
             <div class="reacao" id="reacao"><p style="padding-top:16px">Toque nas estrelas para dar sua nota.</p></div>
           </div>
           <p class="erro" id="erro-estrelas" style="text-align:center" hidden></p>
@@ -614,7 +636,7 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>
           </button>
         </div>
-        <p class="aviso-privacidade">Guardo apenas seu nome, a nota e o comentário. Sem cadastro, sem e-mail, sem telefone.</p>
+        <p class="aviso-privacidade">Guardamos apenas seu nome, as notas e o comentário. Sem cadastro, sem e-mail, sem telefone.</p>
       </form>
 
       <div class="vidro fio formulario revelar" id="ja-avaliado" hidden style="text-align:center">
@@ -622,7 +644,7 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
         <h3 style="margin-top:20px;font-size:1.4rem">Sua avaliação já foi registrada</h3>
-        <p style="margin-top:10px;color:var(--chrome-dim)">Muito obrigado por dedicar um minuto para me ajudar a melhorar.</p>
+        <p style="margin-top:10px;color:var(--chrome-dim)">Muito obrigado por dedicar um minuto para nos ajudar a melhorar.</p>
         <button class="btn-fantasma" type="button" id="nova-avaliacao" style="margin-top:24px">Enviar outra avaliação</button>
       </div>
     </div>
@@ -637,6 +659,16 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
         <p class="revelar">Guarde este link. Aqui está o essencial para manter sua motocicleta em dia e aproveitar cada quilômetro com segurança.</p>
       </div>
 
+      <!-- primeiros quilômetros -->
+      <div style="margin-top:56px">
+        <div class="bloco-rot revelar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.9 4.9l2.9 2.9M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.9-2.9M16.2 7.8l2.9-2.9"/></svg>
+          <span class="eyebrow">Primeiros quilômetros · amaciamento</span>
+        </div>
+        <div class="malha malha-auto" id="amaciamento"></div>
+      </div>
+
+      <!-- revisões -->
       <div style="margin-top:56px">
         <div class="bloco-rot revelar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
@@ -648,8 +680,34 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           <p><strong style="color:var(--chrome-bright)">* Importante:</strong> a partir da terceira revisão o óleo passa a ser fornecido gratuitamente conforme o programa vigente da concessionária, e o cliente passa a pagar a mão de obra e os demais itens necessários. A cobertura pode variar conforme o programa vigente da concessionária e o modelo da motocicleta, portanto confirme as condições no momento do agendamento.</p>
         </div>
+
+        <div class="vidro fio lembrete revelar" style="margin-top:18px">
+          <div>
+            <h3>Não perca a primeira revisão</h3>
+            <p>Informe a data em que você retirou a motocicleta e eu calculo o prazo de 6 meses para você anotar na agenda. O que vencer primeiro manda: a quilometragem ou a data.</p>
+            <div class="entrada">
+              <label class="eyebrow" for="data-retirada" style="width:100%">Data da retirada</label>
+              <input class="campo" type="date" id="data-retirada">
+            </div>
+          </div>
+          <div class="resultado">
+            <span class="rot">Primeira revisão até</span>
+            <p class="valor" id="prazo-revisao">—</p>
+            <p class="obs">ou entre 900 e 1.100 km</p>
+          </div>
+        </div>
       </div>
 
+      <!-- segurança -->
+      <div style="margin-top:56px">
+        <div class="bloco-rot revelar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="eyebrow">Segurança e cuidados no dia a dia</span>
+        </div>
+        <div class="malha malha-auto" id="seguranca"></div>
+      </div>
+
+      <!-- óleo e entrega técnica -->
       <div class="malha malha-2" style="margin-top:56px">
         <article class="vidro fio cartao cartao-largo revelar">
           <div style="display:flex;align-items:center;gap:12px">
@@ -682,11 +740,7 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
   <footer>
     <div class="halo"></div>
     <div class="envolucro" style="position:relative">
-      <svg class="marca" viewBox="0 0 240 96" aria-hidden="true">
-        <g fill="url(#cromo)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <g fill="url(#cromo)" transform="translate(240 0) scale(-1 1)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-        <rect x="117" y="10" width="6" height="76" rx="3" fill="url(#nucleo)"/>
-      </svg>
+      <div id="marca-rodape"></div>
       <div class="frases revelar">
         <p class="cromo">Obrigado por escolher a Honda.</p>
         <p>Boas viagens.</p>
@@ -723,24 +777,18 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
   <div class="envolucro" style="max-width:1400px">
     <header class="painel-cabecalho">
       <div style="display:flex;align-items:center;gap:16px">
-        <svg class="marca" viewBox="0 0 240 96" aria-hidden="true" style="width:56px">
-          <g fill="url(#cromo)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-          <g fill="url(#cromo)" transform="translate(240 0) scale(-1 1)"><path d="M126 16H216L188 46H126Z"/><path d="M126 54H180L156 80H126Z"/></g>
-          <rect x="117" y="10" width="6" height="76" rx="3" fill="url(#nucleo)"/>
-        </svg>
+        <div id="marca-painel"></div>
         <div>
           <span class="eyebrow">Painel interno</span>
-          <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Avaliações da entrega técnica</h1>
+          <h1><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Avaliações do atendimento</h1>
         </div>
       </div>
       <span class="eyebrow" id="painel-empresa"></span>
     </header>
-
     <div id="painel-conteudo"></div>
   </div>
-  <a class="btn-fantasma link-topo" href="#topo" id="voltar-site">Voltar ao site</a>
+  <a class="btn-fantasma link-topo" href="#topo">Voltar ao site</a>
 </section>
-
 <script>
 /* ==========================================================================
    1. CONFIGURAÇÃO — ALTERE SOMENTE ESTE BLOCO
@@ -751,16 +799,31 @@ const CONFIG = {
   supabaseUrl : 'https://kbienvekhnwnqplwkwrv.supabase.co',
   supabaseKey : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiaWVudmVraG53bnFwbHdrd3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTA0MDMsImV4cCI6MjEwMDg2NjQwM30.G2jo07NWVoNe3BWVd63jr0Pl5Xxfb4izQ12_eRhXbY0',
 
-  // ---- Seus dados -----------------------------------------------------
-  nome     : 'Filipe Capelasso',
-  cargo    : 'Entregador Técnico Honda',
-  empresa  : 'Grupo Star Motos LTDA',
+  // ---- Concessionária -------------------------------------------------
+  empresa : 'Grupo Star Motos LTDA',
+  titulo  : 'Da assinatura à primeira partida, cuidamos de cada detalhe.',
+  sobre   : 'Nosso compromisso é entregar sua motocicleta com toda a documentação em ordem, com segurança e com todas as orientações necessárias para você aproveitar ao máximo a sua Honda.',
 
-  // Foto: coloque o arquivo no mesmo repositório e escreva o nome dele,
-  // por exemplo 'foto.jpg'. Deixe '' para exibir suas iniciais.
-  foto     : '',
+  // ---- Equipe ---------------------------------------------------------
+  // etapa: 'sala' para quem atende na sala de entrega (assinaturas e seguro)
+  //        'entrega' para quem faz a entrega técnica da motocicleta
+  // Se você tiver o logotipo oficial liberado, coloque o arquivo no
+  // repositório e escreva o nome dele em logo (ex.: 'logo.png').
+  logo : '',
 
-  descricao: 'Meu compromisso é garantir que sua motocicleta seja entregue com toda qualidade, segurança e todas as orientações necessárias para que você aproveite ao máximo sua Honda.',
+  equipe: [
+    { nome:'Nome da Atendente 1', etapa:'sala',
+      papel:'Sala de entrega',
+      detalhe:'Recebe você, confere os documentos e organiza as assinaturas do contrato.' },
+
+    { nome:'Nome da Atendente 2', etapa:'sala',
+      papel:'Sala de entrega',
+      detalhe:'Cuida do seguro e da conferência final de todos os dados antes da liberação.' },
+
+    { nome:'Seu Nome Completo', etapa:'entrega', destaque:true,
+      papel:'Entrega técnica',
+      detalhe:'Apresenta a motocicleta item por item, explica os cuidados iniciais e acompanha a primeira partida.' }
+  ],
 
   // ---- Mensagens da abertura -----------------------------------------
   mensagens: [
@@ -776,16 +839,65 @@ const CONFIG = {
 };
 
 /* ==========================================================================
-   2. CONTEÚDO FIXO
+   2. CONTEÚDO DO SITE
    ========================================================================== */
 const REACOES = {
-  0:{emoji:'😞', texto:'Sinto muito. Quero entender o que falhou.'},
-  1:{emoji:'😕', texto:'Ficou abaixo do esperado. Vou melhorar.'},
+  0:{emoji:'😞', texto:'Sentimos muito. Queremos entender o que falhou.'},
+  1:{emoji:'😕', texto:'Ficou abaixo do esperado. Vamos melhorar.'},
   2:{emoji:'🙂', texto:'Deu para ajudar, mas dá para fazer melhor.'},
   3:{emoji:'😀', texto:'Que bom que a entrega foi tranquila!'},
-  4:{emoji:'🤩', texto:'Fico muito feliz com o seu retorno!'},
+  4:{emoji:'🤩', texto:'Ficamos muito felizes com o seu retorno!'},
   5:{emoji:'❤️', texto:'Nota máxima! Muito obrigado pela confiança.'}
 };
+
+const FRASES = [
+  'Toda grande viagem começa com uma partida.',
+  'A estrada respeita quem respeita a estrada.',
+  'Capacete não é acessório, é companheiro.',
+  'Revisão em dia é liberdade sem preocupação.',
+  'Duas rodas, mil histórias.',
+  'O melhor caminho é o que você percorre com segurança.',
+  'Cuide da sua moto e ela cuidará de você.'
+];
+
+const JORNADA = [
+  { titulo:'Recepção e conferência',
+    texto:'Confirmamos seus dados, o modelo escolhido, a cor e os itens que acompanham a motocicleta.' },
+  { titulo:'Assinaturas e documentação',
+    texto:'Na sala de entrega você assina o contrato e recebe as explicações sobre cada documento.' },
+  { titulo:'Seguro e proteção',
+    texto:'Apresentamos as coberturas contratadas e esclarecemos as dúvidas antes da liberação.' },
+  { titulo:'Checklist final da motocicleta',
+    texto:'Conferimos níveis, pressão dos pneus, iluminação, acessórios e o estado geral da moto 0 km.' },
+  { titulo:'Entrega técnica', forte:true,
+    texto:'Apresentação completa: painel, luzes, indicadores, combustível, óleo, amaciamento e cuidados iniciais.' }
+];
+
+const AMACIAMENTO = [
+  { icone:'motor', titulo:'Respeite o amaciamento',
+    texto:'Nos primeiros quilômetros, evite acelerações bruscas e rotações muito altas. O motor ainda está assentando as peças internas.' },
+  { icone:'onda', titulo:'Varie a rotação',
+    texto:'Evite manter a moto na mesma velocidade por muito tempo. Alternar a rotação ajuda no assentamento uniforme do motor.' },
+  { icone:'freio', titulo:'Os freios também amaciam',
+    texto:'As pastilhas e lonas precisam de alguns quilômetros para atingir o desempenho total. Antecipe as frenagens nesse período.' },
+  { icone:'livro', titulo:'O manual manda',
+    texto:'Cada modelo tem suas recomendações. Sempre que houver dúvida, o Manual do Proprietário é a referência oficial.' }
+];
+
+const SEGURANCA = [
+  { icone:'capacete', titulo:'Equipamento sempre',
+    texto:'Capacete afivelado em todo trajeto, mesmo nos mais curtos. Luvas, jaqueta e calçado fechado fazem muita diferença numa queda.' },
+  { icone:'pneu', titulo:'Calibragem semanal',
+    texto:'Confira a pressão com os pneus frios, seguindo a indicação do manual. Pneu murcho gasta mais combustível e reduz a aderência.' },
+  { icone:'corrente', titulo:'Corrente e transmissão',
+    texto:'Nos modelos com corrente, mantenha a lubrificação e a folga em dia. É o item que mais sofre com poeira, chuva e falta de limpeza.' },
+  { icone:'luz', titulo:'Seja visto',
+    texto:'Farol aceso, setas funcionando e roupas claras à noite. Boa parte dos acidentes acontece porque a moto simplesmente não foi vista.' },
+  { icone:'distancia', titulo:'Distância é tempo',
+    texto:'Mantenha espaço do veículo da frente e evite o ponto cego de carros e caminhões, principalmente nas ultrapassagens.' },
+  { icone:'doc', titulo:'Documentação em ordem',
+    texto:'Guarde nota fiscal, manual e comprovantes das revisões. Eles valem muito na garantia e na hora de vender a motocicleta.' }
+];
 
 const REVISOES = [
   {ordem:'1ª', titulo:'Primeira revisão', km:'900 a 1.100 km', prazo:'ou 6 meses após a retirada',
@@ -803,7 +915,17 @@ const ICO = {
   ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
   relogio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
   carteira:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/><path d="M17 12h.01"/></svg>',
-  busca:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>'
+  busca:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+  motor:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>',
+  onda:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s2-4 5-4 3 8 6 8 5-4 5-4"/></svg>',
+  freio:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>',
+  livro:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  capacete:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14a9 9 0 0 1 18 0v3a2 2 0 0 1-2 2h-6l-2-3H5a2 2 0 0 1-2-2z"/></svg>',
+  pneu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>',
+  corrente:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 15a4 4 0 0 1 0-6l1-1a4 4 0 0 1 6 6l-1 1"/><path d="M15 9a4 4 0 0 1 0 6l-1 1a4 4 0 0 1-6-6l1-1"/></svg>',
+  luz:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>',
+  distancia:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="m7 8-4 4 4 4M17 8l4 4-4 4"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6"/></svg>'
 };
 
 const $  = (s,e=document)=>e.querySelector(s);
@@ -813,9 +935,34 @@ const semMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const escapar = t => String(t??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ==========================================================================
-   3. PARTÍCULAS
+   3. EMBLEMA
+   ========================================================================== */
+function emblema(destino, largura){
+  const alvo = $(destino);
+  if(!alvo) return;
+  if(CONFIG.logo){
+    const img = new Image();
+    img.src = CONFIG.logo; img.alt = CONFIG.empresa; img.className = 'emblema';
+    img.style.width = largura; img.style.marginInline = 'auto';
+    img.onerror = ()=>{ img.remove(); inserirSvg(alvo, largura); };
+    alvo.prepend(img);
+    return;
+  }
+  inserirSvg(alvo, largura);
+}
+function inserirSvg(alvo, largura){
+  const svg = $('#tpl-emblema').content.cloneNode(true);
+  const el = svg.querySelector('svg');
+  el.style.width = largura;
+  el.style.marginInline = 'auto';
+  alvo.prepend(svg);
+}
+
+/* ==========================================================================
+   4. PARTÍCULAS
    ========================================================================== */
 function iniciarParticulas(canvas, total, forcaVermelha){
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
   if(!ctx) return;
   const qtd = semMovimento ? Math.round(total/3) : total;
@@ -823,10 +970,8 @@ function iniciarParticulas(canvas, total, forcaVermelha){
 
   const criar = () => ({
     x: Math.random()*L, y: Math.random()*A,
-    r: .6 + Math.random()*1.8,
-    v: 6 + Math.random()*16,
-    d: (Math.random()-.5)*10,
-    f: Math.random()*Math.PI*2,
+    r: .6 + Math.random()*1.8, v: 6 + Math.random()*16,
+    d: (Math.random()-.5)*10, f: Math.random()*Math.PI*2,
     vermelha: Math.random() < forcaVermelha
   });
 
@@ -864,33 +1009,30 @@ function iniciarParticulas(canvas, total, forcaVermelha){
   medir();
   quadro = requestAnimationFrame(desenhar);
   addEventListener('resize', medir, {passive:true});
-  return () => cancelAnimationFrame(quadro);
 }
 
 /* ==========================================================================
-   4. INTRO
+   5. INTRO
    ========================================================================== */
-let pulado = false;
+let pulado = false, introIniciada = false;
 
 async function rodarIntro(){
   const intro = $('#intro');
   const caixaLinhas = $('#linhas');
 
-  CONFIG.mensagens.forEach((texto,i)=>{
+  CONFIG.mensagens.forEach((_,i)=>{
     const p = document.createElement('p');
     p.className = 'linha' + (i===0 ? ' destaque cromo' : '');
     caixaLinhas.appendChild(p);
   });
 
-  const trocarFase = f => { intro.className = 'fase-'+f; };
-
   if(!semMovimento){
-    await dormir(1500); if(!pulado) trocarFase('brilho');
+    await dormir(1500); if(!pulado) intro.className = 'fase-brilho';
     await dormir(1100); if(!pulado) intro.classList.add('fase-particulas');
     await dormir(1300); if(!pulado) intro.classList.add('fase-transicao');
     await dormir(850);
   }
-  if(!pulado){ intro.className = 'fase-mensagem fase-particulas'; }
+  if(!pulado) intro.className = 'fase-mensagem fase-particulas';
 
   const linhas = $$('.linha');
   for(let i=0;i<linhas.length;i++){
@@ -917,9 +1059,8 @@ function mostrarBotao(){
 }
 
 function pularIntro(){
-  const intro = $('#intro');
   pulado = true;
-  intro.className = 'fase-mensagem fase-particulas';
+  $('#intro').className = 'fase-mensagem fase-particulas';
   $$('.linha').forEach((el,i)=>{ el.classList.add('ativa'); el.textContent = CONFIG.mensagens[i]; });
   mostrarBotao();
 }
@@ -931,41 +1072,67 @@ function entrarNoSite(){
   intro.classList.add('saindo');
   document.body.style.overflow = '';
   scrollTo({top:0, behavior:'auto'});
-  setTimeout(()=>{ intro.remove(); }, 900);
+  setTimeout(()=> intro.remove(), 900);
 }
 
 /* ==========================================================================
-   5. CONTEÚDO DO SITE
+   6. CONTEÚDO
    ========================================================================== */
-function montarSite(){
-  $('#nome-entregador').textContent = CONFIG.nome;
-  $('#cargo-entregador').textContent = CONFIG.cargo;
-  $('#empresa-topo').textContent = CONFIG.empresa;
-  $('#descricao-entregador').textContent = CONFIG.descricao;
-  $('#assinatura').textContent = CONFIG.nome + ' · ' + CONFIG.cargo;
-  $('#assinatura-empresa').textContent = CONFIG.empresa;
-  $('#painel-empresa').textContent = CONFIG.empresa;
-  document.title = CONFIG.cargo + ' | ' + CONFIG.empresa;
+const daEtapa = etapa => CONFIG.equipe.filter(p => p.etapa === etapa);
+const primeiroNome = n => String(n).trim().split(/\s+/)[0];
+const iniciais = n => String(n).trim().split(/\s+/).slice(0,2).map(p=>p[0]||'').join('').toUpperCase();
 
-  const moldura = $('#moldura');
-  if(CONFIG.foto){
-    const img = new Image();
-    img.src = CONFIG.foto;
-    img.alt = 'Foto de ' + CONFIG.nome + ', ' + CONFIG.cargo;
-    img.decoding = 'async';
-    img.onerror = () => { moldura.innerHTML = monograma(); };
-    moldura.appendChild(img);
-  } else {
-    moldura.innerHTML = monograma();
-  }
+function nomesDe(etapa){
+  const pessoas = daEtapa(etapa);
+  if(!pessoas.length) return 'nossa equipe';
+  const curtos = pessoas.map(p => primeiroNome(p.nome));
+  const lista = new Set(curtos).size === curtos.length ? curtos : pessoas.map(p => p.nome);
+  return lista.length > 1 ? lista.slice(0,-1).join(', ') + ' e ' + lista.at(-1) : lista[0];
+}
+
+function montarSite(){
+  emblema('#marca-intro','100%');
+  emblema('#marca-mensagem','64px');
+  emblema('#marca-hero','88px');
+  emblema('#marca-rodape','64px');
+  emblema('#marca-painel','44px');
+
+  $('#empresa-topo').textContent = CONFIG.empresa;
+  $('#titulo-hero').textContent = CONFIG.titulo;
+  $('#descricao-equipe').textContent = CONFIG.sobre;
+  $('#painel-empresa').textContent = CONFIG.empresa;
+  $('#assinatura').textContent = CONFIG.equipe.map(p=>p.nome).join(' · ');
+  $('#assinatura-empresa').textContent = CONFIG.empresa;
+  document.title = 'Entrega Honda | ' + CONFIG.empresa;
+
+  $('#equipe-cartoes').innerHTML = CONFIG.equipe.map(p=>`
+    <article class="vidro fio cartao pessoa revelar${p.destaque?' destacado':''}">
+      <span class="inicial">${escapar(iniciais(p.nome))}</span>
+      <h3>${escapar(p.nome)}</h3>
+      <span class="papel">${escapar(p.papel)}</span>
+      <p class="detalhe">${escapar(p.detalhe)}</p>
+    </article>`).join('');
+
+  $('#jornada-lista').innerHTML = JORNADA.map((e,i)=>`
+    <li class="revelar${e.forte?' forte':''}">
+      <span class="marco">${String(i+1).padStart(2,'0')}</span>
+      <h3>${escapar(e.titulo)}</h3>
+      <p>${escapar(e.texto)}</p>
+    </li>`).join('');
+
+  const bloco = `<span>${FRASES.map(f=>escapar(f)).join('<i></i>')}<i></i></span>`;
+  $('#faixa-trilho').innerHTML = bloco + bloco;
+
+  $('#det-etapa-sala').textContent = `Com ${nomesDe('sala')} · assinaturas, documentação e seguro`;
+  $('#det-etapa-entrega').textContent = `Com ${nomesDe('entrega')} · orientações, checklist e primeira partida`;
+
+  $('#amaciamento').innerHTML = AMACIAMENTO.map(d=>cartaoDica(d)).join('');
+  $('#seguranca').innerHTML  = SEGURANCA.map(d=>cartaoDica(d)).join('');
 
   $('#revisoes').innerHTML = REVISOES.map((r,i)=>`
     <article class="vidro fio cartao revelar${r.destaque?' destacado':''}">
       <div class="cartao-topo">
-        <div>
-          <span class="ordem">${escapar(r.ordem)} revisão</span>
-          <h3>${escapar(r.titulo)}</h3>
-        </div>
+        <div><span class="ordem">${escapar(r.ordem)} revisão</span><h3>${escapar(r.titulo)}</h3></div>
         <span class="chip-num">0${i+1}</span>
       </div>
       <div class="painel-km">
@@ -982,15 +1149,19 @@ function montarSite(){
 
   $('#topicos').innerHTML = TOPICOS.map(t=>`<li>${ICO.ok}${escapar(t)}</li>`).join('');
 
-  montarEstrelas();
+  montarNotas();
   ligarFormulario();
+  ligarLembrete();
   ligarRevelacao();
   ligarBrilhoCartoes();
 }
 
-function monograma(){
-  const iniciais = CONFIG.nome.trim().split(/\s+/).slice(0,2).map(p=>p[0]||'').join('').toUpperCase();
-  return `<div class="monograma">${escapar(iniciais||'★')}</div>`;
+function cartaoDica(d){
+  return `<article class="vidro fio cartao dica revelar">
+    <span class="icone-cx">${ICO[d.icone] || ICO.ok}</span>
+    <h3>${escapar(d.titulo)}</h3>
+    <p>${escapar(d.texto)}</p>
+  </article>`;
 }
 
 function ligarRevelacao(){
@@ -998,7 +1169,7 @@ function ligarRevelacao(){
   if(!('IntersectionObserver' in window) || semMovimento){
     alvos.forEach(a=>a.classList.add('dentro')); return;
   }
-  const obs = new IntersectionObserver((entradas)=>{
+  const obs = new IntersectionObserver(entradas=>{
     entradas.forEach((e,i)=>{
       if(e.isIntersecting){
         setTimeout(()=> e.target.classList.add('dentro'), i*70);
@@ -1020,18 +1191,34 @@ function ligarBrilhoCartoes(){
   });
 }
 
-/* ==========================================================================
-   6. ESTRELAS
-   ========================================================================== */
-let nota = null;
+/* ---------- lembrete da primeira revisão ---------- */
+function ligarLembrete(){
+  const entrada = $('#data-retirada'), saida = $('#prazo-revisao');
+  const hoje = new Date();
+  entrada.value = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Sao_Paulo'}).format(hoje);
+  const calcular = ()=>{
+    if(!entrada.value){ saida.textContent = '—'; return; }
+    const [a,m,d] = entrada.value.split('-').map(Number);
+    const alvo = new Date(a, m-1+6, d);
+    saida.textContent = new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long',year:'numeric'}).format(alvo);
+  };
+  entrada.addEventListener('change', calcular);
+  entrada.addEventListener('input', calcular);
+  calcular();
+}
 
+/* ==========================================================================
+   7. ESTRELAS
+   ========================================================================== */
 const svgEstrela = () => `
 <svg viewBox="0 0 24 24" aria-hidden="true">
   <path d="M12 2.6l2.9 5.88 6.49.95-4.7 4.58 1.11 6.46L12 17.42 6.2 20.47l1.11-6.46-4.7-4.58 6.49-.95L12 2.6z"/>
 </svg>`;
 
-function montarEstrelas(){
-  const trilha = $('#trilha');
+function criarEstrelas(seletor, {comReacao=false, aoMudar=null}={}){
+  const trilha = $(seletor);
+  let valor = null;
+
   trilha.innerHTML =
     `<button type="button" class="zero" role="radio" aria-checked="false" aria-label="Zero estrelas" data-nota="0">0</button>` +
     [1,2,3,4,5].map(n=>
@@ -1040,47 +1227,64 @@ function montarEstrelas(){
 
   const botoes = $$('[data-nota]', trilha);
 
-  const pintar = valor => {
+  function pintar(mostrar){
     botoes.forEach(b=>{
       const n = +b.dataset.nota;
-      if(n===0){ b.classList.toggle('marcada', nota===0); return; }
-      b.classList.toggle('cheia', valor!==null && n <= valor);
-      b.setAttribute('aria-checked', String(nota===n));
+      if(n===0){ b.classList.toggle('marcada', valor===0); return; }
+      b.classList.toggle('cheia', mostrar!==null && mostrar!==undefined && n <= mostrar);
+      b.setAttribute('aria-checked', String(valor===n));
     });
-    mostrarReacao(valor);
-  };
+    if(comReacao) mostrarReacao(mostrar);
+  }
+
+  function definir(n){
+    valor = n;
+    if(aoMudar) aoMudar(n);
+    pintar(n);
+  }
 
   botoes.forEach(b=>{
     const n = +b.dataset.nota;
-    b.addEventListener('click', ()=>{ nota = n; esconderErro('erro-estrelas'); pintar(n); });
+    b.addEventListener('click', ()=> definir(n));
     b.addEventListener('mouseenter', ()=> pintar(n));
     b.addEventListener('focus',      ()=> pintar(n));
   });
-  trilha.addEventListener('mouseleave', ()=> pintar(nota));
+  trilha.addEventListener('mouseleave', ()=> pintar(valor));
   trilha.addEventListener('keydown', e=>{
-    const atual = nota ?? 0;
-    if(['ArrowRight','ArrowUp'].includes(e.key)){ e.preventDefault(); nota = Math.min(5, atual+1); pintar(nota); }
-    if(['ArrowLeft','ArrowDown'].includes(e.key)){ e.preventDefault(); nota = Math.max(0, atual-1); pintar(nota); }
+    const atual = valor ?? 0;
+    if(['ArrowRight','ArrowUp'].includes(e.key)){ e.preventDefault(); definir(Math.min(5, atual+1)); }
+    if(['ArrowLeft','ArrowDown'].includes(e.key)){ e.preventDefault(); definir(Math.max(0, atual-1)); }
   });
 
-  window.__pintarEstrelas = pintar;
+  return {
+    get valor(){ return valor; },
+    limpar(){ valor = null; pintar(null); }
+  };
 }
 
 function mostrarReacao(valor){
   const caixa = $('#reacao');
   if(valor === null || valor === undefined){
+    delete caixa.dataset.nota;
     caixa.innerHTML = '<p style="padding-top:16px">Toque nas estrelas para dar sua nota.</p>';
     return;
   }
-  const r = REACOES[valor];
   if(caixa.dataset.nota === String(valor)) return;
   caixa.dataset.nota = String(valor);
+  const r = REACOES[valor];
   caixa.innerHTML = `<span class="emoji">${r.emoji}</span><p>${escapar(r.texto)}</p>`;
   caixa.classList.remove('trocando'); void caixa.offsetWidth; caixa.classList.add('trocando');
 }
 
+let notaGeral, notaSala, notaEntrega;
+function montarNotas(){
+  notaSala    = criarEstrelas('#trilha-sala');
+  notaEntrega = criarEstrelas('#trilha-entrega');
+  notaGeral   = criarEstrelas('#trilha-geral', { comReacao:true, aoMudar:()=> esconderErro('erro-estrelas') });
+}
+
 /* ==========================================================================
-   7. FORMULÁRIO E ENVIO
+   8. FORMULÁRIO E ENVIO
    ========================================================================== */
 function mostrarErro(id, texto){ const e = $('#'+id); e.textContent = texto; e.hidden = false; }
 function esconderErro(id){ const e = $('#'+id); if(e) e.hidden = true; }
@@ -1107,19 +1311,26 @@ function ligarFormulario(){
 
     const nome = $('#nome').value.trim();
     let valido = true;
-
     if(nome.length < 2){ mostrarErro('erro-nome','Informe seu nome com pelo menos 2 letras.'); valido = false; }
-    if(nota === null){ mostrarErro('erro-estrelas','Escolha de 0 a 5 estrelas.'); valido = false; }
-    if(!valido){ (nome.length<2 ? $('#nome') : $('#trilha')).scrollIntoView({behavior:'smooth',block:'center'}); return; }
+    if(notaGeral.valor === null){ mostrarErro('erro-estrelas','Escolha de 0 a 5 estrelas na experiência geral.'); valido = false; }
+    if(!valido){ (nome.length<2 ? $('#nome') : $('#trilha-geral')).scrollIntoView({behavior:'smooth',block:'center'}); return; }
 
     const botao = $('#enviar');
     botao.disabled = true; botao.textContent = 'Enviando…';
 
     try{
-      await enviarAvaliacao({ nome, estrelas: nota, comentario: comentario.value.trim() || null });
+      await enviarAvaliacao({
+        nome,
+        estrelas: notaGeral.valor,
+        estrelas_sala: notaSala.valor,
+        estrelas_entrega: notaEntrega.valor,
+        comentario: comentario.value.trim() || null
+      });
       localStorage.setItem('avaliacao-enviada','1');
       abrirSucesso();
-      form.reset(); nota = null; window.__pintarEstrelas(null); $('#contador').textContent = '0';
+      form.reset();
+      notaGeral.limpar(); notaSala.limpar(); notaEntrega.limpar();
+      $('#contador').textContent = '0';
       form.hidden = true; $('#ja-avaliado').hidden = false;
     }catch(erro){
       const msg = String(erro.message||'');
@@ -1158,7 +1369,7 @@ async function enviarAvaliacao(dados){
 }
 
 /* ==========================================================================
-   8. SUCESSO + CONFETES
+   9. SUCESSO + CONFETES
    ========================================================================== */
 function abrirSucesso(){
   const caixa = $('#sucesso');
@@ -1166,10 +1377,9 @@ function abrirSucesso(){
   requestAnimationFrame(()=> caixa.classList.add('visivel'));
   document.body.style.overflow = 'hidden';
   if(!semMovimento) soltarConfetes();
-  const fechar = ()=> fecharSucesso();
-  $('#fechar-sucesso').onclick = fechar;
-  $('.fundo', caixa).onclick = fechar;
-  setTimeout(fechar, 6500);
+  $('#fechar-sucesso').onclick = fecharSucesso;
+  $('.fundo', caixa).onclick = fecharSucesso;
+  setTimeout(fecharSucesso, 6500);
 }
 
 function fecharSucesso(){
@@ -1191,27 +1401,21 @@ function soltarConfetes(){
 
   const cores = ['#E4002B','#FF5C74','#FFFFFF','#C3CAD4','#9E001E'];
   const pecas = Array.from({length:140}, ()=>({
-    x: L/2 + (Math.random()-.5)*L*.6,
-    y: A*.42 + (Math.random()-.5)*60,
-    vx: (Math.random()-.5)*7,
-    vy: -Math.random()*11 - 3,
-    l: 5 + Math.random()*7,
-    a: Math.random()*Math.PI,
-    va: (Math.random()-.5)*.24,
+    x: L/2 + (Math.random()-.5)*L*.6, y: A*.42 + (Math.random()-.5)*60,
+    vx:(Math.random()-.5)*7, vy:-Math.random()*11-3,
+    l: 5+Math.random()*7, a: Math.random()*Math.PI, va:(Math.random()-.5)*.24,
     cor: cores[Math.floor(Math.random()*cores.length)]
   }));
 
-  let vivo = 0;
   (function anima(){
     ctx.clearRect(0,0,L,A);
-    vivo = 0;
+    let vivo = 0;
     for(const p of pecas){
       p.vy += .16; p.x += p.vx; p.y += p.vy; p.a += p.va; p.vx *= .995;
       if(p.y < A + 40) vivo++;
-      ctx.save();
-      ctx.translate(p.x, p.y); ctx.rotate(p.a);
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a);
       ctx.fillStyle = p.cor; ctx.globalAlpha = .92;
-      ctx.fillRect(-p.l/2, -p.l/4, p.l, p.l/2);
+      ctx.fillRect(-p.l/2,-p.l/4,p.l,p.l/2);
       ctx.restore();
     }
     if(vivo > 0) requestAnimationFrame(anima); else ctx.clearRect(0,0,L,A);
@@ -1219,11 +1423,9 @@ function soltarConfetes(){
 }
 
 /* ==========================================================================
-   9. PAINEL  ( abra com  seusite/#admin )
+   10. PAINEL  ( abra com  seusite/#admin )
    ========================================================================== */
 const painelEstado = { dados: [], periodo: '30', de: '', ate: '', busca: '' };
-
-let introIniciada = false;
 
 function rotearHash(){
   const admin = location.hash === '#admin';
@@ -1240,10 +1442,10 @@ function rotearHash(){
   }
 
   if(intro && introIniciada && !intro.classList.contains('saindo')){
-    intro.hidden = false;                 // abertura ainda em andamento
+    intro.hidden = false;
     document.body.style.overflow = 'hidden';
   }else{
-    if(intro) intro.remove();             // veio direto do painel: mostra o site
+    if(intro) intro.remove();
     site.hidden = false;
     site.classList.add('visivel');
     document.body.style.overflow = '';
@@ -1261,15 +1463,12 @@ function telaChave(mensagem){
     <div class="vidro fio entrar">
       <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.2-8.2 2 2-2 2 2 2-3 3-2-2-2 2"/></svg></span>
       <h2>Acesso restrito</h2>
-      <p>Digite a senha que você definiu no arquivo SQL, dentro da função <code>listar_avaliacoes</code>.</p>
+      <p>Digite a senha definida no arquivo SQL, dentro da função listar_avaliacoes.</p>
       <input class="campo" id="chave" type="password" placeholder="Senha do painel" style="margin-top:20px" autocomplete="current-password">
       ${mensagem ? `<p class="erro">${escapar(mensagem)}</p>` : ''}
       <button class="btn" id="entrar-painel" type="button" style="width:100%;margin-top:24px">Entrar no painel</button>
     </div>`;
-  const enviar = ()=>{
-    const v = $('#chave').value.trim();
-    if(v) carregarPainel(v);
-  };
+  const enviar = ()=>{ const v = $('#chave').value.trim(); if(v) carregarPainel(v); };
   $('#entrar-painel').onclick = enviar;
   $('#chave').onkeydown = e => { if(e.key === 'Enter') enviar(); };
   $('#chave').focus();
@@ -1292,7 +1491,7 @@ async function carregarPainel(chave){
 
     if(!resposta.ok){
       let detalhe = ''; try{ detalhe = (await resposta.json()).message || ''; }catch(_){}
-      if(detalhe.toLowerCase().includes('invalida') || resposta.status === 403 || resposta.status === 400){
+      if(detalhe.toLowerCase().includes('invalida') || [400,401,403].includes(resposta.status)){
         sessionStorage.removeItem('painel-chave');
         telaChave('Senha incorreta. Tente novamente.'); return;
       }
@@ -1312,13 +1511,13 @@ async function carregarPainel(chave){
   }
 }
 
-/* ---------- cálculos ---------- */
 const FUSO = 'America/Sao_Paulo';
 const fmtData = iso => new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeZone:FUSO}).format(new Date(iso));
 const fmtHora = iso => new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:FUSO}).format(new Date(iso));
 const diaChave = iso => new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit',timeZone:FUSO}).format(new Date(iso));
-const diaRotulo = c => { const [a,m,d] = c.split('-'); return d+'/'+m; };
+const diaRotulo = c => { const [,m,d] = c.split('-'); return d+'/'+m; };
 const medial = v => v.length ? v.reduce((s,n)=>s+n,0)/v.length : 0;
+const mediaDe = (lista,campo) => medial(lista.map(i=>i[campo]).filter(v=>typeof v === 'number'));
 
 function filtrar(){
   let lista = [...painelEstado.dados];
@@ -1339,20 +1538,18 @@ function filtrar(){
   return lista;
 }
 
-/* ---------- gráficos em SVG ---------- */
 function graficoBarras(dados){
   const L=520, A=240, base=A-30, topo=16, maxV=Math.max(1,...dados.map(d=>d.qtd));
   const larg=(L-40)/dados.length, cores=['#4B5361','#7A2130','#A3202F','#C4002A','#E4002B','#FF3D5F'];
   const barras = dados.map((d,i)=>{
-    const h = (base-topo) * (d.qtd/maxV);
-    const x = 30 + i*larg + larg*.2, y = base-h, w = larg*.6;
+    const h=(base-topo)*(d.qtd/maxV), x=30+i*larg+larg*.2, y=base-h, w=larg*.6;
     return `<rect x="${x}" y="${y}" width="${w}" height="${Math.max(h,1)}" rx="6" fill="${cores[i]}">
         <animate attributeName="height" from="0" to="${Math.max(h,1)}" dur=".7s" fill="freeze"/>
         <animate attributeName="y" from="${base}" to="${y}" dur=".7s" fill="freeze"/></rect>
       <text x="${x+w/2}" y="${base+18}" text-anchor="middle">${d.rot}</text>`;
   }).join('');
   const grade = [0,.5,1].map(f=>{
-    const y = base - (base-topo)*f;
+    const y = base-(base-topo)*f;
     return `<line x1="28" x2="${L-8}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>
             <text x="22" y="${y+3}" text-anchor="end">${Math.round(maxV*f)}</text>`;
   }).join('');
@@ -1364,8 +1561,8 @@ function graficoLinha(dados){
   if(!dados.length) return '<p class="vazio">Sem dados no período.</p>';
   const maxV = Math.max(1, ...dados.map(d=>d.qtd));
   const passo = dados.length > 1 ? (L-esq-16)/(dados.length-1) : 0;
-  const pontos = dados.map((d,i)=>[esq + i*passo, base - (base-topo)*(d.qtd/maxV)]);
-  const linha = pontos.map((p,i)=> (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const pontos = dados.map((d,i)=>[esq+i*passo, base-(base-topo)*(d.qtd/maxV)]);
+  const linha = pontos.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
   const area = linha + ` L${pontos.at(-1)[0].toFixed(1)} ${base} L${pontos[0][0].toFixed(1)} ${base} Z`;
   const marcas = pontos.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="#FF5C74"/>`).join('');
   const salto = Math.ceil(dados.length/6);
@@ -1385,17 +1582,21 @@ function graficoLinha(dados){
     ${marcas}${rotulos}</svg>`;
 }
 
-/* ---------- desenho do painel ---------- */
 function desenharPainel(){
   const lista = filtrar();
   const notas = lista.map(i=>i.estrelas);
   const clientes = new Set(lista.map(i=>i.nome.trim().toLowerCase())).size;
   const comentarios = lista.filter(i => (i.comentario||'').trim().length);
-  const distribuicao = [0,1,2,3,4,5].map(n=>({rot:n+'★', qtd: lista.filter(i=>i.estrelas===n).length, n}));
+  const distribuicao = [0,1,2,3,4,5].map(n=>({rot:n+'★', qtd:lista.filter(i=>i.estrelas===n).length, n}));
   const pct = q => lista.length ? Math.round(q/lista.length*100) : 0;
 
+  const mSala = mediaDe(lista,'estrelas_sala');
+  const mEntrega = mediaDe(lista,'estrelas_entrega');
+  const nSala = lista.filter(i=>typeof i.estrelas_sala === 'number').length;
+  const nEntrega = lista.filter(i=>typeof i.estrelas_entrega === 'number').length;
+
   const mapa = new Map();
-  lista.forEach(i=>{ const d = diaChave(i.criado_em); mapa.set(d, (mapa.get(d)||0)+1); });
+  lista.forEach(i=>{ const d = diaChave(i.criado_em); mapa.set(d,(mapa.get(d)||0)+1); });
   const porDia = [...mapa.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([d,q])=>({rot:diaRotulo(d), qtd:q}));
 
   const ranking = [...lista].sort((a,b)=> b.estrelas-a.estrelas || new Date(b.criado_em)-new Date(a.criado_em)).slice(0,5);
@@ -1423,7 +1624,11 @@ function desenharPainel(){
 
   <div class="kpis">
     ${kpi('Total de avaliações', lista.length, painelEstado.dados.length+' no total geral')}
-    ${kpi('Média das estrelas', lista.length ? medial(notas).toFixed(2) : '—', notas.filter(n=>n>=4).length+' notas 4 ou 5')}
+    ${kpi('Média geral', lista.length ? medial(notas).toFixed(2) : '—', notas.filter(n=>n>=4).length+' notas 4 ou 5')}
+    ${kpi('Sala de entrega', nSala ? mSala.toFixed(2) : '—', nSala+' avaliaram esta etapa')}
+    ${kpi('Entrega técnica', nEntrega ? mEntrega.toFixed(2) : '—', nEntrega+' avaliaram esta etapa')}
+  </div>
+  <div class="kpis">
     ${kpi('Clientes', clientes, 'Nomes distintos no período')}
     ${kpi('Comentários', comentarios.length, lista.length ? pct(comentarios.length)+'% deixaram comentário' : 'Sem dados')}
   </div>
@@ -1434,7 +1639,7 @@ function desenharPainel(){
       ${porDia.length ? graficoLinha(porDia) : '<p class="vazio">Sem dados para exibir.</p>'}
     </section>
     <section class="vidro fio quadro">
-      <header><h2>Distribuição por estrelas</h2><p>Quantidade de avaliações em cada nota</p></header>
+      <header><h2>Distribuição por estrelas</h2><p>Nota geral de cada cliente</p></header>
       ${lista.length ? graficoBarras(distribuicao) : '<p class="vazio">Sem dados para exibir.</p>'}
     </section>
   </div>
@@ -1475,15 +1680,17 @@ function desenharPainel(){
     <header><h2>Últimas avaliações</h2><p>${lista.length} registro(s) no filtro atual</p></header>
     <div class="rolagem">
       <table>
-        <thead><tr><th>Cliente</th><th>Nota</th><th>Comentário</th><th>Data</th><th>Hora</th></tr></thead>
+        <thead><tr><th>Cliente</th><th>Geral</th><th>Sala</th><th>Entrega</th><th>Comentário</th><th>Data</th><th>Hora</th></tr></thead>
         <tbody>
           ${lista.length ? lista.slice(0,50).map(i=>`
             <tr><td class="cliente">${escapar(i.nome)}</td>
               <td class="nota">${i.estrelas} ★</td>
+              <td class="nota">${typeof i.estrelas_sala === 'number' ? i.estrelas_sala+' ★' : '—'}</td>
+              <td class="nota">${typeof i.estrelas_entrega === 'number' ? i.estrelas_entrega+' ★' : '—'}</td>
               <td>${escapar(i.comentario||'—')}</td>
               <td class="quando">${fmtData(i.criado_em)}</td>
               <td class="quando">${fmtHora(i.criado_em)}</td></tr>`).join('')
-            : '<tr><td colspan="5" class="vazio">Nenhuma avaliação encontrada com os filtros atuais.</td></tr>'}
+            : '<tr><td colspan="7" class="vazio">Nenhuma avaliação encontrada com os filtros atuais.</td></tr>'}
         </tbody>
       </table>
     </div>
@@ -1510,10 +1717,12 @@ function kpi(rotulo, valor, detalhe){
 
 function exportarCsv(lista){
   const asp = v => '"' + String(v??'').replace(/"/g,'""') + '"';
-  const linhas = [['Nome','Estrelas','Comentario','Modelo','Data','Hora'].map(asp).join(';')];
+  const linhas = [['Nome','Geral','Sala de entrega','Entrega tecnica','Comentario','Data','Hora'].map(asp).join(';')];
   lista.forEach(i => linhas.push([
-    asp(i.nome), asp(i.estrelas), asp(i.comentario||''), asp(i.modelo_moto||''),
-    asp(fmtData(i.criado_em)), asp(fmtHora(i.criado_em))
+    asp(i.nome), asp(i.estrelas),
+    asp(typeof i.estrelas_sala === 'number' ? i.estrelas_sala : ''),
+    asp(typeof i.estrelas_entrega === 'number' ? i.estrelas_entrega : ''),
+    asp(i.comentario||''), asp(fmtData(i.criado_em)), asp(fmtHora(i.criado_em))
   ].join(';')));
 
   const blob = new Blob(['\uFEFF' + linhas.join('\r\n')], {type:'text/csv;charset=utf-8;'});
@@ -1524,7 +1733,7 @@ function exportarCsv(lista){
 }
 
 /* ==========================================================================
-   10. INÍCIO
+   11. INÍCIO
    ========================================================================== */
 addEventListener('DOMContentLoaded', ()=>{
   iniciarParticulas($('#poeira'), 34, .22);
@@ -1548,5 +1757,6 @@ addEventListener('DOMContentLoaded', ()=>{
   rodarIntro();
 });
 </script>
+
 </body>
 </html>
