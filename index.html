@@ -399,10 +399,201 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
 @keyframes girar{to{transform:rotate(360deg)}}
 .link-topo{position:fixed;bottom:18px;right:18px;z-index:30;background:rgba(11,14,20,.9)}
 
+/* ---------- mural de avaliações ---------- */
+#mural-secao{padding-block:clamp(40px,6vw,72px)}
+.mural-cabecalho{text-align:center;margin-bottom:28px}
+.mural-cabecalho h2{font-size:clamp(1.5rem,4.6vw,2.1rem);font-weight:800;margin-top:14px}
+.mural-cabecalho p{margin-top:12px;color:var(--chrome-dim);max-width:44ch;margin-inline:auto;text-wrap:pretty}
+.mural-caixa{position:relative;margin-top:8px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.mural{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-behavior:auto;
+  padding:10px 24px 22px;scrollbar-width:none;-ms-overflow-style:none;
+  overscroll-behavior-x:contain;cursor:grab}
+.mural::-webkit-scrollbar{display:none}
+.mural:active{cursor:grabbing}
+.depoimento{flex:0 0 clamp(258px,74vw,320px);position:relative;overflow:hidden;padding:22px;
+  border-radius:16px;border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(155deg,rgba(255,255,255,.06),rgba(255,255,255,.015) 46%,rgba(255,255,255,0)),rgba(11,14,20,.72);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 20px 44px -34px rgba(0,0,0,.95);
+  transition:transform var(--rapido) var(--curva),border-color var(--rapido),box-shadow var(--rapido);
+  opacity:0;transform:translateY(16px);animation:cardEntra .5s var(--curva) forwards}
+@keyframes cardEntra{to{opacity:1;transform:none}}
+.depoimento::before{content:'';position:absolute;inset:0 auto auto 0;height:1px;width:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35) 22%,rgba(242,178,58,.8) 50%,rgba(255,255,255,.35) 78%,transparent);
+  opacity:.55}
+.depoimento::after{content:'';position:absolute;top:-60%;left:-30%;width:40%;height:220%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.14) 48%,transparent);
+  transform:translateX(-160%) skewX(-16deg);transition:transform .8s var(--curva)}
+.depoimento:hover{transform:translateY(-5px);border-color:rgba(242,178,58,.35);
+  box-shadow:0 24px 50px -30px rgba(242,178,58,.4)}
+.depoimento:hover::after{transform:translateX(420%) skewX(-16deg)}
+.depoimento.destaque{border-color:rgba(242,178,58,.4)}
+.selo-destaque{position:absolute;top:16px;right:16px;display:flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#F2B23A;border:1px solid rgba(242,178,58,.4);border-radius:99px;padding:4px 9px;
+  background:rgba(242,178,58,.1)}
+.selo-destaque svg{width:10px;height:10px}
+.estrelas-ouro{display:flex;gap:3px}
+.estrelas-ouro svg{width:19px;height:19px;opacity:0;transform:scale(.4);animation:estrelaPop .38s var(--curva) forwards}
+.estrelas-ouro svg path{fill:url(#ouro)}
+.estrelas-ouro svg.apagada path{fill:rgba(255,255,255,.09)}
+.estrelas-ouro svg.acesa{filter:drop-shadow(0 2px 8px rgba(242,178,58,.55))}
+@keyframes estrelaPop{to{opacity:1;transform:none}}
+.depoimento .texto{margin-top:16px;font-size:.95rem;line-height:1.6;color:rgba(226,234,244,.9);
+  text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.depoimento .sem-texto{margin-top:16px;font-family:var(--display);font-weight:800;font-size:1.05rem;
+  color:#F2B23A;letter-spacing:.02em}
+.depoimento .rodape-card{margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.depoimento .quem{display:flex;align-items:center;gap:10px;min-width:0}
+.depoimento .avatar{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;
+  font-family:var(--display);font-weight:800;font-size:.8rem;color:#0B0E14;
+  background:linear-gradient(150deg,#FFE59A,#F2B23A 55%,#C98A16)}
+.depoimento .nome{font-family:var(--display);font-weight:800;font-size:.92rem;color:var(--chrome-bright);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.depoimento time{font-family:var(--mono);font-size:.62rem;color:var(--chrome-dim);white-space:nowrap;flex:none}
+.mural-vazio{text-align:center;padding:44px 24px;border:1px dashed rgba(255,255,255,.14);border-radius:16px;
+  max-width:520px;margin-inline:auto;animation:cardEntra .6s var(--curva) forwards;opacity:0}
+.mural-vazio .estrelas-ouro{justify-content:center;margin-bottom:16px}
+.mural-vazio p{font-family:var(--display);font-weight:800;font-size:1.1rem;color:var(--chrome-bright);text-wrap:balance}
+.mural-vazio span{display:block;margin-top:10px;font-size:.9rem;color:var(--chrome-dim)}
+.esqueleto{flex:0 0 clamp(258px,74vw,320px);height:190px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.03);position:relative;overflow:hidden}
+.esqueleto::after{content:'';position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+  animation:varreEsq 1.3s infinite}
+@keyframes varreEsq{to{transform:translateX(100%)}}
+.mural-dica{text-align:center;margin-top:6px;font-family:var(--mono);font-size:.6rem;
+  letter-spacing:.18em;text-transform:uppercase;color:rgba(124,134,149,.55)}
+
+/* ---------- painel: navegação e status ---------- */
+.abas{display:flex;flex-wrap:wrap;gap:8px}
+.aba{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--edge);border-radius:10px;
+  padding:8px 14px;font-size:.82rem;color:var(--chrome-dim);transition:var(--rapido)}
+.aba:hover{border-color:rgba(228,0,43,.45);color:var(--chrome-bright)}
+.aba.ativo{border-color:var(--racing);background:rgba(228,0,43,.14);color:var(--chrome-bright)}
+.aba .cont{font-family:var(--mono);font-size:.68rem;background:rgba(255,255,255,.07);border-radius:6px;padding:2px 6px}
+.aba.ativo .cont{background:rgba(228,0,43,.3)}
+.estrelas-filtro{display:flex;flex-wrap:wrap;gap:6px}
+.estrelas-filtro button{border:1px solid var(--edge);border-radius:8px;padding:7px 10px;font-family:var(--mono);
+  font-size:.7rem;color:var(--chrome-dim);transition:var(--rapido);white-space:nowrap}
+.estrelas-filtro button:hover{border-color:rgba(242,178,58,.5);color:#F2B23A}
+.estrelas-filtro button.ativo{border-color:#F2B23A;background:rgba(242,178,58,.14);color:#F2B23A}
+.barra-topo{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:20px}
+.grupo-filtros{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+.selo{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:4px 11px;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.selo i{width:6px;height:6px;border-radius:50%;display:block}
+.selo-aprovado{color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3)}
+.selo-aprovado i{background:#4ade80}
+.selo-pendente{color:#F2B23A;background:rgba(242,178,58,.12);border:1px solid rgba(242,178,58,.32)}
+.selo-pendente i{background:#F2B23A}
+.selo-oculto{color:var(--chrome-dim);background:rgba(255,255,255,.05);border:1px solid var(--edge)}
+.selo-oculto i{background:var(--chrome-dim)}
+
+.acoes-linha{display:flex;gap:4px;justify-content:flex-end}
+.acao{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:var(--chrome-dim);
+  border:1px solid transparent;transition:var(--rapido)}
+.acao svg{width:15px;height:15px}
+.acao:hover{background:rgba(255,255,255,.06);color:var(--chrome-bright);border-color:var(--edge)}
+.acao.perigo:hover{color:#ff6b81;border-color:rgba(255,107,129,.4);background:rgba(255,107,129,.1)}
+.acao.ouro{color:#F2B23A}
+.acao.ouro:hover{border-color:rgba(242,178,58,.4);background:rgba(242,178,58,.12)}
+.acao[aria-pressed="true"]{color:#F2B23A;background:rgba(242,178,58,.14);border-color:rgba(242,178,58,.35)}
+td .comentario-cel{display:block;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(195,202,212,.85)}
+tr.destacada td:first-child{box-shadow:inset 3px 0 0 #F2B23A}
+
+/* ---------- painel: tabela vira cartão no celular ---------- */
+@media(max-width:900px){
+  table{min-width:0}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  tbody tr{display:block;border:1px solid rgba(40,48,61,.7);border-radius:14px;padding:14px;margin-bottom:12px;
+    background:rgba(11,14,20,.5)}
+  tbody td{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;border:0;padding:6px 0;text-align:right}
+  tbody td::before{content:attr(data-rot);font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--chrome-dim);text-align:left;flex:none}
+  td .comentario-cel{max-width:none;white-space:normal;text-align:right}
+  .acoes-linha{justify-content:flex-end;flex-wrap:wrap}
+  tr.destacada td:first-child{box-shadow:none}
+  tr.destacada{border-color:rgba(242,178,58,.45)}
+}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:20px;opacity:0;
+  transition:opacity var(--rapido)}
+.modal.visivel{opacity:1}
+.modal .fundo{position:absolute;inset:0;background:rgba(5,7,11,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.modal-cartao{position:relative;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:26px;
+  transform:translateY(14px) scale(.98);transition:transform var(--medio) var(--curva)}
+.modal.visivel .modal-cartao{transform:none}
+.modal-cartao h3{font-size:1.15rem;font-weight:800}
+.modal-cartao .sub{margin-top:6px;font-size:.86rem;color:var(--chrome-dim)}
+.modal-campo{margin-top:16px}
+.modal-campo label{display:block;margin-bottom:7px}
+.modal-acoes{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;margin-top:24px}
+.btn-perigo{border-radius:99px;padding:12px 24px;font-family:var(--display);font-size:.78rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.12em;color:#fff;background:linear-gradient(100deg,#8f0016,#d61f3c);
+  transition:var(--rapido)}
+.btn-perigo:hover{transform:translateY(-2px)}
+.ver-linha{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid rgba(40,48,61,.5);
+  font-size:.9rem}
+.ver-linha:last-child{border:0}
+.ver-linha b{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--chrome-dim);font-weight:400;flex:none}
+.ver-linha span{text-align:right;color:var(--chrome-bright);text-wrap:pretty}
+select.campo{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--chrome-dim) 50%),linear-gradient(135deg,var(--chrome-dim) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 21px,calc(100% - 15px) 21px;background-size:5px 5px;background-repeat:no-repeat}
+
+/* ---------- avisos ---------- */
+#avisos{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;gap:10px;
+  max-width:min(340px,calc(100vw - 32px))}
+.aviso{display:flex;align-items:flex-start;gap:11px;padding:13px 16px;border-radius:12px;font-size:.88rem;
+  background:rgba(18,22,31,.96);border:1px solid var(--edge);color:var(--chrome-bright);
+  box-shadow:0 18px 40px -20px rgba(0,0,0,.9);animation:avisoEntra .3s var(--curva);backdrop-filter:blur(10px)}
+.aviso.saindo{animation:avisoSai .25s ease forwards}
+.aviso svg{width:16px;height:16px;flex:none;margin-top:2px}
+.aviso.ok{border-color:rgba(74,222,128,.4)} .aviso.ok svg{color:#4ade80}
+.aviso.erro{border-color:rgba(255,107,129,.45)} .aviso.erro svg{color:#ff6b81}
+.aviso.info svg{color:var(--racing-glow)}
+@keyframes avisoEntra{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes avisoSai{to{opacity:0;transform:translateX(24px)}}
+
+/* ---------- carregando ---------- */
+.esq-linha{height:52px;border-radius:12px;background:rgba(255,255,255,.035);position:relative;overflow:hidden;margin-bottom:10px}
+.esq-linha::after{content:'';position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:varreEsq 1.3s infinite}
+.esq-kpi{height:104px;border-radius:16px;background:rgba(255,255,255,.035);position:relative;overflow:hidden}
+.esq-kpi::after{content:'';position:absolute;inset:0;transform:translateX(-100%);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);animation:varreEsq 1.3s infinite}
+
+/* ---------- impressão ---------- */
+@media print{
+  body{background:#fff;color:#000}
+  #fundo,#progresso,#intro,#site,#sucesso,.filtros,.barra-topo,.acoes-filtro,.acoes-linha,
+  .link-topo,#avisos,.paineis,.modal{display:none !important}
+  #painel{padding:0}
+  .painel-cabecalho{border-color:#ccc}
+  .quadro,.kpi{background:#fff !important;border:1px solid #ccc !important;box-shadow:none !important;
+    backdrop-filter:none !important;break-inside:avoid}
+  .kpis{display:grid !important;grid-template-columns:repeat(3,1fr) !important}
+  h1,h2,.kpi .valor,td.cliente{color:#000 !important;-webkit-text-fill-color:#000}
+  th,td,.eyebrow,.kpi .detalhe,.quadro header p{color:#333 !important}
+  thead{position:static !important;width:auto !important;height:auto !important;clip:auto !important}
+  tbody tr{display:table-row !important;border:0 !important;background:none !important}
+  tbody td{display:table-cell !important;text-align:left !important;border-bottom:1px solid #ddd !important}
+  tbody td::before{content:none !important}
+  td .comentario-cel{max-width:none;white-space:normal}
+  @page{size:landscape;margin:12mm}
+}
+
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
   .revelar{opacity:1;transform:none}
+  .depoimento,.mural-vazio{opacity:1 !important;transform:none !important}
 }
 </style>
 </head>
@@ -410,6 +601,9 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
+    <linearGradient id="ouro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFE59A"/><stop offset="52%" stop-color="#F2B23A"/><stop offset="100%" stop-color="#C98A16"/>
+    </linearGradient>
     <linearGradient id="estrelaCheia" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFFFFF"/><stop offset="38%" stop-color="#FF5C74"/><stop offset="100%" stop-color="#C4002A"/>
     </linearGradient>
@@ -512,6 +706,23 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
         <button class="btn-fantasma" type="button" id="nova-avaliacao" style="margin-top:20px">Enviar outra avaliação</button>
       </div>
     </div>
+  </section>
+
+  <!-- MURAL -->
+  <section id="mural-secao">
+    <div class="envolucro" style="max-width:1180px">
+      <div class="mural-cabecalho">
+        <div class="marcador revelar" style="display:flex;align-items:center;justify-content:center;gap:12px">
+          <i></i><span class="eyebrow">Depoimentos</span><i></i>
+        </div>
+        <h2 class="revelar"><span aria-hidden="true">⭐</span> <span class="cromo">O que nossos clientes disseram</span></h2>
+        <p class="revelar">Veja a experiência de outros clientes que receberam sua Honda conosco.</p>
+      </div>
+    </div>
+    <div class="mural-caixa revelar">
+      <div class="mural" id="mural" role="region" aria-label="Avaliações de clientes" tabindex="0"></div>
+    </div>
+    <p class="mural-dica" id="mural-dica" hidden>Arraste para o lado</p>
   </section>
 
   <!-- ETAPAS -->
@@ -625,6 +836,9 @@ td.quando{font-family:var(--mono);font-size:.7rem;color:var(--chrome-dim);white-
     <button class="btn-fantasma" type="button" id="fechar-sucesso" style="margin-top:24px">Ver revisões e cuidados</button>
   </div>
 </div>
+
+<div id="avisos" aria-live="polite"></div>
+<div id="modal" class="modal" hidden></div>
 
 <!-- ======================= PAINEL ======================= -->
 <section id="painel" hidden>
@@ -956,6 +1170,7 @@ function montarSite(){
 
   montarEstrelas();
   ligarFormulario();
+  carregarMural();
   ligarLembrete();
   ligarRevelacao();
 }
@@ -1043,6 +1258,128 @@ function mostrarReacao(valor){
   caixa.dataset.nota = String(valor);
   caixa.innerHTML = `<span class="emoji">${NOTAS[valor].emoji}</span><span class="rotulo">${NOTAS[valor].rotulo}</span>`;
   caixa.classList.remove('trocando'); void caixa.offsetWidth; caixa.classList.add('trocando');
+}
+
+/* ==========================================================================
+   MURAL DE AVALIAÇÕES (carrossel infinito)
+   ========================================================================== */
+const estrelaOuro = aceso =>
+  `<svg viewBox="0 0 24 24" class="${aceso?'acesa':'apagada'}" style="animation-delay:var(--d,0ms)" aria-hidden="true"><path d="M12 2.6l2.9 5.88 6.49.95-4.7 4.58 1.11 6.46L12 17.42 6.2 20.47l1.11-6.46-4.7-4.58 6.49-.95L12 2.6z"/></svg>`;
+
+function fileiraEstrelas(nota, atraso=0){
+  return `<div class="estrelas-ouro" role="img" aria-label="${nota} de 5 estrelas">` +
+    [1,2,3,4,5].map((n,i)=>estrelaOuro(n<=nota).replace('var(--d,0ms)', (atraso+i*70)+'ms')).join('') +
+    `</div>`;
+}
+
+async function carregarMural(){
+  const mural = $('#mural');
+  mural.innerHTML = Array.from({length:4},()=>'<div class="esqueleto"></div>').join('');
+
+  let lista = [];
+  try{
+    if(CONFIG.supabaseUrl.includes('SEUPROJETO')) throw new Error('sem conexão');
+    const resposta = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,'') + '/rest/v1/rpc/avaliacoes_publicas', {
+      method:'POST',
+      headers:{ 'apikey':CONFIG.supabaseKey, 'Authorization':'Bearer '+CONFIG.supabaseKey, 'Content-Type':'application/json' },
+      body:'{}'
+    });
+    if(resposta.ok) lista = await resposta.json();
+  }catch(_){ lista = []; }
+
+  if(!Array.isArray(lista) || lista.length === 0){
+    mural.innerHTML = `
+      <div class="mural-vazio">
+        ${fileiraEstrelas(5)}
+        <p>Você poderá ser o primeiro cliente a avaliar nosso atendimento.</p>
+        <span>Sua opinião abre este mural.</span>
+      </div>`;
+    mural.style.justifyContent = 'center';
+    return;
+  }
+
+  mural.style.justifyContent = '';
+  const cartoes = lista.map(cartaoDepoimento).join('');
+
+  // duplica a fila para o laço ficar contínuo, sem corte no fim
+  const precisaLaco = lista.length >= 3;
+  mural.innerHTML = precisaLaco ? cartoes + cartoes : cartoes;
+
+  if(lista.length > 1) $('#mural-dica').hidden = false;
+  if(precisaLaco) rolagemInfinita(mural);
+}
+
+function cartaoDepoimento(a, i){
+  const comentario = (a.comentario||'').trim();
+  const data = a.criado_em ? fmtData(a.criado_em) : '';
+  const atraso = Math.min(i*60, 480);
+  return `
+  <article class="depoimento${a.destacado?' destaque':''}" style="animation-delay:${atraso}ms">
+    ${a.destacado ? `<span class="selo-destaque"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.6l2.9 5.88 6.49.95-4.7 4.58 1.11 6.46L12 17.42 6.2 20.47l1.11-6.46-4.7-4.58 6.49-.95z"/></svg>Destaque</span>` : ''}
+    ${fileiraEstrelas(a.estrelas, atraso)}
+    ${comentario
+      ? `<p class="texto">${escapar(comentario)}</p>`
+      : `<p class="sem-texto">${escapar(NOTAS[a.estrelas]?.rotulo || 'Avaliado')}</p>`}
+    <div class="rodape-card">
+      <span class="quem">
+        <span class="avatar">${escapar(inicialDe(a.nome))}</span>
+        <span class="nome">${escapar(a.nome)}</span>
+      </span>
+      ${data ? `<time>${data}</time>` : ''}
+    </div>
+  </article>`;
+}
+
+const inicialDe = n => String(n||'?').trim().charAt(0).toUpperCase() || '?';
+
+/** Rolagem contínua da direita para a esquerda, com pausa e arraste. */
+function rolagemInfinita(caixa){
+  if(semMovimento) return;
+  let pausado = false, retomar = null;
+
+  const pausa = (ms=1600)=>{
+    pausado = true;
+    clearTimeout(retomar);
+    retomar = setTimeout(()=> pausado = false, ms);
+  };
+
+  caixa.addEventListener('mouseenter', ()=>{ clearTimeout(retomar); pausado = true; });
+  caixa.addEventListener('mouseleave', ()=> pausado = false);
+  caixa.addEventListener('pointerdown', ()=>{ clearTimeout(retomar); pausado = true; });
+  caixa.addEventListener('pointerup',   ()=> pausa());
+  caixa.addEventListener('pointercancel', ()=> pausa());
+  caixa.addEventListener('touchend',    ()=> pausa(2200));
+  caixa.addEventListener('wheel',       ()=> pausa(2200), {passive:true});
+  caixa.addEventListener('focusin',     ()=>{ clearTimeout(retomar); pausado = true; });
+  caixa.addEventListener('focusout',    ()=> pausado = false);
+
+  let visivel = true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(e => visivel = e[0].isIntersecting, {threshold:0}).observe(caixa);
+  }
+  document.addEventListener('visibilitychange', ()=> visivel = !document.hidden);
+
+  let antes = performance.now(), resto = 0;
+  const VELOCIDADE = 26; // pixels por segundo
+
+  (function passo(agora){
+    const dt = Math.min((agora - antes)/1000, .05);
+    antes = agora;
+
+    if(!pausado && visivel){
+      resto += VELOCIDADE * dt;
+      const inteiro = Math.floor(resto);
+      if(inteiro >= 1){ caixa.scrollLeft += inteiro; resto -= inteiro; }
+    }
+
+    const metade = caixa.scrollWidth / 2;
+    if(metade > 0){
+      if(caixa.scrollLeft >= metade) caixa.scrollLeft -= metade;
+      else if(caixa.scrollLeft <= 0) caixa.scrollLeft += metade;
+    }
+
+    requestAnimationFrame(passo);
+  })(performance.now());
 }
 
 /* ==========================================================================
@@ -1185,8 +1522,55 @@ function soltarConfetes(){
 /* ==========================================================================
    10. PAINEL  ( abra com  seusite/#admin )
    ========================================================================== */
-const painelEstado = { dados: [], periodo: '30', de: '', ate: '', busca: '' };
+const painelEstado = {
+  dados: [], chave: '', carregando: false,
+  status: 'todas', estrelas: 0, periodo: '30', de: '', ate: '', busca: ''
+};
 
+const FUSO = 'America/Sao_Paulo';
+const fmtData = iso => new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeZone:FUSO}).format(new Date(iso));
+const fmtHora = iso => new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:FUSO}).format(new Date(iso));
+const diaChave = iso => new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit',timeZone:FUSO}).format(new Date(iso));
+const mesChave = iso => diaChave(iso).slice(0,7);
+const diaRotulo = c => { const [,m,d] = c.split('-'); return d+'/'+m; };
+const mesRotulo = c => { const [a,m] = c.split('-'); return ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][+m-1]+'/'+a.slice(2); };
+const medial = v => v.length ? v.reduce((s,n)=>s+n,0)/v.length : 0;
+const hojeChave = () => new Intl.DateTimeFormat('en-CA',{timeZone:FUSO}).format(new Date());
+
+/* ---------- avisos (toasts) ---------- */
+function aviso(texto, tipo='ok'){
+  const icones = {
+    ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+    erro:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>',
+    info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>'
+  };
+  const el = document.createElement('div');
+  el.className = 'aviso ' + tipo;
+  el.innerHTML = (icones[tipo]||icones.info) + '<span>' + escapar(texto) + '</span>';
+  $('#avisos').appendChild(el);
+  setTimeout(()=>{ el.classList.add('saindo'); setTimeout(()=> el.remove(), 260); }, 3400);
+}
+
+/* ---------- modal ---------- */
+function abrirModal(html, aoAbrir){
+  const modal = $('#modal');
+  modal.innerHTML = '<div class="fundo"></div><div class="vidro fio modal-cartao" role="dialog" aria-modal="true">'+html+'</div>';
+  modal.hidden = false;
+  requestAnimationFrame(()=> modal.classList.add('visivel'));
+  $('.fundo', modal).onclick = fecharModal;
+  document.addEventListener('keydown', escFecha);
+  if(aoAbrir) aoAbrir(modal);
+}
+function fecharModal(){
+  const modal = $('#modal');
+  if(modal.hidden) return;
+  modal.classList.remove('visivel');
+  document.removeEventListener('keydown', escFecha);
+  setTimeout(()=>{ modal.hidden = true; modal.innerHTML = ''; }, 240);
+}
+function escFecha(e){ if(e.key === 'Escape') fecharModal(); }
+
+/* ---------- navegação ---------- */
 function rotearHash(){
   const admin = location.hash === '#admin';
   $('#painel').hidden = !admin;
@@ -1201,6 +1585,7 @@ function rotearHash(){
     return;
   }
 
+  fecharModal();
   if(intro && introIniciada && !intro.classList.contains('saindo')){
     intro.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -1222,7 +1607,7 @@ function telaChave(mensagem){
     <div class="vidro fio entrar">
       <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.2-8.2 2 2-2 2 2 2-3 3-2-2-2 2"/></svg></span>
       <h2>Acesso restrito</h2>
-      <p>Digite a senha definida no arquivo SQL, dentro da função listar_avaliacoes.</p>
+      <p>Digite a senha definida no arquivo SQL, dentro da função conferir_chave.</p>
       <input class="campo" id="chave" type="password" placeholder="Senha do painel" style="margin-top:18px" autocomplete="current-password">
       ${mensagem ? `<p class="erro">${escapar(mensagem)}</p>` : ''}
       <button class="btn" id="entrar-painel" type="button" style="width:100%;margin-top:20px">Entrar</button>
@@ -1233,30 +1618,46 @@ function telaChave(mensagem){
   $('#chave').focus();
 }
 
+function esqueletoPainel(){
+  $('#painel-conteudo').innerHTML = `
+    <div class="kpis">${'<div class="esq-kpi"></div>'.repeat(6)}</div>
+    <section class="vidro quadro" style="margin-top:16px">${'<div class="esq-linha"></div>'.repeat(6)}</section>`;
+}
+
+/* ---------- chamadas ao banco ---------- */
+async function chamarRpc(funcao, corpo){
+  if(CONFIG.supabaseUrl.includes('SEUPROJETO')) throw new Error('Configure supabaseUrl e supabaseKey no index.html.');
+  const resposta = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,'') + '/rest/v1/rpc/' + funcao, {
+    method:'POST',
+    headers:{ 'apikey':CONFIG.supabaseKey, 'Authorization':'Bearer '+CONFIG.supabaseKey, 'Content-Type':'application/json' },
+    body: JSON.stringify(corpo)
+  });
+  if(!resposta.ok){
+    let detalhe = ''; try{ detalhe = (await resposta.json()).message || ''; }catch(_){}
+    const erro = new Error(detalhe || ('HTTP ' + resposta.status));
+    erro.status = resposta.status;
+    erro.chaveInvalida = detalhe.toLowerCase().includes('invalida') || [400,401,403].includes(resposta.status);
+    throw erro;
+  }
+  return resposta.json();
+}
+
 async function carregarPainel(chave){
-  $('#painel-conteudo').innerHTML = '<div class="carregando"><span class="girando"></span>Carregando…</div>';
+  esqueletoPainel();
   try{
-    if(CONFIG.supabaseUrl.includes('SEUPROJETO')) throw new Error('Configure supabaseUrl e supabaseKey no index.html.');
-
-    const resposta = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,'') + '/rest/v1/rpc/listar_avaliacoes', {
-      method:'POST',
-      headers:{ 'apikey':CONFIG.supabaseKey, 'Authorization':'Bearer '+CONFIG.supabaseKey, 'Content-Type':'application/json' },
-      body: JSON.stringify({ chave })
-    });
-
-    if(!resposta.ok){
-      let detalhe = ''; try{ detalhe = (await resposta.json()).message || ''; }catch(_){}
-      if(detalhe.toLowerCase().includes('invalida') || [400,401,403].includes(resposta.status)){
-        sessionStorage.removeItem('painel-chave');
-        telaChave('Senha incorreta. Tente novamente.'); return;
-      }
-      throw new Error(detalhe || ('HTTP ' + resposta.status));
-    }
-
-    painelEstado.dados = await resposta.json();
+    const dados = await chamarRpc('listar_avaliacoes', { chave });
+    painelEstado.dados = dados;
+    painelEstado.chave = chave;
     sessionStorage.setItem('painel-chave', chave);
     desenharPainel();
+    const pendentes = dados.filter(d=>d.status === 'pendente').length;
+    if(pendentes) aviso(pendentes + (pendentes === 1 ? ' avaliação aguardando aprovação.' : ' avaliações aguardando aprovação.'), 'info');
   }catch(erro){
+    if(erro.chaveInvalida){
+      sessionStorage.removeItem('painel-chave');
+      telaChave('Senha incorreta. Tente novamente.');
+      return;
+    }
     $('#painel-conteudo').innerHTML = `
       <div class="vidro entrar" style="border-color:rgba(228,0,43,.35)">
         <h2>Não consegui carregar</h2>
@@ -1266,20 +1667,69 @@ async function carregarPainel(chave){
   }
 }
 
-const FUSO = 'America/Sao_Paulo';
-const fmtData = iso => new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeZone:FUSO}).format(new Date(iso));
-const fmtHora = iso => new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:FUSO}).format(new Date(iso));
-const diaChave = iso => new Intl.DateTimeFormat('en-CA',{year:'numeric',month:'2-digit',day:'2-digit',timeZone:FUSO}).format(new Date(iso));
-const diaRotulo = c => { const [,m,d] = c.split('-'); return d+'/'+m; };
-const medial = v => v.length ? v.reduce((s,n)=>s+n,0)/v.length : 0;
+async function salvarAlteracao(id, campos, mensagem){
+  const antes = painelEstado.dados.map(d => ({...d}));
+  const alvo = painelEstado.dados.find(d => d.id === id);
+  if(alvo) Object.assign(alvo, campos);
+  desenharPainel();
 
+  try{
+    await chamarRpc('atualizar_avaliacao', {
+      chave: painelEstado.chave,
+      p_id: id,
+      p_nome: campos.nome ?? null,
+      p_estrelas: campos.estrelas ?? null,
+      p_comentario: campos.comentario === undefined ? null : (campos.comentario ?? ''),
+      p_status: campos.status ?? null,
+      p_destacado: campos.destacado ?? null
+    });
+    if(mensagem) aviso(mensagem, 'ok');
+  }catch(erro){
+    painelEstado.dados = antes;
+    desenharPainel();
+    aviso('Não foi possível salvar: ' + erro.message, 'erro');
+  }
+}
+
+async function excluirAvaliacao(id, nome){
+  const antes = painelEstado.dados.map(d => ({...d}));
+  painelEstado.dados = painelEstado.dados.filter(d => d.id !== id);
+  desenharPainel();
+  try{
+    await chamarRpc('excluir_avaliacao', { chave: painelEstado.chave, p_id: id });
+    aviso('Avaliação de ' + nome + ' removida.', 'ok');
+  }catch(erro){
+    painelEstado.dados = antes;
+    desenharPainel();
+    aviso('Não foi possível excluir: ' + erro.message, 'erro');
+  }
+}
+
+async function aprovarTodas(){
+  try{
+    const qtd = await chamarRpc('aprovar_pendentes', { chave: painelEstado.chave });
+    painelEstado.dados.forEach(d => { if(d.status === 'pendente') d.status = 'aprovado'; });
+    desenharPainel();
+    aviso(qtd + (qtd === 1 ? ' avaliação aprovada.' : ' avaliações aprovadas.'), 'ok');
+  }catch(erro){
+    aviso('Não foi possível aprovar: ' + erro.message, 'erro');
+  }
+}
+
+/* ---------- filtros ---------- */
 function filtrar(){
   let lista = [...painelEstado.dados];
-  const {periodo, de, ate, busca} = painelEstado;
+  const {status, estrelas, periodo, de, ate, busca} = painelEstado;
+
+  if(status !== 'todas') lista = lista.filter(i => (i.status || 'aprovado') === status);
+  if(estrelas) lista = lista.filter(i => i.estrelas === estrelas);
 
   if(periodo === 'personalizado'){
     if(de)  lista = lista.filter(i => diaChave(i.criado_em) >= de);
     if(ate) lista = lista.filter(i => diaChave(i.criado_em) <= ate);
+  }else if(periodo === 'hoje'){
+    const hoje = hojeChave();
+    lista = lista.filter(i => diaChave(i.criado_em) === hoje);
   }else if(periodo !== 'tudo'){
     const limite = Date.now() - Number(periodo)*864e5;
     lista = lista.filter(i => new Date(i.criado_em).getTime() >= limite);
@@ -1287,157 +1737,203 @@ function filtrar(){
 
   const termo = busca.trim().toLowerCase();
   if(termo) lista = lista.filter(i =>
-    i.nome.toLowerCase().includes(termo) || (i.comentario||'').toLowerCase().includes(termo));
+    i.nome.toLowerCase().includes(termo) ||
+    (i.comentario||'').toLowerCase().includes(termo) ||
+    fmtData(i.criado_em).includes(termo) ||
+    String(i.estrelas) === termo);
 
-  return lista;
+  return lista.sort((a,b)=> (b.destacado?1:0)-(a.destacado?1:0) || new Date(b.criado_em)-new Date(a.criado_em));
 }
 
-function graficoBarras(dados){
-  const L=520, A=230, base=A-28, topo=14, maxV=Math.max(1,...dados.map(d=>d.qtd));
-  const larg=(L-40)/dados.length, cores=['#7A2130','#A3202F','#C4002A','#E4002B','#FF3D5F'];
+/* ---------- gráficos ---------- */
+function graficoBarras(dados, cores){
+  const L=520, A=200, base=A-26, topo=12, maxV=Math.max(1,...dados.map(d=>d.qtd));
+  const larg=(L-42)/dados.length;
   const barras = dados.map((d,i)=>{
-    const h=(base-topo)*(d.qtd/maxV), x=30+i*larg+larg*.2, y=base-h, w=larg*.6;
-    return `<rect x="${x}" y="${y}" width="${w}" height="${Math.max(h,1)}" rx="6" fill="${cores[i]}">
-      <animate attributeName="height" from="0" to="${Math.max(h,1)}" dur=".5s" fill="freeze"/>
-      <animate attributeName="y" from="${base}" to="${y}" dur=".5s" fill="freeze"/></rect>
-      <text x="${x+w/2}" y="${base+17}" text-anchor="middle">${d.rot}</text>`;
+    const h=(base-topo)*(d.qtd/maxV), x=32+i*larg+larg*.18, y=base-h, w=larg*.64;
+    const cor = cores ? cores[i % cores.length] : '#E4002B';
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${Math.max(h,1).toFixed(1)}" rx="5" fill="${cor}">
+      <animate attributeName="height" from="0" to="${Math.max(h,1).toFixed(1)}" dur=".45s" fill="freeze"/>
+      <animate attributeName="y" from="${base}" to="${y.toFixed(1)}" dur=".45s" fill="freeze"/></rect>
+      <text x="${(x+w/2).toFixed(1)}" y="${base+16}" text-anchor="middle">${d.rot}</text>`;
   }).join('');
   const grade = [0,.5,1].map(f=>{
     const y = base-(base-topo)*f;
-    return `<line x1="28" x2="${L-8}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>
-            <text x="22" y="${y+3}" text-anchor="end">${Math.round(maxV*f)}</text>`;
+    return `<line x1="30" x2="${L-6}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>
+            <text x="24" y="${y+3}" text-anchor="end">${Math.round(maxV*f)}</text>`;
   }).join('');
   return `<svg class="grafico" viewBox="0 0 ${L} ${A}">${grade}${barras}</svg>`;
 }
 
-function graficoLinha(dados){
-  const L=520, A=230, base=A-28, topo=14, esq=32;
+function graficoLinha(dados, opcoes={}){
+  const {maximo, casas=0, cor='#FF2247'} = opcoes;
+  const L=520, A=200, base=A-26, topo=12, esq=34;
   if(!dados.length) return '<p class="vazio">Sem dados no período.</p>';
-  const maxV = Math.max(1, ...dados.map(d=>d.qtd));
-  const passo = dados.length > 1 ? (L-esq-16)/(dados.length-1) : 0;
-  const pontos = dados.map((d,i)=>[esq+i*passo, base-(base-topo)*(d.qtd/maxV)]);
+  const maxV = maximo || Math.max(1, ...dados.map(d=>d.qtd));
+  const passo = dados.length > 1 ? (L-esq-14)/(dados.length-1) : 0;
+  const pontos = dados.map((d,i)=>[esq+i*passo, base-(base-topo)*(Math.min(d.qtd,maxV)/maxV)]);
   const linha = pontos.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
   const area = linha + ` L${pontos.at(-1)[0].toFixed(1)} ${base} L${pontos[0][0].toFixed(1)} ${base} Z`;
-  const marcas = pontos.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.5" fill="#FF5C74"/>`).join('');
+  const marcas = pontos.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.4" fill="${cor}"/>`).join('');
   const salto = Math.ceil(dados.length/6);
   const rotulos = dados.map((d,i)=> i%salto ? '' :
-    `<text x="${pontos[i][0].toFixed(1)}" y="${base+17}" text-anchor="middle">${d.rot}</text>`).join('');
+    `<text x="${pontos[i][0].toFixed(1)}" y="${base+16}" text-anchor="middle">${d.rot}</text>`).join('');
   const grade = [0,.5,1].map(f=>{
     const y = base-(base-topo)*f;
-    return `<line x1="${esq-4}" x2="${L-8}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>
-            <text x="${esq-10}" y="${y+3}" text-anchor="end">${Math.round(maxV*f)}</text>`;
+    return `<line x1="${esq-4}" x2="${L-6}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.06)"/>
+            <text x="${esq-10}" y="${y+3}" text-anchor="end">${(maxV*f).toFixed(casas)}</text>`;
   }).join('');
   return `<svg class="grafico" viewBox="0 0 ${L} ${A}">
-    <defs><linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#E4002B" stop-opacity=".5"/><stop offset="100%" stop-color="#E4002B" stop-opacity="0"/>
+    <defs><linearGradient id="g-${opcoes.id||'a'}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${cor}" stop-opacity=".45"/><stop offset="100%" stop-color="${cor}" stop-opacity="0"/>
     </linearGradient></defs>
-    ${grade}<path d="${area}" fill="url(#areaG)"/>
-    <path d="${linha}" fill="none" stroke="#FF2247" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${grade}<path d="${area}" fill="url(#g-${opcoes.id||'a'})"/>
+    <path d="${linha}" fill="none" stroke="${cor}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
     ${marcas}${rotulos}</svg>`;
 }
 
+/* ---------- desenho ---------- */
 function desenharPainel(){
+  const todas = painelEstado.dados;
   const lista = filtrar();
   const notas = lista.map(i=>i.estrelas);
+  const clientes = new Set(lista.map(i=>i.nome.trim().toLowerCase())).size;
   const comentarios = lista.filter(i => (i.comentario||'').trim().length);
+  const cinco = lista.filter(i => i.estrelas === 5).length;
+  const hoje = hojeChave();
+  const mesAtual = hoje.slice(0,7);
+  const doMes = todas.filter(i => mesChave(i.criado_em) === mesAtual).length;
+  const deHoje = todas.filter(i => diaChave(i.criado_em) === hoje).length;
+  const pendentes = todas.filter(i => (i.status||'aprovado') === 'pendente').length;
+
+  const conta = st => st === 'todas' ? todas.length : todas.filter(i => (i.status||'aprovado') === st).length;
   const distribuicao = [1,2,3,4,5].map(n=>({rot:n+'★', qtd:lista.filter(i=>i.estrelas===n).length, n}));
   const pct = q => lista.length ? Math.round(q/lista.length*100) : 0;
-  const satisfacao = lista.length ? Math.round(notas.filter(n=>n>=4).length/lista.length*100) : 0;
 
-  const mapa = new Map();
-  lista.forEach(i=>{ const d = diaChave(i.criado_em); mapa.set(d,(mapa.get(d)||0)+1); });
-  const porDia = [...mapa.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([d,q])=>({rot:diaRotulo(d), qtd:q}));
+  const porDiaMapa = new Map();
+  lista.forEach(i=>{ const d = diaChave(i.criado_em); porDiaMapa.set(d,(porDiaMapa.get(d)||0)+1); });
+  const porDia = [...porDiaMapa.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([d,q])=>({rot:diaRotulo(d), qtd:q}));
 
-  const per = painelEstado.periodo;
+  const porMesMapa = new Map();
+  todas.forEach(i=>{ const m = mesChave(i.criado_em); porMesMapa.set(m, [...(porMesMapa.get(m)||[]), i.estrelas]); });
+  const meses = [...porMesMapa.entries()].sort((a,b)=>a[0].localeCompare(b[0])).slice(-12);
+  const porMes = meses.map(([m,v])=>({rot:mesRotulo(m), qtd:v.length}));
+  const mediaMes = meses.map(([m,v])=>({rot:mesRotulo(m), qtd:Number(medial(v).toFixed(2))}));
+
+  const p = painelEstado;
 
   $('#painel-conteudo').innerHTML = `
+  <div class="barra-topo">
+    <div class="abas">
+      ${[['todas','Todas'],['pendente','Pendentes'],['aprovado','Aprovadas'],['oculto','Ocultas']]
+        .map(([v,r])=>`<button class="aba ${p.status===v?'ativo':''}" data-status="${v}">${r}<span class="cont">${conta(v)}</span></button>`).join('')}
+    </div>
+    <div class="grupo-filtros">
+      ${pendentes ? `<button class="btn-fantasma" id="aprovar-todas" style="border-color:rgba(242,178,58,.5);color:#F2B23A">Aprovar ${pendentes} pendente(s)</button>` : ''}
+      <button class="btn-fantasma" id="recarregar">Atualizar</button>
+    </div>
+  </div>
+
   <div class="vidro fio filtros">
     <div class="periodos">
-      ${[['7','7 dias'],['30','30 dias'],['90','90 dias'],['tudo','Tudo'],['personalizado','Período']]
-        .map(([v,r])=>`<button data-periodo="${v}" class="${per===v?'ativo':''}">${r}</button>`).join('')}
+      ${[['hoje','Hoje'],['7','7 dias'],['30','30 dias'],['365','Ano'],['tudo','Tudo'],['personalizado','Período']]
+        .map(([v,r])=>`<button data-periodo="${v}" class="${p.periodo===v?'ativo':''}">${r}</button>`).join('')}
+    </div>
+    <div class="estrelas-filtro">
+      ${[5,4,3,2,1].map(n=>`<button data-estrelas="${n}" class="${p.estrelas===n?'ativo':''}">${'★'.repeat(n)}${'☆'.repeat(5-n)}</button>`).join('')}
+      ${p.estrelas ? '<button data-estrelas="0">Limpar</button>' : ''}
     </div>
     <div class="acoes-filtro">
       <div class="busca">${ICO.busca}
-        <input class="campo" id="busca" type="search" placeholder="Pesquisar" value="${escapar(painelEstado.busca)}">
+        <input class="campo" id="busca" type="search" placeholder="Nome, comentário, data ou nota" value="${escapar(p.busca)}">
       </div>
-      <button class="btn-fantasma" id="recarregar">Atualizar</button>
-      <button class="btn-fantasma" id="exportar" ${lista.length?'':'disabled'}>Exportar CSV</button>
+      <button class="btn-fantasma" id="exp-csv" ${lista.length?'':'disabled'}>CSV</button>
+      <button class="btn-fantasma" id="exp-xls" ${lista.length?'':'disabled'}>Excel</button>
+      <button class="btn-fantasma" id="imprimir" ${lista.length?'':'disabled'}>Imprimir</button>
     </div>
-    ${per==='personalizado' ? `
+    ${p.periodo==='personalizado' ? `
     <div class="datas">
-      <label><span class="eyebrow">De</span><input class="campo" type="date" id="data-de" value="${painelEstado.de}"></label>
-      <label><span class="eyebrow">Até</span><input class="campo" type="date" id="data-ate" value="${painelEstado.ate}"></label>
+      <label><span class="eyebrow">De</span><input class="campo" type="date" id="data-de" value="${p.de}"></label>
+      <label><span class="eyebrow">Até</span><input class="campo" type="date" id="data-ate" value="${p.ate}"></label>
     </div>` : ''}
   </div>
 
   <div class="kpis">
-    ${kpi('Avaliações', lista.length, painelEstado.dados.length+' no total geral')}
-    ${kpi('Média', lista.length ? medial(notas).toFixed(2) : '—', 'de 1 a 5 estrelas')}
-    ${kpi('Satisfação', lista.length ? satisfacao+'%' : '—', 'notas 4 ou 5')}
-    ${kpi('Comentários', comentarios.length, lista.length ? pct(comentarios.length)+'% comentaram' : 'Sem dados')}
+    ${kpi('⭐ Média geral', lista.length ? medial(notas).toFixed(2) : '—', 'de 1 a 5 estrelas')}
+    ${kpi('👥 Clientes', clientes, 'nomes distintos no filtro')}
+    ${kpi('💬 Comentários', comentarios.length, lista.length ? pct(comentarios.length)+'% comentaram' : 'sem dados')}
+    ${kpi('❤️ Cinco estrelas', cinco, lista.length ? pct(cinco)+'% do total' : 'sem dados')}
+    ${kpi('📈 Neste mês', doMes, 'todas as avaliações do mês')}
+    ${kpi('📅 Hoje', deHoje, 'recebidas hoje')}
   </div>
 
   <div class="paineis paineis-2">
+    <section class="vidro fio quadro">
+      <header><h2>Distribuição das estrelas</h2><p>Quantidade em cada nota</p></header>
+      ${lista.length ? graficoBarras(distribuicao, ['#7A2130','#A3202F','#C4002A','#E4002B','#FF3D5F']) : '<p class="vazio">Sem dados.</p>'}
+    </section>
     <section class="vidro fio quadro">
       <header><h2>Avaliações por dia</h2><p>Volume no período selecionado</p></header>
-      ${porDia.length ? graficoLinha(porDia) : '<p class="vazio">Sem dados.</p>'}
+      ${porDia.length ? graficoLinha(porDia,{id:'dia'}) : '<p class="vazio">Sem dados.</p>'}
     </section>
     <section class="vidro fio quadro">
-      <header><h2>Distribuição das notas</h2><p>Quantidade em cada nota</p></header>
-      ${lista.length ? graficoBarras(distribuicao) : '<p class="vazio">Sem dados.</p>'}
-    </section>
-  </div>
-
-  <div class="paineis paineis-2">
-    <section class="vidro fio quadro">
-      <header><h2>Participação de cada nota</h2><p>Percentual no período</p></header>
-      <ul class="barras">
-        ${[...distribuicao].reverse().map(d=>`
-          <li><span class="rot">${d.n} ★</span>
-            <span class="trilho"><span class="preenche" style="width:${pct(d.qtd)}%"></span></span>
-            <span class="qtd">${d.qtd} · ${pct(d.qtd)}%</span></li>`).join('')}
-      </ul>
+      <header><h2>Avaliações por mês</h2><p>Últimos 12 meses, sem filtro de período</p></header>
+      ${porMes.length ? graficoBarras(porMes) : '<p class="vazio">Sem dados.</p>'}
     </section>
     <section class="vidro fio quadro">
-      <header><h2>Comentários recentes</h2><p>O que os clientes escreveram</p></header>
-      <ul class="comentarios">
-        ${comentarios.length ? comentarios.slice(0,5).map(c=>`
-          <li><div class="cab"><b>${escapar(c.nome)}</b><span class="nota">${c.estrelas} ★</span></div>
-            <p class="txt">${escapar(c.comentario)}</p>
-            <time>${fmtData(c.criado_em)} às ${fmtHora(c.criado_em)}</time></li>`).join('')
-          : '<p class="vazio">Nenhum comentário no período.</p>'}
-      </ul>
+      <header><h2>Média mensal</h2><p>Nota média de cada mês</p></header>
+      ${mediaMes.length ? graficoLinha(mediaMes,{id:'media',maximo:5,casas:1,cor:'#F2B23A'}) : '<p class="vazio">Sem dados.</p>'}
     </section>
   </div>
 
   <section class="vidro fio quadro" style="margin-top:14px">
-    <header><h2>Últimas avaliações</h2><p>${lista.length} registro(s) no filtro atual</p></header>
+    <header><h2>Avaliações</h2><p>${lista.length} registro(s) no filtro atual${p.estrelas?' · '+p.estrelas+' estrelas':''}</p></header>
     <div class="rolagem">
       <table>
-        <thead><tr><th>Cliente</th><th>Nota</th><th>Comentário</th><th>Data</th><th>Hora</th></tr></thead>
+        <thead><tr>
+          <th>Nome</th><th>Estrelas</th><th>Comentário</th><th>Data</th><th>Hora</th><th>Status</th><th style="text-align:right">Ações</th>
+        </tr></thead>
         <tbody>
-          ${lista.length ? lista.slice(0,50).map(i=>`
-            <tr><td class="cliente">${escapar(i.nome)}</td>
-              <td class="nota">${i.estrelas} ★</td>
-              <td>${escapar(i.comentario||'—')}</td>
-              <td class="quando">${fmtData(i.criado_em)}</td>
-              <td class="quando">${fmtHora(i.criado_em)}</td></tr>`).join('')
-            : '<tr><td colspan="5" class="vazio">Nenhuma avaliação encontrada.</td></tr>'}
+          ${lista.length ? lista.map(i=>linhaTabela(i)).join('')
+            : '<tr><td colspan="7" class="vazio">Nenhuma avaliação encontrada com os filtros atuais.</td></tr>'}
         </tbody>
       </table>
     </div>
   </section>`;
 
-  $$('[data-periodo]').forEach(b => b.onclick = ()=>{ painelEstado.periodo = b.dataset.periodo; desenharPainel(); });
-  const busca = $('#busca');
-  busca.oninput = ()=>{ painelEstado.busca = busca.value; clearTimeout(busca._t);
-    busca._t = setTimeout(()=>{ const p = busca.selectionStart; desenharPainel();
-      const novo = $('#busca'); novo.focus(); novo.setSelectionRange(p,p); }, 220); };
-  const de = $('#data-de'), ate = $('#data-ate');
-  if(de)  de.onchange  = ()=>{ painelEstado.de  = de.value;  desenharPainel(); };
-  if(ate) ate.onchange = ()=>{ painelEstado.ate = ate.value; desenharPainel(); };
-  $('#recarregar').onclick = ()=>{ painelEstado.dados = []; abrirPainel(); };
-  $('#exportar').onclick = ()=> exportarCsv(lista);
+  ligarPainel();
+}
+
+function linhaTabela(i){
+  const st = i.status || 'aprovado';
+  const rotulos = {aprovado:'Aprovada', oculto:'Oculta', pendente:'Pendente'};
+  const comentario = (i.comentario||'').trim();
+  return `
+  <tr class="${i.destacado?'destacada':''}" data-id="${i.id}">
+    <td class="cliente" data-rot="Nome">${escapar(i.nome)}</td>
+    <td class="nota" data-rot="Estrelas">${i.estrelas} ★</td>
+    <td data-rot="Comentário"><span class="comentario-cel">${comentario ? escapar(comentario) : '—'}</span></td>
+    <td class="quando" data-rot="Data">${fmtData(i.criado_em)}</td>
+    <td class="quando" data-rot="Hora">${fmtHora(i.criado_em)}</td>
+    <td data-rot="Status"><span class="selo selo-${st}"><i></i>${rotulos[st]}</span></td>
+    <td data-rot="Ações">
+      <div class="acoes-linha">
+        <button class="acao" data-ver="${i.id}" title="Visualizar" aria-label="Visualizar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="acao" data-editar="${i.id}" title="Editar" aria-label="Editar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+        <button class="acao ${i.destacado?'ouro':''}" data-destacar="${i.id}" aria-pressed="${!!i.destacado}" title="${i.destacado?'Remover destaque':'Destacar no mural'}" aria-label="Destacar">
+          <svg viewBox="0 0 24 24" fill="${i.destacado?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6l2.9 5.88 6.49.95-4.7 4.58 1.11 6.46L12 17.42 6.2 20.47l1.11-6.46-4.7-4.58 6.49-.95z"/></svg></button>
+        ${st === 'aprovado'
+          ? `<button class="acao" data-ocultar="${i.id}" title="Ocultar do mural" aria-label="Ocultar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.2A10.9 10.9 0 0 1 12 4c6.4 0 10 7 10 7a18 18 0 0 1-3 4"/><path d="M6.6 6.6A18 18 0 0 0 2 11s3.6 7 10 7a10.6 10.6 0 0 0 5.4-1.4"/><path d="M2 2l20 20"/></svg></button>`
+          : `<button class="acao" data-aprovar="${i.id}" title="Aprovar e publicar" aria-label="Aprovar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></button>`}
+        <button class="acao perigo" data-excluir="${i.id}" title="Excluir" aria-label="Excluir">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></button>
+      </div>
+    </td>
+  </tr>`;
 }
 
 function kpi(rotulo, valor, detalhe){
@@ -1446,18 +1942,168 @@ function kpi(rotulo, valor, detalhe){
     <p class="valor">${valor}</p><p class="detalhe">${escapar(detalhe)}</p></div>`;
 }
 
-function exportarCsv(lista){
-  const asp = v => '"' + String(v??'').replace(/"/g,'""') + '"';
-  const linhas = [['Nome','Nota','Comentario','Data','Hora'].map(asp).join(';')];
-  lista.forEach(i => linhas.push([
-    asp(i.nome), asp(i.estrelas), asp(i.comentario||''), asp(fmtData(i.criado_em)), asp(fmtHora(i.criado_em))
-  ].join(';')));
+/* ---------- eventos ---------- */
+function ligarPainel(){
+  const p = painelEstado;
+  const achar = id => p.dados.find(d => d.id === id);
 
-  const blob = new Blob(['\uFEFF' + linhas.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+  $$('[data-status]').forEach(b => b.onclick = ()=>{ p.status = b.dataset.status; desenharPainel(); });
+  $$('[data-periodo]').forEach(b => b.onclick = ()=>{ p.periodo = b.dataset.periodo; desenharPainel(); });
+  $$('[data-estrelas]').forEach(b => b.onclick = ()=>{
+    const n = Number(b.dataset.estrelas);
+    p.estrelas = (n === 0 || p.estrelas === n) ? 0 : n;
+    desenharPainel();
+  });
+
+  const busca = $('#busca');
+  busca.oninput = ()=>{
+    p.busca = busca.value;
+    clearTimeout(busca._t);
+    busca._t = setTimeout(()=>{
+      const pos = busca.selectionStart;
+      desenharPainel();
+      const novo = $('#busca'); novo.focus(); novo.setSelectionRange(pos,pos);
+    }, 200);
+  };
+
+  const de = $('#data-de'), ate = $('#data-ate');
+  if(de)  de.onchange  = ()=>{ p.de  = de.value;  desenharPainel(); };
+  if(ate) ate.onchange = ()=>{ p.ate = ate.value; desenharPainel(); };
+
+  $('#recarregar').onclick = ()=>{ p.dados = []; carregarPainel(p.chave); };
+  const aprovarTudo = $('#aprovar-todas');
+  if(aprovarTudo) aprovarTudo.onclick = aprovarTodas;
+
+  $('#exp-csv').onclick = ()=> exportarCsv(filtrar());
+  $('#exp-xls').onclick = ()=> exportarExcel(filtrar());
+  $('#imprimir').onclick = ()=> window.print();
+
+  $$('[data-ver]').forEach(b => b.onclick = ()=> modalVer(achar(b.dataset.ver)));
+  $$('[data-editar]').forEach(b => b.onclick = ()=> modalEditar(achar(b.dataset.editar)));
+  $$('[data-excluir]').forEach(b => b.onclick = ()=> modalExcluir(achar(b.dataset.excluir)));
+  $$('[data-destacar]').forEach(b => b.onclick = ()=>{
+    const a = achar(b.dataset.destacar);
+    salvarAlteracao(a.id, {destacado: !a.destacado}, a.destacado ? 'Destaque removido.' : 'Avaliação destacada no mural.');
+  });
+  $$('[data-ocultar]').forEach(b => b.onclick = ()=>{
+    const a = achar(b.dataset.ocultar);
+    salvarAlteracao(a.id, {status:'oculto'}, 'Avaliação ocultada do mural.');
+  });
+  $$('[data-aprovar]').forEach(b => b.onclick = ()=>{
+    const a = achar(b.dataset.aprovar);
+    salvarAlteracao(a.id, {status:'aprovado'}, 'Avaliação aprovada e publicada.');
+  });
+}
+
+/* ---------- modais ---------- */
+function modalVer(a){
+  const st = a.status || 'aprovado';
+  const rotulos = {aprovado:'Aprovada', oculto:'Oculta', pendente:'Pendente'};
+  abrirModal(`
+    <h3>Avaliação de ${escapar(a.nome)}</h3>
+    <p class="sub">${'★'.repeat(a.estrelas)}${'☆'.repeat(5-a.estrelas)} · ${a.estrelas} de 5</p>
+    <div style="margin-top:18px">
+      <div class="ver-linha"><b>Status</b><span class="selo selo-${st}"><i></i>${rotulos[st]}</span></div>
+      <div class="ver-linha"><b>Destaque</b><span>${a.destacado ? 'Sim, aparece primeiro' : 'Não'}</span></div>
+      <div class="ver-linha"><b>Data</b><span>${fmtData(a.criado_em)} às ${fmtHora(a.criado_em)}</span></div>
+      ${a.atualizado_em ? `<div class="ver-linha"><b>Alterada</b><span>${fmtData(a.atualizado_em)} às ${fmtHora(a.atualizado_em)}</span></div>` : ''}
+      <div class="ver-linha"><b>Comentário</b><span>${escapar((a.comentario||'').trim() || 'Sem comentário')}</span></div>
+    </div>
+    <div class="modal-acoes"><button class="btn-fantasma" id="fechar-modal">Fechar</button></div>`,
+    ()=> $('#fechar-modal').onclick = fecharModal);
+}
+
+function modalEditar(a){
+  abrirModal(`
+    <h3>Editar avaliação</h3>
+    <p class="sub">Recebida em ${fmtData(a.criado_em)} às ${fmtHora(a.criado_em)}</p>
+    <div class="modal-campo"><label class="eyebrow" for="ed-nome">Nome</label>
+      <input class="campo" id="ed-nome" value="${escapar(a.nome)}" maxlength="80"></div>
+    <div class="modal-campo"><label class="eyebrow" for="ed-estrelas">Estrelas</label>
+      <select class="campo" id="ed-estrelas">
+        ${[5,4,3,2,1,0].map(n=>`<option value="${n}" ${a.estrelas===n?'selected':''}>${n} ${n===1?'estrela':'estrelas'}</option>`).join('')}
+      </select></div>
+    <div class="modal-campo"><label class="eyebrow" for="ed-comentario">Comentário</label>
+      <textarea class="campo" id="ed-comentario" rows="4" maxlength="600">${escapar(a.comentario||'')}</textarea></div>
+    <div class="modal-campo"><label class="eyebrow" for="ed-status">Status</label>
+      <select class="campo" id="ed-status">
+        ${[['aprovado','Aprovada — aparece no mural'],['pendente','Pendente — aguardando'],['oculto','Oculta — não aparece']]
+          .map(([v,r])=>`<option value="${v}" ${(a.status||'aprovado')===v?'selected':''}>${r}</option>`).join('')}
+      </select></div>
+    <div class="modal-acoes">
+      <button class="btn-fantasma" id="cancelar">Cancelar</button>
+      <button class="btn" id="salvar" style="padding:12px 26px">Salvar</button>
+    </div>`,
+    ()=>{
+      $('#cancelar').onclick = fecharModal;
+      $('#ed-nome').focus();
+      $('#salvar').onclick = ()=>{
+        const nome = $('#ed-nome').value.trim();
+        if(nome.length < 2){ aviso('O nome precisa de pelo menos 2 letras.', 'erro'); return; }
+        const campos = {
+          nome,
+          estrelas: Number($('#ed-estrelas').value),
+          comentario: $('#ed-comentario').value.trim(),
+          status: $('#ed-status').value
+        };
+        fecharModal();
+        salvarAlteracao(a.id, campos, 'Avaliação atualizada.');
+      };
+    });
+}
+
+function modalExcluir(a){
+  abrirModal(`
+    <h3>Excluir avaliação</h3>
+    <p class="sub">A avaliação de <strong style="color:var(--chrome-bright)">${escapar(a.nome)}</strong> será removida. Esta ação não pode ser desfeita.</p>
+    <div class="modal-acoes">
+      <button class="btn-fantasma" id="cancelar">Cancelar</button>
+      <button class="btn-perigo" id="confirmar">Excluir</button>
+    </div>`,
+    ()=>{
+      $('#cancelar').onclick = fecharModal;
+      $('#confirmar').onclick = ()=>{ fecharModal(); excluirAvaliacao(a.id, a.nome); };
+      $('#confirmar').focus();
+    });
+}
+
+/* ---------- exportação ---------- */
+const rotuloStatus = st => ({aprovado:'Aprovada', oculto:'Oculta', pendente:'Pendente'})[st||'aprovado'];
+
+function baixar(conteudo, tipo, nome){
+  const blob = new Blob([conteudo], {type:tipo});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'avaliacoes-' + new Date().toISOString().slice(0,10) + '.csv';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  a.href = url; a.download = nome;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportarCsv(lista){
+  const asp = v => '"' + String(v??'').replace(/"/g,'""') + '"';
+  const linhas = [['Nome','Estrelas','Comentario','Data','Hora','Status','Destacada'].map(asp).join(';')];
+  lista.forEach(i => linhas.push([
+    asp(i.nome), asp(i.estrelas), asp(i.comentario||''), asp(fmtData(i.criado_em)),
+    asp(fmtHora(i.criado_em)), asp(rotuloStatus(i.status)), asp(i.destacado?'Sim':'Nao')
+  ].join(';')));
+  baixar('\uFEFF' + linhas.join('\r\n'), 'text/csv;charset=utf-8;',
+    'avaliacoes-' + hojeChave() + '.csv');
+  aviso('CSV exportado com ' + lista.length + ' registro(s).', 'ok');
+}
+
+function exportarExcel(lista){
+  const celulas = lista.map(i=>`<tr>
+    <td>${escapar(i.nome)}</td><td>${i.estrelas}</td><td>${escapar(i.comentario||'')}</td>
+    <td>${fmtData(i.criado_em)}</td><td>${fmtHora(i.criado_em)}</td>
+    <td>${rotuloStatus(i.status)}</td><td>${i.destacado?'Sim':'Nao'}</td></tr>`).join('');
+  const html = `<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8">
+    <style>table{border-collapse:collapse}td,th{border:1px solid #999;padding:6px;font-family:Arial;font-size:11pt}
+    th{background:#E4002B;color:#fff}</style></head><body>
+    <table><thead><tr><th>Nome</th><th>Estrelas</th><th>Comentario</th><th>Data</th><th>Hora</th><th>Status</th><th>Destacada</th></tr></thead>
+    <tbody>${celulas}</tbody></table></body></html>`;
+  baixar('\uFEFF' + html, 'application/vnd.ms-excel;charset=utf-8;',
+    'avaliacoes-' + hojeChave() + '.xls');
+  aviso('Planilha exportada com ' + lista.length + ' registro(s).', 'ok');
 }
 
 /* ==========================================================================
