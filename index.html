@@ -126,10 +126,33 @@ textarea.campo{resize:none;min-height:130px;line-height:1.6}
 
 /* ---------- logotipo ---------- */
 .marca img{width:100%;height:auto;object-fit:contain}
-.marca-texto{font-family:var(--display);font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--chrome-bright);text-align:center;line-height:1.15;max-width:100%;text-wrap:balance}
-.marca-texto small{display:block;font-family:var(--mono);font-weight:400;font-size:.36em;
-  letter-spacing:.2em;color:var(--racing-glow);margin-top:.6em;text-wrap:balance}
+.marca-texto{font-family:var(--display);font-weight:800;text-transform:uppercase;
+  color:var(--chrome-bright);text-align:center;max-width:100%;text-wrap:balance;
+  text-shadow:0 6px 30px rgba(0,0,0,.85)}
+.marca-texto small{display:block;font-family:var(--mono);font-weight:500;
+  color:var(--racing-glow);text-wrap:balance}
+
+/* Quando a marca aparece como texto, o contêiner não pode ficar estreito */
+.marca-em-texto{width:auto !important;max-width:min(94vw,820px)!important;margin-inline:auto}
+
+/* Título gigante — intro e topo do site */
+.marca-gigante{font-size:clamp(2.9rem,11vw,5.4rem);letter-spacing:.02em;line-height:.96;
+  max-width:9ch;margin-inline:auto}
+.marca-gigante small{font-size:max(.9rem,.19em);letter-spacing:.24em;margin-top:1em;line-height:1.5}
+
+/* Médio — cabeçalho da mensagem */
+.marca-media{font-size:clamp(1.7rem,6vw,2.6rem);letter-spacing:.04em;line-height:1.04;
+  max-width:10ch;margin-inline:auto}
+.marca-media small{font-size:max(.85rem,.28em);letter-spacing:.2em;margin-top:.9em;line-height:1.5}
+
+/* Pequeno — rodapé */
+.marca-pequena{font-size:clamp(1.25rem,4vw,1.6rem);letter-spacing:.06em;line-height:1.1;
+  max-width:11ch;margin-inline:auto}
+.marca-pequena small{font-size:max(.85rem,.34em);letter-spacing:.18em;margin-top:.8em;line-height:1.5}
+
+/* Mini — painel interno */
+.marca-mini{font-size:1.2rem;letter-spacing:.06em;line-height:1.15;max-width:12ch}
+.marca-mini small{font-size:.85rem;letter-spacing:.14em;margin-top:.5em;line-height:1.4}
 
 /* ==========================================================================
    INTRO
@@ -145,7 +168,7 @@ textarea.campo{resize:none;min-height:130px;line-height:1.6}
 #intro.fase-brilho .intro-halo{opacity:.9;transform:translate(-50%,-50%) scale(1)}
 #pular{position:absolute;top:16px;right:16px;z-index:3;opacity:0;animation:aparecer .5s ease .9s forwards}
 .palco{position:relative;z-index:2;display:grid;place-items:center;width:100%}
-.marca-intro{position:relative;width:min(64vw,280px);opacity:0;transform:scale(.88);
+.marca-intro{position:relative;width:min(76vw,420px);opacity:0;transform:scale(.88);
   animation:marcaEntra 1.1s var(--curva) forwards;filter:drop-shadow(0 14px 34px rgba(0,0,0,.9))}
 @keyframes marcaEntra{to{opacity:1;transform:scale(1)}}
 .brilho{position:absolute;top:-50%;height:200%;width:44%;pointer-events:none;opacity:0;
@@ -162,7 +185,7 @@ textarea.campo{resize:none;min-height:130px;line-height:1.6}
 #intro.fase-mensagem .palco{display:none}
 #intro.fase-mensagem #mensagem{display:block;animation:aparecer .6s ease forwards}
 #mensagem .topo{display:flex;flex-direction:column;align-items:center;gap:16px;opacity:0;animation:subir .6s ease .05s forwards}
-#mensagem .marca{width:120px}
+#mensagem .marca{width:min(56vw,230px)}
 .linhas{margin-top:34px;display:flex;flex-direction:column;gap:16px}
 .linha{opacity:0;transform:translateY(10px);transition:opacity var(--medio) ease,transform var(--medio) var(--curva);
   font-size:1.12rem;line-height:1.7;color:var(--chrome);text-wrap:pretty}
@@ -204,9 +227,11 @@ section{padding-block:clamp(72px,8vw,124px)}
 
 /* ---------- hero ---------- */
 .hero{text-align:center;padding-top:clamp(64px,11vw,104px);padding-bottom:clamp(32px,5vw,52px)}
-.hero .marca{width:min(52vw,190px);margin-inline:auto;opacity:0;transform:translateY(14px);
+.hero .marca{width:min(70vw,340px);margin-inline:auto;opacity:0;transform:translateY(14px);
   animation:subir .6s var(--curva) .05s forwards}
-.hero h1{margin-top:30px;font-size:clamp(2.3rem,6.6vw,3.5rem);font-weight:800;text-wrap:balance}
+.hero h1{margin-top:clamp(26px,3.4vw,40px);font-size:clamp(1.45rem,3.6vw,2.05rem);font-weight:800;
+  color:var(--chrome);text-wrap:balance;letter-spacing:0}
+.hero h1 .cromo{filter:none}
 .hero .sobre{margin:22px auto 0;max-width:40ch;font-size:1.1rem;line-height:1.7;color:var(--chrome);text-wrap:pretty}
 .acoes-hero{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px}
 .odometro{margin-top:38px;display:flex;flex-direction:column;align-items:center;gap:10px}
@@ -1012,25 +1037,30 @@ const escapar = t => String(t??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
 /* ==========================================================================
    3. LOGOTIPO
    ========================================================================== */
-function marca(seletor, tamanho){
+function marca(seletor, tamanho, porte){
   const alvo = $(seletor);
   if(!alvo) return;
   if(tamanho) alvo.style.width = tamanho;
 
-  if(!CONFIG.logo){ alvo.style.width = ''; alvo.prepend(textoDaMarca(tamanho)); return; }
+  const usarTexto = ()=>{
+    alvo.style.width = '';
+    alvo.classList.add('marca-em-texto');
+    alvo.prepend(textoDaMarca(porte));
+  };
+
+  if(!CONFIG.logo){ usarTexto(); return; }
 
   const img = new Image();
   img.src = CONFIG.logo;
   img.alt = CONFIG.empresa;
   img.decoding = 'async';
-  img.onerror = ()=>{ img.remove(); alvo.style.width = ''; alvo.prepend(textoDaMarca(tamanho)); };
+  img.onerror = ()=>{ img.remove(); usarTexto(); };
   alvo.prepend(img);
 }
 
-function textoDaMarca(tamanho){
+function textoDaMarca(porte){
   const el = document.createElement('div');
-  el.className = 'marca-texto';
-  el.style.fontSize = tamanho && parseInt(tamanho) < 140 ? '1.1rem' : '1.9rem';
+  el.className = 'marca-texto ' + (porte || 'marca-media');
   el.innerHTML = escapar(CONFIG.empresa) + '<small>' + escapar(CONFIG.setor) + '</small>';
   return el;
 }
@@ -1166,11 +1196,11 @@ function entrarNoSite(){
    6. CONTEÚDO DO SITE
    ========================================================================== */
 function montarSite(){
-  marca('#marca-intro','min(64vw,280px)');
-  marca('#marca-mensagem','120px');
-  marca('#marca-hero','min(52vw,190px)');
-  marca('#marca-rodape','130px');
-  marca('#marca-painel','96px');
+  marca('#marca-intro',   'min(76vw,420px)', 'marca-gigante');
+  marca('#marca-mensagem','min(56vw,230px)', 'marca-media');
+  marca('#marca-hero',    'min(70vw,340px)', 'marca-gigante');
+  marca('#marca-rodape',  'min(50vw,190px)', 'marca-pequena');
+  marca('#marca-painel',  '120px',           'marca-mini');
 
   $('#sobre-hero').textContent = CONFIG.sobre;
   $('#frase-empresa').textContent = CONFIG.empresa;
