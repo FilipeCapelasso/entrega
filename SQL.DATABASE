@@ -1,0 +1,241 @@
+-- ===========================================================================
+--  AVALIAÇÕES DO SETOR DE ENTREGA — GRUPO STAR MOTOS
+--  Cole ESTE ARQUIVO INTEIRO no SQL Editor do Supabase e clique em RUN.
+--  Pode rodar mais de uma vez sem problema, inclusive por cima de uma
+--  versão anterior — nenhuma avaliação já existente é perdida.
+--
+--  >>> TROQUE A SENHA NA LINHA MARCADA COM  << TROCAR >>  (item 5)
+-- ===========================================================================
+
+create extension if not exists "pgcrypto";
+
+-- ---------------------------------------------------------------------------
+-- 1) TABELA
+-- ---------------------------------------------------------------------------
+create table if not exists public.avaliacoes (
+  id            uuid primary key default gen_random_uuid(),
+  nome          text        not null,
+  estrelas      smallint    not null,
+  comentario    text,
+  modelo_moto   text,
+  criado_em     timestamptz not null default now()
+);
+
+-- Colunas novas (o "if not exists" evita erro se ja foram criadas antes)
+alter table public.avaliacoes add column if not exists modelo_moto   text;
+alter table public.avaliacoes add column if not exists status        text;
+alter table public.avaliacoes add column if not exists destacado     boolean;
+alter table public.avaliacoes add column if not exists atualizado_em timestamptz;
+
+-- Avaliacoes que ja existiam entram como aprovadas
+update public.avaliacoes set status        = 'aprovado' where status is null;
+update public.avaliacoes set destacado     = false      where destacado is null;
+update public.avaliacoes set atualizado_em = criado_em  where atualizado_em is null;
+
+-- ---------------------------------------------------------------------------
+--  COMO AS NOVAS AVALIACOES CHEGAM
+--  'pendente' = voce aprova uma por uma no painel antes de aparecer no site.
+--  'aprovado' = aparece no mural automaticamente, sem precisar aprovar.
+--  Troque a palavra na linha abaixo se quiser publicacao automatica.
+-- ---------------------------------------------------------------------------
+alter table public.avaliacoes alter column status set default 'pendente';
+
+alter table public.avaliacoes alter column destacado     set default false;
+alter table public.avaliacoes alter column atualizado_em set default now();
+alter table public.avaliacoes alter column status        set not null;
+alter table public.avaliacoes alter column destacado     set not null;
+alter table public.avaliacoes alter column atualizado_em set not null;
+
+-- Regras de conteudo
+alter table public.avaliacoes drop constraint if exists avaliacoes_nome_tamanho;
+alter table public.avaliacoes add  constraint avaliacoes_nome_tamanho
+  check (char_length(btrim(nome)) between 2 and 80);
+
+alter table public.avaliacoes drop constraint if exists avaliacoes_estrelas_intervalo;
+alter table public.avaliacoes add  constraint avaliacoes_estrelas_intervalo
+  check (estrelas between 0 and 5);
+
+alter table public.avaliacoes drop constraint if exists avaliacoes_comentario_tamanho;
+alter table public.avaliacoes add  constraint avaliacoes_comentario_tamanho
+  check (comentario is null or char_length(comentario) <= 600);
+
+alter table public.avaliacoes drop constraint if exists avaliacoes_status_valido;
+alter table public.avaliacoes add  constraint avaliacoes_status_valido
+  check (status in ('aprovado','oculto','pendente'));
+
+create index if not exists avaliacoes_criado_em_idx on public.avaliacoes (criado_em desc);
+create index if not exists avaliacoes_estrelas_idx  on public.avaliacoes (estrelas);
+create index if not exists avaliacoes_status_idx    on public.avaliacoes (status);
+
+-- ---------------------------------------------------------------------------
+-- 2) SEGURANCA
+--    Quem abre o QR Code so pode INSERIR. Nada de ler, editar ou apagar a
+--    tabela com a chave publica. Tudo o mais passa pelas funcoes abaixo.
+-- ---------------------------------------------------------------------------
+alter table public.avaliacoes enable row level security;
+
+revoke all    on table public.avaliacoes from anon, authenticated;
+grant  insert on table public.avaliacoes to   anon, authenticated;
+
+drop policy if exists "avaliacoes_insert_publico" on public.avaliacoes;
+create policy "avaliacoes_insert_publico"
+  on public.avaliacoes
+  for insert
+  to anon, authenticated
+  with check (
+    char_length(btrim(nome)) between 2 and 80
+    and estrelas between 0 and 5
+    and (comentario is null or char_length(comentario) <= 600)
+  );
+
+-- ---------------------------------------------------------------------------
+-- 3) ENVIO DUPLICADO
+-- ---------------------------------------------------------------------------
+create or replace function public.impedir_avaliacao_duplicada()
+returns trigger language plpgsql security definer set search_path = public as $$
+begin
+  if exists (
+    select 1 from public.avaliacoes a
+     where lower(btrim(a.nome)) = lower(btrim(new.nome))
+       and a.criado_em > now() - interval '30 seconds'
+  ) then
+    raise exception 'Avaliacao ja registrada ha poucos segundos.'
+      using errcode = 'check_violation';
+  end if;
+  return new;
+end; $$;
+
+drop trigger if exists avaliacoes_sem_duplicidade on public.avaliacoes;
+create trigger avaliacoes_sem_duplicidade
+  before insert on public.avaliacoes
+  for each row execute function public.impedir_avaliacao_duplicada();
+
+-- ---------------------------------------------------------------------------
+-- 4) MURAL PUBLICO
+--    Devolve SOMENTE as aprovadas e SOMENTE as colunas que aparecem no site.
+--    Nao expoe pendentes, ocultas nem qualquer outro dado.
+-- ---------------------------------------------------------------------------
+drop function if exists public.avaliacoes_publicas();
+
+create function public.avaliacoes_publicas()
+returns table (
+  nome       text,
+  estrelas   smallint,
+  comentario text,
+  criado_em  timestamptz,
+  destacado  boolean
+)
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select a.nome, a.estrelas, a.comentario, a.criado_em, a.destacado
+    from public.avaliacoes a
+   where a.status = 'aprovado'
+   order by a.destacado desc, a.criado_em desc
+   limit 60;
+$$;
+
+revoke all on function public.avaliacoes_publicas() from public;
+grant execute on function public.avaliacoes_publicas() to anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 5) PAINEL  (pagina  seusite/#admin )
+--    A senha abaixo e a mesma que voce digita no painel.
+-- ---------------------------------------------------------------------------
+create or replace function public.conferir_chave(chave text)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+
+  -- <<< TROCAR >>>  troque star2024 pela sua senha (use letras e numeros)
+  if chave is distinct from 'star2024' then
+    raise exception 'Chave de acesso invalida.' using errcode = '42501';
+  end if;
+
+end; $$;
+
+revoke all on function public.conferir_chave(text) from public;
+
+-- ---- listar tudo ----------------------------------------------------------
+drop function if exists public.listar_avaliacoes(text);
+
+create function public.listar_avaliacoes(chave text)
+returns setof public.avaliacoes
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.conferir_chave(chave);
+  return query select * from public.avaliacoes order by criado_em desc limit 5000;
+end; $$;
+
+-- ---- editar / aprovar / ocultar / destacar --------------------------------
+drop function if exists public.atualizar_avaliacao(text,uuid,text,smallint,text,text,boolean);
+
+create function public.atualizar_avaliacao(
+  chave        text,
+  p_id         uuid,
+  p_nome       text     default null,
+  p_estrelas   smallint default null,
+  p_comentario text     default null,
+  p_status     text     default null,
+  p_destacado  boolean  default null
+)
+returns setof public.avaliacoes
+language plpgsql security definer set search_path = public as $$
+begin
+  perform public.conferir_chave(chave);
+
+  return query
+  update public.avaliacoes a set
+    nome          = coalesce(nullif(btrim(p_nome), ''), a.nome),
+    estrelas      = coalesce(p_estrelas,  a.estrelas),
+    comentario    = case when p_comentario is null then a.comentario
+                         when btrim(p_comentario) = '' then null
+                         else btrim(p_comentario) end,
+    status        = coalesce(p_status,    a.status),
+    destacado     = coalesce(p_destacado, a.destacado),
+    atualizado_em = now()
+  where a.id = p_id
+  returning a.*;
+end; $$;
+
+-- ---- excluir --------------------------------------------------------------
+drop function if exists public.excluir_avaliacao(text,uuid);
+
+create function public.excluir_avaliacao(chave text, p_id uuid)
+returns integer
+language plpgsql security definer set search_path = public as $$
+declare removidas integer;
+begin
+  perform public.conferir_chave(chave);
+  delete from public.avaliacoes where id = p_id;
+  get diagnostics removidas = row_count;
+  return removidas;
+end; $$;
+
+-- ---- aprovar todas as pendentes de uma vez --------------------------------
+drop function if exists public.aprovar_pendentes(text);
+
+create function public.aprovar_pendentes(chave text)
+returns integer
+language plpgsql security definer set search_path = public as $$
+declare alteradas integer;
+begin
+  perform public.conferir_chave(chave);
+  update public.avaliacoes set status = 'aprovado', atualizado_em = now()
+   where status = 'pendente';
+  get diagnostics alteradas = row_count;
+  return alteradas;
+end; $$;
+
+grant execute on function public.listar_avaliacoes(text)   to anon, authenticated;
+grant execute on function public.excluir_avaliacao(text,uuid) to anon, authenticated;
+grant execute on function public.aprovar_pendentes(text)   to anon, authenticated;
+grant execute on function public.atualizar_avaliacao(text,uuid,text,smallint,text,text,boolean)
+  to anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 6) CONFERENCIA (opcional)
+-- ---------------------------------------------------------------------------
+-- select * from public.avaliacoes_publicas();
+-- select * from public.listar_avaliacoes('star2024');
