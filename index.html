@@ -55,7 +55,13 @@
   --curva:cubic-bezier(.22,1,.36,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;background:var(--ink);-webkit-text-size-adjust:100%}
+/* ---------------------------------------------------------------------------
+   DIAL DE TAMANHO — controla a escala de TODO o site com um número só.
+   O valor do meio cresce junto com a largura da tela.
+   Quer tudo maior? aumente 17px / 19.5px.  Menor? diminua os dois.
+   --------------------------------------------------------------------------- */
+html{font-size:clamp(17px,calc(15.9px + .28vw),19.5px);
+  scroll-behavior:smooth;background:var(--ink);-webkit-text-size-adjust:100%}
 body{font-family:var(--body);color:var(--chrome);background:var(--ink);line-height:1.65;font-size:1.05rem;
   overflow-x:hidden;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--display);color:var(--chrome-bright);letter-spacing:-.02em;line-height:1.1}
