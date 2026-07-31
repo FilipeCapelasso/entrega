@@ -296,7 +296,7 @@ select.campo{appearance:none;cursor:pointer;
   filter:drop-shadow(0 14px 30px rgba(0,0,0,.8))}
 .marca-em-texto{width:auto !important;max-width:100%;margin-inline:auto}
 
-.marca-texto{display:flex;flex-direction:column;align-items:center;max-width:100%}
+.marca-texto{display:flex;flex-direction:column;align-items:center;max-width:100%;flex-shrink:0}
 .marca-texto .grupo{
   display:flex;align-items:center;gap:.9em;width:100%;justify-content:center;
   font-family:var(--dado);font-weight:500;color:var(--tenue);
@@ -307,15 +307,19 @@ select.campo{appearance:none;cursor:pointer;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.28))}
 .marca-texto .grupo::after{background:linear-gradient(270deg,transparent,rgba(255,255,255,.28))}
 
+/* "Star Motos" — sempre em uma única linha. white-space:nowrap garante que o
+   texto nunca quebre; se o espaço disponível for menor que o necessário, o
+   JavaScript (ajustarNomesDaMarca) reduz o tamanho da fonte suavemente em vez
+   de deixar o navegador cortar ou empurrar a palavra para uma nova linha. */
 .marca-texto .nome{
   display:block;white-space:nowrap;font-family:var(--display);font-weight:800;
-  letter-spacing:-.035em;line-height:.94;
+  letter-spacing:-.035em;line-height:.94;max-width:100%;
   background:linear-gradient(172deg,#fff 0%,#EAF1F9 30%,#A7B2C4 66%,#FFFFFF 96%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 10px 26px rgba(0,0,0,.75));
 }
 .marca-texto .nome em{
-  font-style:normal;
+  font-style:normal;white-space:nowrap;
   background:linear-gradient(172deg,#FF8095,var(--sinal) 45%,var(--racing));
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 0 24px rgba(228,0,43,.55));
@@ -1554,6 +1558,46 @@ function nomeDestacado(){
   ).join(' ');
 }
 
+/**
+ * Rede de segurança de "Star Motos" (e de qualquer outro porte da marca):
+ * o CSS já impede a quebra de linha com white-space:nowrap, mas a troca da
+ * fonte de reserva do sistema pela fonte Sora (que carrega depois), o zoom
+ * do navegador ou o texto grande do sistema operacional podem deixar o nome
+ * mais largo do que o espaço disponível. Em vez de deixar o texto vazar ou
+ * confiar apenas no CSS, reduzimos a fonte em pequenos passos até caber —
+ * sempre em uma única linha, nunca quebrada.
+ */
+function ajustarNomesDaMarca(){
+  $$('.marca-texto').forEach(caixa=>{
+    const nome = $('.nome', caixa);
+    if(!nome || caixa.closest('[hidden]')) return;
+    const disponivel = caixa.clientWidth;
+    if(!disponivel) return;
+
+    nome.style.fontSize = '';                       // volta ao tamanho definido no CSS
+    const base = parseFloat(getComputedStyle(nome).fontSize);
+    let atual = base, tentativas = 0;
+    while(nome.scrollWidth > disponivel && atual > base*.6 && tentativas < 30){
+      atual -= base * .018;
+      nome.style.fontSize = atual + 'px';
+      tentativas++;
+    }
+  });
+}
+
+/** Reexecuta o ajuste após qualquer mudança de layout (tela, orientação, fonte). */
+function observarLarguraDaMarca(){
+  let pendente = false;
+  const reagendar = ()=>{
+    if(pendente) return;
+    pendente = true;
+    requestAnimationFrame(()=>{ pendente = false; ajustarNomesDaMarca(); });
+  };
+  addEventListener('resize', reagendar, {passive:true});
+  addEventListener('orientationchange', reagendar);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(reagendar);
+}
+
 /** Coloca o logotipo como marca d'água ao fundo do topo, se o arquivo existir. */
 function marcaDagua(){
   if(!CONFIG.logo) return;
@@ -1689,7 +1733,7 @@ function pularIntro(){
 function entrarNoSite(){
   const intro = $('#intro'), site = $('#site');
   site.hidden = false;
-  requestAnimationFrame(()=> site.classList.add('visivel'));
+  requestAnimationFrame(()=>{ site.classList.add('visivel'); ajustarNomesDaMarca(); });
   setTimeout(mostrarCabecalho, 420);
   intro.classList.add('saindo');
   document.body.style.overflow = '';
@@ -1768,6 +1812,8 @@ function montarSite(){
   ligarRevelacao();
   ligarCabecalho();
   ligarOndas();
+  observarLarguraDaMarca();
+  requestAnimationFrame(ajustarNomesDaMarca);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1803,7 +1849,7 @@ function mostrarCabecalho(){
   const barra = $('#cabecalho');
   if(!barra) return;
   barra.hidden = false;
-  requestAnimationFrame(()=> barra.classList.add('visivel'));
+  requestAnimationFrame(()=>{ barra.classList.add('visivel'); ajustarNomesDaMarca(); });
 }
 
 /** Ondulação discreta no ponto tocado dos botões. */
@@ -2249,6 +2295,7 @@ function rotearHash(){
     site.hidden = true;
     document.body.style.overflow = '';
     scrollTo({top:0, behavior:'auto'});
+    requestAnimationFrame(ajustarNomesDaMarca);
     abrirPainel();
     return;
   }
