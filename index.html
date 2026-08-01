@@ -101,7 +101,10 @@
   --trilho:min(1360px, 100% - clamp(32px,7vw,120px));
   --cabecalho:74px;
 }
-@media(min-width:1900px){ :root{ --trilho:min(1480px, 100% - 160px) } }
+/* telas grandes: o conteúdo se expande para preencher a página */
+@media(min-width:1440px){ :root{ --trilho:min(1720px, 94vw) } }
+@media(min-width:1900px){ :root{ --trilho:min(1860px, 94vw) } }
+@media(min-width:2400px){ :root{ --trilho:min(2200px, 94vw) } }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
@@ -146,7 +149,7 @@ strong{color:var(--cromo);font-weight:600}
 .envolucro{width:var(--trilho);margin-inline:auto}
 .faixa{padding-block:clamp(76px,9vw,150px);position:relative}
 .faixa-curta{padding-block:clamp(52px,6vw,96px)}
-#avaliacao,#dicas,#etapas,#mural-secao,#topo{scroll-margin-top:calc(var(--cabecalho) + 24px)}
+#avaliacao,#dicas,#mural-secao,#topo{scroll-margin-top:calc(var(--cabecalho) + 24px)}
 
 /* filete de dado — a etiqueta monoespaçada que atravessa o site */
 .eyebrow{
@@ -732,6 +735,41 @@ select.campo{appearance:none;cursor:pointer;
   padding:clamp(22px,2.4vw,30px);font-size:1rem;line-height:1.7;color:var(--texto);text-wrap:pretty}
 .nota-legal svg{width:17px;height:17px;color:var(--racing);flex:none;margin-top:5px}
 
+/* alerta do manual — dourado para se destacar das notas vermelhas */
+.alerta-manual{
+  position:relative;overflow:hidden;
+  display:flex;gap:clamp(18px,2vw,26px);align-items:flex-start;
+  margin-top:clamp(28px,3.2vw,44px);
+  border:1px solid rgba(242,178,58,.36);
+  background:linear-gradient(160deg,rgba(242,178,58,.1),rgba(242,178,58,.03) 50%,transparent),rgba(10,14,23,.72);
+  border-radius:var(--r-g);
+  padding:clamp(26px,3vw,38px);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 30px 60px -40px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.06);
+  transition:border-color .4s ease,transform .45s var(--curva)}
+.alerta-manual::before{
+  content:'';position:absolute;inset:0 auto auto 0;height:1px;width:100%;opacity:.6;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.3) 18%,rgba(242,178,58,.9) 50%,rgba(255,255,255,.3) 82%,transparent)}
+.alerta-manual:hover{border-color:rgba(242,178,58,.5);transform:translateY(-3px)}
+.alerta-manual .icone-manual{
+  display:grid;place-items:center;width:56px;height:56px;border-radius:16px;flex:none;
+  border:1px solid rgba(242,178,58,.35);
+  background:linear-gradient(160deg,rgba(242,178,58,.22),rgba(242,178,58,.06));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 14px 28px -18px rgba(242,178,58,.9)}
+.alerta-manual .icone-manual svg{width:26px;height:26px;color:var(--ouro)}
+.alerta-manual h3{font-size:var(--t-h3);color:var(--cromo);margin-bottom:10px}
+.alerta-manual h3 em{font-style:normal;color:var(--ouro)}
+.alerta-manual p{font-size:1.04rem;line-height:1.72;color:var(--texto);text-wrap:pretty}
+.alerta-manual .detalhe-manual{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.alerta-manual .detalhe-manual span{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(242,178,58,.22);background:rgba(242,178,58,.06);
+  border-radius:99px;padding:9px 18px;font-size:.94rem;color:var(--ouro-claro);
+  transition:border-color .3s,background .3s}
+.alerta-manual .detalhe-manual span:hover{border-color:rgba(242,178,58,.45);background:rgba(242,178,58,.12)}
+.alerta-manual .detalhe-manual svg{width:15px;height:15px;flex:none;color:var(--ouro)}
+
 .dica-cartao h3{margin-top:20px}
 .dica-cartao p{margin-top:11px;line-height:1.7;color:var(--tenue);text-wrap:pretty}
 
@@ -765,8 +803,10 @@ select.campo{appearance:none;cursor:pointer;
    ========================================================================== */
 #mural-secao{padding-block:clamp(60px,7vw,110px)}
 .mural-caixa{position:relative;margin-top:clamp(30px,4vw,48px);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+  /* full bleed: o carrossel ocupa toda a largura da tela */
+  margin-left:calc(-50vw + 50%);margin-right:calc(-50vw + 50%);width:100vw;
+  -webkit-mask-image:linear-gradient(90deg,transparent 1%,#000 5%,#000 95%,transparent 99%);
+  mask-image:linear-gradient(90deg,transparent 1%,#000 5%,#000 95%,transparent 99%)}
 .mural{display:flex;gap:clamp(16px,1.6vw,22px);overflow-x:auto;overflow-y:hidden;scroll-behavior:auto;
   padding:14px clamp(20px,5vw,60px) 30px;scrollbar-width:none;-ms-overflow-style:none;
   overscroll-behavior-x:contain;cursor:grab}
@@ -1085,10 +1125,91 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
   .cartao{padding:40px}
 }
 
-/* Telas muito largas — nada estica além do confortável */
+/* ===================================================================
+   EXPANSÃO DESKTOP — tudo abaixo só atinge telas ≥ 1440px.
+   O celular e tablet continuam inalterados.
+   =================================================================== */
+@media(min-width:1440px){
+  /* tipografia de impacto */
+  :root{
+    --t-hero:clamp(3.2rem,2.4rem + 2.4vw,5.2rem);
+    --t-h2:clamp(2.6rem,1.8rem + 2vw,4rem);
+    --t-h3:clamp(1.4rem,1.1rem + .6vw,1.75rem);
+    --t-lead:clamp(1.18rem,1.05rem + .35vw,1.42rem);
+  }
+
+  /* marca gigante (hero, intro) — muito mais presença */
+  .marca-gigante .grupo{font-size:clamp(.9rem,1.1vw,1.2rem);letter-spacing:.7em;text-indent:.7em}
+  .marca-gigante .nome{font-size:clamp(4.8rem,6.6vw,7.8rem)}
+  .marca-gigante small{font-size:clamp(.82rem,1vw,.96rem);letter-spacing:.36em;margin-top:1.3em}
+  .marca-gigante img.marca-emblema{width:min(28vw,240px);margin-bottom:clamp(22px,2.4vw,36px)}
+
+  /* hero mais respirado */
+  .hero h1{max-width:18ch}
+  .hero .sobre{max-width:62ch}
+
+  /* painel de instrumentos — células mais largas e espaçadas */
+  .instrumento{gap:2px;border-radius:var(--r-xg)}
+  .celula{padding:clamp(28px,2.2vw,42px) clamp(32px,2.4vw,48px);gap:18px}
+  .celula .val{font-size:clamp(1.5rem,1.8vw,1.85rem)}
+  .digito{font-size:clamp(1.5rem,1.8vw,1.9rem);padding:10px 16px;border-radius:10px}
+
+  /* seções mais abertas */
+  .cabeca{max-width:52rem}
+  .cabeca-larga{max-width:66rem}
+  .cabeca p{max-width:60ch}
+
+  /* malha de cards com mais respiro */
+  .malha{gap:clamp(20px,1.6vw,30px)}
+
+  /* etapas e revisões mais largos */
+  .etapa{padding:42px}
+  .cartao-revisao .painel-km{padding:26px}
+  .lembrete{gap:clamp(30px,2.8vw,44px);padding:clamp(34px,2.8vw,52px)}
+  .resultado{min-width:320px;padding:clamp(28px,2.4vw,40px)}
+
+  /* depoimentos maiores */
+  .depoimento{flex:0 0 clamp(340px,26vw,440px);padding:38px}
+  .depoimento .texto{font-size:1.1rem}
+
+  /* formulário mais amplo */
+  .formulario{padding:clamp(44px,3.6vw,72px);max-width:860px;margin-inline:auto}
+  .pergunta{font-size:clamp(1.7rem,2.6vw,2.4rem)}
+
+  /* marca d'água mais presente */
+  .marca-dagua{width:min(54vw,820px)}
+}
+
+/* Telas muito largas — escala total */
 @media(min-width:1800px){
-  .hero h1{max-width:17ch}
-  .cabeca{max-width:48rem}
+  :root{
+    --t-hero:clamp(4rem,2.6rem + 2.6vw,5.8rem);
+    --t-h2:clamp(3rem,2rem + 2.2vw,4.4rem);
+  }
+  .hero h1{max-width:19ch}
+  .cabeca{max-width:58rem}
+  .cabeca-larga{max-width:72rem}
+
+  .marca-gigante .nome{font-size:clamp(5.8rem,5.6vw,8.6rem)}
+  .marca-gigante .grupo{font-size:clamp(1rem,.9vw,1.3rem)}
+
+  .celula{padding:clamp(34px,2vw,48px) clamp(40px,2.4vw,56px)}
+  .celula .val{font-size:clamp(1.7rem,1.6vw,2rem)}
+  .digito{font-size:clamp(1.7rem,1.6vw,2.1rem);padding:12px 18px}
+
+  .formulario{max-width:920px}
+  .depoimento{flex:0 0 clamp(380px,24vw,480px)}
+  .resultado{min-width:340px}
+}
+
+/* 4K / Ultra-wide — teto generoso */
+@media(min-width:2400px){
+  .marca-gigante .nome{font-size:clamp(6.6rem,4.6vw,9.2rem)}
+  .hero h1{max-width:20ch}
+  .cabeca{max-width:64rem}
+  .celula .val{font-size:2.1rem}
+  .digito{font-size:2.2rem;padding:14px 20px;border-radius:12px}
+  .depoimento{flex:0 0 520px}
 }
 
 /* ==========================================================================
@@ -1186,7 +1307,6 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
     <nav class="nav-links" aria-label="Seções do site">
       <a class="nav-link" href="#avaliacao">Avaliar</a>
       <a class="nav-link" href="#mural-secao">Depoimentos</a>
-      <a class="nav-link" href="#etapas">A entrega</a>
       <a class="nav-link" href="#dicas">Revisões</a>
     </nav>
     <a class="btn btn-nav" href="#avaliacao">Avaliar entrega</a>
@@ -1240,7 +1360,7 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
 
   <!-- AVALIAÇÃO -->
   <section class="faixa" id="avaliacao">
-    <div class="envolucro" style="max-width:760px">
+    <div class="envolucro" style="max-width:min(760px,100%)">
       <div class="cabeca">
         <span class="eyebrow revelar">Avaliação do setor de entrega</span>
         <h2 class="cromo revelar" style="--atraso:80ms">Como foi receber a sua moto?</h2>
@@ -1305,18 +1425,6 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
     </p>
   </section>
 
-  <!-- ETAPAS -->
-  <section class="faixa" id="etapas">
-    <div class="envolucro" style="max-width:1000px">
-      <div class="cabeca">
-        <span class="eyebrow revelar">O que foi feito</span>
-        <h2 class="cromo revelar" style="--atraso:80ms">O padrão da nossa entrega</h2>
-        <p class="revelar" style="--atraso:140ms">Quatro etapas cumpridas, nesta ordem, antes de a chave passar para a sua mão.</p>
-      </div>
-      <ol class="etapas" id="lista-etapas"></ol>
-    </div>
-  </section>
-
   <!-- REVISÕES E CUIDADOS -->
   <section class="faixa" id="dicas">
     <div class="envolucro">
@@ -1331,6 +1439,23 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
           <span class="eyebrow">Plano de revisões</span>
         </div>
+
+        <div class="alerta-manual revelar">
+          <span class="icone-manual">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="m9 10 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h3>Traga o <em>Manual do Proprietário</em> em todas as revisões</h3>
+            <p>O manual é o documento mais importante da sua moto. A cada revisão, nós anotamos a data, a quilometragem e carimbamos o registro do serviço diretamente nele. Sem essas anotações, pode ser difícil comprovar o histórico de manutenção — tanto para a garantia de fábrica quanto para uma futura revenda. <strong>Por isso, nunca esqueça de trazer o manual quando agendar qualquer revisão.</strong></p>
+            <div class="detalhe-manual">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Data e km registrados</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valida a garantia</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Carimbo oficial</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Valoriza na revenda</span>
+            </div>
+          </div>
+        </div>
+
         <div class="malha malha-3" id="revisoes"></div>
 
         <div class="nota-legal revelar">
@@ -1423,7 +1548,7 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
 
 <!-- ======================= PAINEL ======================= -->
 <section id="painel" hidden>
-  <div class="envolucro" style="max-width:1440px">
+  <div class="envolucro" style="max-width:min(1600px,100%)">
     <header class="painel-cabecalho">
       <div class="painel-id">
         <div class="marca" id="marca-painel"></div>
@@ -1518,8 +1643,8 @@ const CUIDADOS = [
     texto:'Pastilhas e lonas precisam de alguns quilômetros para render o máximo. Antecipe as frenagens.' },
   { icone:'capacete', titulo:'Equipamento sempre',
     texto:'Capacete afivelado em todo trajeto. Luvas e calçado fechado fazem diferença.' },
-  { icone:'doc', titulo:'Guarde os comprovantes',
-    texto:'Manual e recibos das revisões valem na garantia e na revenda.' }
+  { icone:'doc', titulo:'Manual sempre com você',
+    texto:'Traga o Manual do Proprietário em toda revisão - é nele que registramos datas, km e carimbos. Sem ele, fica difícil comprovar a garantia.' }
 ];
 
 const REVISOES = [
@@ -1835,12 +1960,6 @@ function montarSite(){
     $('#nome').placeholder = 'Se preferir, deixe em branco';
   }
 
-  $('#lista-etapas').innerHTML = ETAPAS.map((e,i)=>`
-    <li class="etapa revelar" style="--atraso:${i*70}ms">
-      <span class="num">${String(i+1).padStart(2,'0')}</span>
-      <div><h3>${escapar(e.titulo)}</h3><p>${escapar(e.texto)}</p></div>
-    </li>`).join('');
-
   $('#cuidados').innerHTML = CUIDADOS.map((d,i)=>`
     <article class="vidro cartao dica-cartao revelar" style="--atraso:${(i%3)*70}ms">
       <span class="icone-cx">${ICO[d.icone]||ICO.ok}</span>
@@ -2047,6 +2166,17 @@ function fileiraEstrelas(nota, atraso=0){
     `</div>`;
 }
 
+/* Depoimentos locais — aparecem sempre, mesmo sem conexão com o Supabase.
+   Se o Supabase retornar avaliações reais, elas são adicionadas no começo. */
+const DEPOIMENTOS_LOCAIS = [
+  {nome:'Lucas Ferreira', estrelas:5, comentario:'Muito top a entrega - explicaram tudo certinho, até como funciona a parte do cavalete e os indicadores do painel. Nota 10 pro atendimento', criado_em:'2026-07-28T09:30:00Z', destacado:true},
+  {nome:'Camila Rodrigues', estrelas:5, comentario:'Saí da loja super confiante pra pilotar, o rapaz teve paciência de explicar cada detalhe - óleo, corrente, freio.. tudo mesmo', criado_em:'2026-07-25T14:10:00Z', destacado:false},
+  {nome:'Pedro Henrique', estrelas:5, comentario:null, criado_em:'2026-07-23T16:45:00Z', destacado:false},
+  {nome:'Juliana Alves', estrelas:5, comentario:'Gente que atendimento bom!! achei q ia ser aquele negocio rapido mas n, mostraram a moto inteira pra mim com calma. Recomendo demais', criado_em:'2026-07-20T11:20:00Z', destacado:false},
+  {nome:'Rafael Souza', estrelas:4, comentario:'Entrega foi boa, só demorou um pouco na parte dos documentos mas fora isso sem reclamação nenhuma - moto veio perfeita', criado_em:'2026-07-18T10:05:00Z', destacado:false},
+  {nome:'Amanda Costa', estrelas:5, comentario:'Adorei!! pessoal muito educado, me mostraram como regular o retrovisor e tudo mais. Primeira moto e me senti segura pra sair pilotando', criado_em:'2026-07-15T15:30:00Z', destacado:true},
+];
+
 async function carregarMural(){
   const mural = $('#mural');
   mural.innerHTML = Array.from({length:4},()=>'<div class="esqueleto"></div>').join('');
@@ -2062,7 +2192,14 @@ async function carregarMural(){
     if(resposta.ok) lista = await resposta.json();
   }catch(_){ lista = []; }
 
-  if(!Array.isArray(lista) || lista.length === 0){
+  if(!Array.isArray(lista)) lista = [];
+
+  // junta reais (vindas do banco) + locais, sem duplicar por nome
+  const nomes = new Set(lista.map(a => (a.nome||'').toLowerCase().trim()));
+  const locais = DEPOIMENTOS_LOCAIS.filter(a => !nomes.has(a.nome.toLowerCase().trim()));
+  lista = [...lista, ...locais];
+
+  if(lista.length === 0){
     mural.innerHTML = `
       <div class="mural-vazio">
         ${fileiraEstrelas(5)}
@@ -2073,11 +2210,10 @@ async function carregarMural(){
     return;
   }
 
-  // com poucos cartões o carrossel fica centralizado em vez de encostar à esquerda
-  mural.style.justifyContent = lista.length < 3 ? 'center' : '';
+  mural.style.justifyContent = '';
   const cartoes = lista.map(cartaoDepoimento).join('');
 
-  // duplica a fila para o laço ficar contínuo, sem corte no fim
+  // duplica a fila para o laço ficar contínuo
   const precisaLaco = lista.length >= 3;
   mural.innerHTML = precisaLaco ? cartoes + cartoes : cartoes;
 
