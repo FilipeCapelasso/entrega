@@ -1261,41 +1261,14 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
 </div>
 <div id="progresso"></div>
 
-<!-- ======================= ABERTURA ======================= -->
-<div id="intro" class="fase-logo">
-  <div class="intro-halo"></div>
-  <div class="intro-anel"></div>
-  <div class="intro-anel-2"></div>
-  <canvas id="particulas-intro"></canvas>
-  <button id="pular" class="btn-fantasma" type="button">Pular</button>
-
-  <div class="palco">
-    <span class="raio"></span>
-  </div>
-
-  <div id="mensagem">
-    <div class="topo">
-      <div class="marca" id="marca-mensagem"></div>
-      <span class="eyebrow">Entrega técnica concluída</span>
-    </div>
-    <div class="linhas" id="linhas"></div>
-    <div id="acao">
-      <span class="anel"><button class="btn" id="continuar" type="button">Continuar
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button></span>
-      <span class="eyebrow sem-ponto">Leva menos de um minuto</span>
-    </div>
-  </div>
-</div>
-
 <!-- ======================= CABEÇALHO ======================= -->
 <header class="cabecalho" id="cabecalho" hidden>
   <div class="envolucro cabecalho-int">
     <a class="marca marca-nav" id="marca-nav" href="#topo" aria-label="Grupo Star Motos — início"></a>
     <nav class="nav-links" aria-label="Seções do site">
-      <a class="nav-link" href="#mural-secao">Depoimentos</a>
       <a class="nav-link" href="#dicas">Revisões</a>
       <a class="nav-link" href="#avaliacao">Avaliar</a>
+      <a class="nav-link" href="#mural-secao">Depoimentos</a>
     </nav>
     <a class="btn btn-nav" href="#avaliacao">Avaliar entrega</a>
   </div>
@@ -1322,49 +1295,12 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
         <a class="btn-fantasma" href="#dicas">Revisões e cuidados</a>
       </div>
 
-      <div class="regua" aria-hidden="true"></div>
-
-      <div class="instrumento">
-        <div class="celula">
-          <span class="rot">Odômetro na entrega</span>
-          <div class="digitos"><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span></div>
-          <span class="obs">Quilometragem registrada na saída</span>
-        </div>
-        <div class="celula">
-          <span class="rot">Itens apresentados</span>
-          <p class="val" id="itens-entrega">—</p>
-          <span class="obs">Checklist completo da entrega técnica</span>
-        </div>
-        <div class="celula">
-          <span class="rot">Primeira revisão</span>
-          <p class="val" id="km-primeira">—</p>
-          <span class="obs" id="prazo-primeira">—</span>
-        </div>
-      </div>
     </div>
 
-    <a class="rolar" href="#mural-secao" aria-label="Ir para a avaliação">Role<i></i></a>
+    <a class="rolar" href="#dicas" aria-label="Ir para revisões e cuidados">Role<i></i></a>
   </section>
 
   
-  <!-- MURAL -->
-  <section id="mural-secao">
-    <div class="envolucro">
-      <div class="cabeca">
-        <span class="eyebrow">Depoimentos</span>
-        <h2 class="cromo">Quem já saiu daqui de moto nova</h2>
-        <p >Avaliações reais de clientes atendidos pelo nosso setor de entrega técnica.</p>
-      </div>
-    </div>
-    <div class="mural-caixa">
-      <div class="mural" id="mural" role="region" aria-label="Avaliações de clientes" tabindex="0"></div>
-    </div>
-    <p class="mural-dica" id="mural-dica" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      Arraste para o lado
-    </p>
-  </section>
-
   <!-- REVISÕES E CUIDADOS -->
   <section class="faixa" id="dicas">
     <div class="envolucro">
@@ -1490,6 +1426,24 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
         <button class="btn-fantasma" type="button" id="nova-avaliacao" style="margin-top:24px">Enviar outra avaliação</button>
       </div>
     </div>
+  </section>
+
+  <!-- MURAL -->
+  <section id="mural-secao">
+    <div class="envolucro">
+      <div class="cabeca">
+        <span class="eyebrow">Depoimentos</span>
+        <h2 class="cromo">Quem já saiu daqui de moto nova</h2>
+        <p >Avaliações reais de clientes atendidos pelo nosso setor de entrega técnica.</p>
+      </div>
+    </div>
+    <div class="mural-caixa">
+      <div class="mural" id="mural" role="region" aria-label="Avaliações de clientes" tabindex="0"></div>
+    </div>
+    <p class="mural-dica" id="mural-dica" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Arraste para o lado
+    </p>
   </section>
 
   <div class="frase">
@@ -1844,95 +1798,15 @@ function iniciarParticulas(canvas, total, forcaVermelha){
 }
 
 /* ==========================================================================
-   5. INTRO
-   ========================================================================== */
-let pulado = false, introIniciada = false;
-
-async function rodarIntro(){
-  const intro = $('#intro'), caixa = $('#linhas');
-
-  CONFIG.mensagens.forEach((_,i)=>{
-    const p = document.createElement('p');
-    p.className = 'linha' + (i===0 ? ' destaque cromo' : '');
-    caixa.appendChild(p);
-  });
-
-  if(!semMovimento){
-    await dormir(720); if(!pulado) intro.className = 'fase-brilho';
-    await dormir(660); if(!pulado) intro.classList.add('fase-particulas');
-    await dormir(560); if(!pulado) intro.classList.add('fase-transicao');
-    await dormir(440);
-  }
-  if(!pulado) intro.className = 'fase-mensagem fase-particulas';
-
-  const linhas = $$('.linha');
-  for(let i=0;i<linhas.length;i++){
-    const el = linhas[i], texto = CONFIG.mensagens[i];
-    el.classList.add('ativa');
-    if(pulado || semMovimento){ el.textContent = texto; continue; }
-    const cursor = document.createElement('span'); cursor.className = 'cursor';
-    await digitar(el, texto, cursor);
-    el.textContent = texto;
-    await dormir(pulado ? 0 : 110);
-  }
-  mostrarBotao();
-}
-
-/** Escreve o texto letra por letra usando o relogio da tela. */
-function digitar(el, texto, cursor){
-  return new Promise(resolve=>{
-    const inicio = performance.now();
-    const ms = CONFIG.velocidadeTexto;
-    (function passo(agora){
-      if(pulado){ el.textContent = texto; return resolve(); }
-      const n = Math.min(texto.length, Math.ceil((agora - inicio) / ms));
-      el.textContent = texto.slice(0, n);
-      el.appendChild(cursor);
-      if(n >= texto.length) return resolve();
-      requestAnimationFrame(passo);
-    })(performance.now());
-  });
-}
-
-function mostrarBotao(){
-  const pular = $('#pular'), acao = $('#acao');
-  if(pular) pular.hidden = true;
-  if(acao)  acao.classList.add('visivel');
-}
-
-function pularIntro(){
-  pulado = true;
-  $('#intro').className = 'fase-mensagem fase-particulas';
-  $$('.linha').forEach((el,i)=>{ el.classList.add('ativa'); el.textContent = CONFIG.mensagens[i]; });
-  mostrarBotao();
-}
-
-function entrarNoSite(){
-  const intro = $('#intro'), site = $('#site');
-  site.hidden = false;
-  requestAnimationFrame(()=>{ site.classList.add('visivel'); ajustarNomesDaMarca(); });
-  setTimeout(mostrarCabecalho, 420);
-  intro.classList.add('saindo');
-  document.body.style.overflow = '';
-  scrollTo({top:0, behavior:'auto'});
-  setTimeout(()=> intro.remove(), 650);
-}
-
-/* ==========================================================================
    6. CONTEÚDO DO SITE
    ========================================================================== */
 function montarSite(){
   marcaDagua();
-  marca('#marca-mensagem', 'marca-media');
   marca('#marca-hero',     'marca-gigante');
   marca('#marca-rodape',   'marca-pequena');
   marca('#marca-nav',      'marca-mini');
   marca('#marca-painel',   'marca-mini');
 
-  // painel de instrumentos do topo — números vindos do próprio conteúdo
-  $('#itens-entrega').textContent = TOPICOS.length + ' pontos';
-  $('#km-primeira').textContent   = REVISOES[0].km;
-  $('#prazo-primeira').textContent = REVISOES[0].prazo.replace(/^ou /,'Ou ');
 
   $('#sobre-hero').textContent = CONFIG.sobre;
   $('#frase-empresa').textContent = CONFIG.empresa;
@@ -2446,10 +2320,9 @@ function escFecha(e){ if(e.key === 'Escape') fecharModal(); }
 function rotearHash(){
   const admin = location.hash === '#admin';
   $('#painel').hidden = !admin;
-  const intro = $('#intro'), site = $('#site'), barra = $('#cabecalho');
+  const site = $('#site'), barra = $('#cabecalho');
 
   if(admin){
-    if(intro) intro.hidden = true;
     if(barra) barra.hidden = true;
     site.hidden = true;
     document.body.style.overflow = '';
@@ -2460,15 +2333,9 @@ function rotearHash(){
   }
 
   fecharModal();
-  if(intro && introIniciada && !intro.classList.contains('saindo')){
-    intro.hidden = false;
-    document.body.style.overflow = 'hidden';
-  }else{
-    if(intro) intro.remove();
-    site.hidden = false; site.classList.add('visivel');
-    document.body.style.overflow = '';
-    mostrarCabecalho();
-  }
+  site.hidden = false; site.classList.add('visivel');
+  document.body.style.overflow = '';
+  mostrarCabecalho();
 }
 
 function abrirPainel(){
@@ -2998,12 +2865,11 @@ addEventListener('DOMContentLoaded', ()=>{
 
   if(location.hash === '#admin'){ rotearHash(); return; }
 
-  introIniciada = true;
-  document.body.style.overflow = 'hidden';
-  iniciarParticulas($('#particulas-intro'), 40, .28);
-  $('#pular').addEventListener('click', pularIntro);
-  $('#continuar').addEventListener('click', entrarNoSite);
-  rodarIntro();
+  const site = $('#site');
+  site.hidden = false;
+  document.body.style.overflow = '';
+  requestAnimationFrame(()=>{ site.classList.add('visivel'); ajustarNomesDaMarca(); });
+  setTimeout(mostrarCabecalho, 200);
 });
 </script>
 
