@@ -390,8 +390,7 @@ select.campo{appearance:none;cursor:pointer;
 
 /* palco da marca */
 .palco{position:relative;z-index:2;display:grid;place-items:center;width:100%}
-.marca-intro{position:relative;opacity:0;transform:scale(.85) translateY(10px);
-  animation:marcaEntra 1.4s var(--curva) forwards}
+
 @keyframes marcaEntra{
   0%{opacity:0;transform:scale(.85) translateY(10px);filter:blur(8px)}
   60%{opacity:1;filter:blur(0)}
@@ -411,7 +410,6 @@ select.campo{appearance:none;cursor:pointer;
   box-shadow:0 0 50px 8px rgba(228,0,43,.95)}
 #intro.fase-transicao .raio{animation:rasgar .8s cubic-bezier(.65,0,.35,1) forwards}
 @keyframes rasgar{0%{width:0;opacity:0}40%{opacity:1}100%{width:180vw;opacity:0}}
-#intro.fase-transicao .marca-intro{opacity:0;transform:scale(1.1);filter:blur(6px);transition:.55s var(--curva)}
 
 /* fase das mensagens */
 #mensagem{display:none;width:100%;max-width:680px;text-align:center;position:relative;z-index:2}
@@ -571,14 +569,6 @@ select.campo{appearance:none;cursor:pointer;
   mask-image:radial-gradient(circle at 55% 45%,#000 42%,transparent 76%);
   -webkit-mask-image:radial-gradient(circle at 55% 45%,#000 42%,transparent 76%)}
 @media(max-width:900px){ .marca-dagua{right:-26%;top:8%;width:120vw;opacity:.07} }
-
-/* ==========================================================================
-   9. REVELAÇÃO NO SCROLL
-   ========================================================================== */
-.revelar{opacity:0;transform:translateY(36px) scale(.98);filter:blur(7px);
-  transition:opacity .95s var(--curva),transform .95s var(--curva),filter .7s ease-out;
-  transition-delay:var(--atraso,0ms)}
-.revelar.dentro{opacity:1;transform:none;filter:none}
 
 /* ==========================================================================
    10. CABEÇALHOS DE SEÇÃO
@@ -1241,7 +1231,6 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important}
-  .revelar{opacity:1;transform:none;filter:none}
   .depoimento,.mural-vazio{opacity:1 !important;transform:none !important}
   .cabecalho{transform:none}
   .halo{animation:none}
@@ -1281,7 +1270,6 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
   <button id="pular" class="btn-fantasma" type="button">Pular</button>
 
   <div class="palco">
-    <div class="marca marca-intro" id="marca-intro"><span class="brilho"></span></div>
     <span class="raio"></span>
   </div>
 
@@ -1305,9 +1293,9 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
   <div class="envolucro cabecalho-int">
     <a class="marca marca-nav" id="marca-nav" href="#topo" aria-label="Grupo Star Motos — início"></a>
     <nav class="nav-links" aria-label="Seções do site">
-      <a class="nav-link" href="#avaliacao">Avaliar</a>
       <a class="nav-link" href="#mural-secao">Depoimentos</a>
       <a class="nav-link" href="#dicas">Revisões</a>
+      <a class="nav-link" href="#avaliacao">Avaliar</a>
     </nav>
     <a class="btn btn-nav" href="#avaliacao">Avaliar entrega</a>
   </div>
@@ -1320,23 +1308,23 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
   <section class="hero" id="topo">
     <div class="hero-brasa" aria-hidden="true"></div>
     <div class="envolucro hero-int">
-      <span class="selo-hero revelar"><i class="pulso"></i>Entrega técnica concluída</span>
+      <span class="selo-hero"><i class="pulso"></i>Entrega técnica concluída</span>
 
-      <div class="marca marca-hero revelar" id="marca-hero" style="--atraso:80ms"></div>
+      <div class="marca marca-hero" id="marca-hero"></div>
 
-      <h1 class="cromo revelar" style="--atraso:160ms">Cada detalhe conferido<span class="quebra">antes de você dar a partida.</span></h1>
-      <p class="sobre revelar" id="sobre-hero" style="--atraso:240ms"></p>
+      <h1 class="cromo">Cada detalhe conferido<span class="quebra">antes de você dar a partida.</span></h1>
+      <p class="sobre" id="sobre-hero"></p>
 
-      <div class="acoes-hero revelar" style="--atraso:320ms">
+      <div class="acoes-hero">
         <a class="btn" href="#avaliacao">Avaliar a entrega
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <a class="btn-fantasma" href="#dicas">Revisões e cuidados</a>
       </div>
 
-      <div class="regua revelar" aria-hidden="true" style="--atraso:380ms"></div>
+      <div class="regua" aria-hidden="true"></div>
 
-      <div class="instrumento revelar" style="--atraso:420ms">
+      <div class="instrumento">
         <div class="celula">
           <span class="rot">Odômetro na entrega</span>
           <div class="digitos"><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span><span class="digito">0</span></div>
@@ -1355,19 +1343,116 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
       </div>
     </div>
 
-    <a class="rolar" href="#avaliacao" aria-label="Ir para a avaliação">Role<i></i></a>
+    <a class="rolar" href="#mural-secao" aria-label="Ir para a avaliação">Role<i></i></a>
+  </section>
+
+  
+  <!-- MURAL -->
+  <section id="mural-secao">
+    <div class="envolucro">
+      <div class="cabeca">
+        <span class="eyebrow">Depoimentos</span>
+        <h2 class="cromo">Quem já saiu daqui de moto nova</h2>
+        <p >Avaliações reais de clientes atendidos pelo nosso setor de entrega técnica.</p>
+      </div>
+    </div>
+    <div class="mural-caixa">
+      <div class="mural" id="mural" role="region" aria-label="Avaliações de clientes" tabindex="0"></div>
+    </div>
+    <p class="mural-dica" id="mural-dica" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      Arraste para o lado
+    </p>
+  </section>
+
+  <!-- REVISÕES E CUIDADOS -->
+  <section class="faixa" id="dicas">
+    <div class="envolucro">
+      <div class="cabeca cabeca-larga">
+        <span class="eyebrow">Depois da entrega</span>
+        <h2 class="cromo">Revisões e cuidados</h2>
+        <p >Guarde este link. Aqui está o essencial para manter a sua Honda em dia — e a garantia também.</p>
+      </div>
+
+      <div style="margin-top:clamp(48px,6vw,80px)">
+        <div class="bloco-rot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+          <span class="eyebrow">Plano de revisões</span>
+        </div>
+
+        <div class="alerta-manual">
+          <span class="icone-manual">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="m9 10 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h3>Traga o <em>Manual do Proprietário</em> em todas as revisões</h3>
+            <p>O manual é o documento mais importante da sua moto. A cada revisão, nós anotamos a data, a quilometragem e carimbamos o registro do serviço diretamente nele. Sem essas anotações, pode ser difícil comprovar o histórico de manutenção — tanto para a garantia de fábrica quanto para uma futura revenda. <strong>Por isso, nunca esqueça de trazer o manual quando agendar qualquer revisão.</strong></p>
+            <div class="detalhe-manual">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Data e km registrados</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valida a garantia</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Carimbo oficial</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Valoriza na revenda</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="malha malha-3" id="revisoes"></div>
+
+        <div class="nota-legal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <p><strong>* Importante:</strong> a partir da terceira revisão o óleo é fornecido conforme o programa vigente da concessionária, e o cliente passa a pagar a mão de obra e os demais itens. A cobertura pode variar conforme o programa e o modelo — confirme no agendamento.</p>
+        </div>
+
+        <div class="vidro fio lembrete">
+          <div>
+            <h3>Não perca a primeira revisão</h3>
+            <p>Informe a data em que você retirou a moto e veja até quando fazer a primeira revisão. Vale o que vencer primeiro: quilometragem ou data.</p>
+            <input class="campo" type="date" id="data-retirada" aria-label="Data da retirada">
+          </div>
+          <div class="resultado">
+            <span class="rot">Primeira revisão até</span>
+            <p class="valor" id="prazo-revisao">—</p>
+            <p class="obs">ou entre 900 e 1.100 km</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:clamp(48px,6vw,80px)">
+        <div class="bloco-rot">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="eyebrow">Cuidados essenciais</span>
+        </div>
+        <div class="malha malha-auto" id="cuidados"></div>
+      </div>
+
+      <div class="malha malha-2" style="margin-top:clamp(48px,6vw,80px)">
+        <article class="vidro fio cartao cartao-largo">
+          <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7 6.6 9.5a7 7 0 1 0 10.8 0z"/></svg></span>
+          <h3>Óleo Pro Honda</h3>
+          <p class="texto">O Pro Honda semissintético oferece boa resistência e proteção ao motor. O intervalo correto de troca segue o Manual do Proprietário e o plano de revisões — mantê-lo em dia preserva o desempenho e a garantia.</p>
+          <ul class="tags" style="margin-top:22px"><li>Proteção do motor</li><li>Segue o manual</li><li>Preserva a garantia</li></ul>
+        </article>
+
+        <article class="vidro fio cartao cartao-largo">
+          <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4H9z"/><path d="M5 4h2v18h10V4h2"/><path d="m9 14 2 2 4-4"/></svg></span>
+          <h3>Itens da entrega técnica</h3>
+          <p class="texto">Tudo o que foi apresentado a você antes de sair com a moto:</p>
+          <ul class="topicos" id="topicos"></ul>
+        </article>
+      </div>
+    </div>
   </section>
 
   <!-- AVALIAÇÃO -->
   <section class="faixa" id="avaliacao">
     <div class="envolucro" style="max-width:min(760px,100%)">
       <div class="cabeca">
-        <span class="eyebrow revelar">Avaliação do setor de entrega</span>
-        <h2 class="cromo revelar" style="--atraso:80ms">Como foi receber a sua moto?</h2>
-        <p class="revelar" style="--atraso:140ms">São dois toques e um comentário, se você quiser. É com isso que a gente ajusta o padrão da próxima entrega.</p>
+        <span class="eyebrow">Avaliação do setor de entrega</span>
+        <h2 class="cromo">Como foi receber a sua moto?</h2>
+        <p >São dois toques e um comentário, se você quiser. É com isso que a gente ajusta o padrão da próxima entrega.</p>
       </div>
 
-      <form class="vidro fio formulario revelar" id="form-avaliacao" novalidate>
+      <form class="vidro fio formulario" id="form-avaliacao" novalidate>
         <p class="pergunta">Dê a sua nota para a entrega</p>
 
         <div class="trilha" id="trilha" role="radiogroup" aria-label="Nota da entrega, de 1 a 5 estrelas"></div>
@@ -1396,7 +1481,7 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
         <p class="aviso-privacidade">Avaliação do setor de entrega. Sem cadastro, sem e-mail, sem telefone.</p>
       </form>
 
-      <div class="vidro fio formulario revelar" id="ja-avaliado" hidden style="text-align:center">
+      <div class="vidro fio formulario" id="ja-avaliado" hidden style="text-align:center">
         <div class="icone-cx" style="margin-inline:auto">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
@@ -1407,103 +1492,7 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
     </div>
   </section>
 
-  <!-- MURAL -->
-  <section id="mural-secao">
-    <div class="envolucro">
-      <div class="cabeca">
-        <span class="eyebrow revelar">Depoimentos</span>
-        <h2 class="cromo revelar" style="--atraso:80ms">Quem já saiu daqui de moto nova</h2>
-        <p class="revelar" style="--atraso:140ms">Avaliações reais de clientes atendidos pelo nosso setor de entrega técnica.</p>
-      </div>
-    </div>
-    <div class="mural-caixa revelar">
-      <div class="mural" id="mural" role="region" aria-label="Avaliações de clientes" tabindex="0"></div>
-    </div>
-    <p class="mural-dica" id="mural-dica" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      Arraste para o lado
-    </p>
-  </section>
-
-  <!-- REVISÕES E CUIDADOS -->
-  <section class="faixa" id="dicas">
-    <div class="envolucro">
-      <div class="cabeca cabeca-larga">
-        <span class="eyebrow revelar">Depois da entrega</span>
-        <h2 class="cromo revelar" style="--atraso:80ms">Revisões e cuidados</h2>
-        <p class="revelar" style="--atraso:140ms">Guarde este link. Aqui está o essencial para manter a sua Honda em dia — e a garantia também.</p>
-      </div>
-
-      <div style="margin-top:clamp(48px,6vw,80px)">
-        <div class="bloco-rot revelar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
-          <span class="eyebrow">Plano de revisões</span>
-        </div>
-
-        <div class="alerta-manual revelar">
-          <span class="icone-manual">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/><path d="m9 10 2 2 4-4"/></svg>
-          </span>
-          <div>
-            <h3>Traga o <em>Manual do Proprietário</em> em todas as revisões</h3>
-            <p>O manual é o documento mais importante da sua moto. A cada revisão, nós anotamos a data, a quilometragem e carimbamos o registro do serviço diretamente nele. Sem essas anotações, pode ser difícil comprovar o histórico de manutenção — tanto para a garantia de fábrica quanto para uma futura revenda. <strong>Por isso, nunca esqueça de trazer o manual quando agendar qualquer revisão.</strong></p>
-            <div class="detalhe-manual">
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Data e km registrados</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valida a garantia</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>Carimbo oficial</span>
-              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Valoriza na revenda</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="malha malha-3" id="revisoes"></div>
-
-        <div class="nota-legal revelar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          <p><strong>* Importante:</strong> a partir da terceira revisão o óleo é fornecido conforme o programa vigente da concessionária, e o cliente passa a pagar a mão de obra e os demais itens. A cobertura pode variar conforme o programa e o modelo — confirme no agendamento.</p>
-        </div>
-
-        <div class="vidro fio lembrete revelar">
-          <div>
-            <h3>Não perca a primeira revisão</h3>
-            <p>Informe a data em que você retirou a moto e veja até quando fazer a primeira revisão. Vale o que vencer primeiro: quilometragem ou data.</p>
-            <input class="campo" type="date" id="data-retirada" aria-label="Data da retirada">
-          </div>
-          <div class="resultado">
-            <span class="rot">Primeira revisão até</span>
-            <p class="valor" id="prazo-revisao">—</p>
-            <p class="obs">ou entre 900 e 1.100 km</p>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-top:clamp(48px,6vw,80px)">
-        <div class="bloco-rot revelar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span class="eyebrow">Cuidados essenciais</span>
-        </div>
-        <div class="malha malha-auto" id="cuidados"></div>
-      </div>
-
-      <div class="malha malha-2" style="margin-top:clamp(48px,6vw,80px)">
-        <article class="vidro fio cartao cartao-largo revelar">
-          <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7 6.6 9.5a7 7 0 1 0 10.8 0z"/></svg></span>
-          <h3>Óleo Pro Honda</h3>
-          <p class="texto">O Pro Honda semissintético oferece boa resistência e proteção ao motor. O intervalo correto de troca segue o Manual do Proprietário e o plano de revisões — mantê-lo em dia preserva o desempenho e a garantia.</p>
-          <ul class="tags" style="margin-top:22px"><li>Proteção do motor</li><li>Segue o manual</li><li>Preserva a garantia</li></ul>
-        </article>
-
-        <article class="vidro fio cartao cartao-largo revelar" style="--atraso:90ms">
-          <span class="icone-cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4H9z"/><path d="M5 4h2v18h10V4h2"/><path d="m9 14 2 2 4-4"/></svg></span>
-          <h3>Itens da entrega técnica</h3>
-          <p class="texto">Tudo o que foi apresentado a você antes de sair com a moto:</p>
-          <ul class="topicos" id="topicos"></ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <div class="frase revelar">
+  <div class="frase">
     <div class="envolucro">
       <p class="cromo">Uma boa entrega é o primeiro quilômetro de uma longa história.</p>
       <span class="eyebrow" id="frase-empresa"></span>
@@ -1514,7 +1503,7 @@ tr.destacada td:first-child{box-shadow:inset 3px 0 0 var(--ouro)}
     <div class="halo" aria-hidden="true"></div>
     <div class="envolucro" style="position:relative">
       <div class="marca" id="marca-rodape"></div>
-      <div class="frases revelar">
+      <div class="frases">
         <p class="cromo">Obrigado por escolher a Honda.</p>
         <p>Boas viagens. Pilotar com segurança é sempre a melhor escolha.</p>
       </div>
@@ -1934,7 +1923,6 @@ function entrarNoSite(){
    ========================================================================== */
 function montarSite(){
   marcaDagua();
-  marca('#marca-intro',    'marca-gigante');
   marca('#marca-mensagem', 'marca-media');
   marca('#marca-hero',     'marca-gigante');
   marca('#marca-rodape',   'marca-pequena');
@@ -1961,14 +1949,14 @@ function montarSite(){
   }
 
   $('#cuidados').innerHTML = CUIDADOS.map((d,i)=>`
-    <article class="vidro cartao dica-cartao revelar" style="--atraso:${(i%3)*70}ms">
+    <article class="vidro cartao dica-cartao">
       <span class="icone-cx">${ICO[d.icone]||ICO.ok}</span>
       <h3>${escapar(d.titulo)}</h3>
       <p>${escapar(d.texto)}</p>
     </article>`).join('');
 
   $('#revisoes').innerHTML = REVISOES.map((r,i)=>`
-    <article class="vidro fio cartao cartao-revisao revelar${r.destaque?' principal':''}" style="--atraso:${i*80}ms">
+    <article class="vidro fio cartao cartao-revisao${r.destaque?' principal':''}">
       <div class="cartao-topo">
         <div><span class="ordem">${escapar(r.ordem)} revisão</span><h3>${escapar(r.titulo)}</h3></div>
         <span class="chip-num">0${i+1}</span>
@@ -1991,7 +1979,6 @@ function montarSite(){
   ligarFormulario();
   carregarMural();
   ligarLembrete();
-  ligarRevelacao();
   ligarCabecalho();
   ligarOndas();
   observarLarguraDaMarca();
@@ -2011,7 +1998,6 @@ function ligarCabecalho(){
 
   const atualizar = ()=>{
     pendente = false;
-    varrerRevelacao();
     barra.classList.toggle('rolado', scrollY > 24);
     const linha = scrollY + innerHeight*.32;
     let atual = -1;
@@ -2048,41 +2034,6 @@ function ligarOndas(){
     alvo.appendChild(onda);
     setTimeout(()=> onda.remove(), 700);
   });
-}
-
-let varrerRevelacao = ()=>{};
-
-function ligarRevelacao(){
-  const alvos = $$('.revelar');
-  if(!('IntersectionObserver' in window) || semMovimento){
-    alvos.forEach(a=>a.classList.add('dentro')); return;
-  }
-
-  const pendentes = new Set(alvos);
-  const obs = new IntersectionObserver(entradas=>{
-    entradas.forEach(e=>{
-      if(!e.isIntersecting) return;
-      e.target.classList.add('dentro');
-      obs.unobserve(e.target);
-      pendentes.delete(e.target);
-    });
-  },{rootMargin:'0px 0px -12% 0px'});
-  alvos.forEach(a=>obs.observe(a));
-
-  /* Rede de segurança: num salto grande de rolagem — link de âncora, tecla End,
-     arrasto rápido no celular — o observador pode passar por cima de um bloco.
-     Esta varredura garante que nada fique invisível na tela. */
-  varrerRevelacao = ()=>{
-    if(!pendentes.size) return;
-    [...pendentes].forEach(el=>{
-      if(el.closest('[hidden]')) return;          // ainda oculto: revela quando aparecer
-      if(el.getBoundingClientRect().top < innerHeight * .96){
-        el.classList.add('dentro');
-        obs.unobserve(el);
-        pendentes.delete(el);
-      }
-    });
-  };
 }
 
 function ligarLembrete(){
