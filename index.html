@@ -392,7 +392,7 @@ function entrar(msg){
    <div style="display:flex;gap:8px;margin-top:14px"><input class="f" id="ch" name="painel-chave" type="password" placeholder="Senha do painel" autocomplete="new-password" autocapitalize="off" spellcheck="false"><button type="button" class="btn o s" id="ver" style="min-height:50px">Mostrar</button></div>
    ${msg?`<p class="er">${msg}</p>`:''}<button class="btn" id="go" style="width:100%;margin-top:14px">Entrar</button></div>`;
   const ir=async()=>{AD.chave=$('#ch').value; try{await carregar(); sessionStorage.setItem('ch',AD.chave)}catch(_){entrar('Senha inválida.')}};
-  $('#go').onclick=ir; $('#ch').onkeydown=e=>e.key==='Enter'&&ir(); $('#ch').value=''; $('#ch').focus();
+  $('#go').onclick=ir; $('#ch').addEventListener('keydown',e=>{if(e.key==='Enter')ir()}); $('#ch').value=''; $('#ch').focus();
   $('#ver').onclick=()=>{const c=$('#ch'),m=c.type==='password';c.type=m?'text':'password';$('#ver').textContent=m?'Ocultar':'Mostrar'};
 }
 async function carregar(){
@@ -446,7 +446,7 @@ function midia(){
     }catch(err){aviso('Erro: '+err.message);$('#prog').hidden=true}
   };
   $('#sl').onclick=()=>{const v=$('#lnk').value.trim(); if(!/^https:\/\//i.test(v)) return aviso('Cole um link começando com https://'); salvarCfg({video_url:v},'Link salvo.')};
-  $('#rv').onclick=()=>confirm('Remover o vídeo do site?')&&salvarCfg({video_url:''},'Vídeo removido.');
+  $('#rv').onclick=()=>{if(confirm('Remover o vídeo do site?'))salvarCfg({video_url:''},'Vídeo removido.')};
   $('#st3').onclick=()=>salvarCfg({titulo:$('#t1').value.trim(),subtitulo:$('#t2').value.trim(),legenda:$('#t3').value.trim()},'Textos salvos.');
 }
 
