@@ -50,6 +50,17 @@ nav{display:flex;gap:26px;font-size:.92rem;font-weight:600;color:var(--mut)}nav 
 /* hero */
 .hero{background:radial-gradient(60% 90% at 90% 0%,#FBD5DA,transparent 70%),linear-gradient(180deg,#fff,var(--bg));padding-block:clamp(40px,7vw,84px) clamp(28px,4vw,48px)}
 .hero .m{margin-bottom:22px}.hero .m small{font-size:.74rem}.hero .m b{font-size:clamp(2.2rem,7vw,3.6rem)}.hero .m img{height:64px}
+/* vídeo do hero */
+.vid{max-width:820px;margin:0 0 30px}
+.vid .tela{position:relative;border-radius:var(--r);overflow:hidden;background:#E9E4DC;aspect-ratio:16/9;box-shadow:0 24px 50px -24px rgba(31,38,51,.45),0 0 0 1px var(--line)}
+.vid video{width:100%;height:100%;display:block;object-fit:cover;background:#E9E4DC}
+.vid .pl{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,rgba(31,38,51,.04),rgba(31,38,51,.22));cursor:pointer;transition:opacity .25s}
+.vid .pl.fora{opacity:0;pointer-events:none}
+.vid .pl span{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--red),var(--red-d));box-shadow:0 0 0 10px rgba(255,255,255,.55),0 18px 36px -12px rgba(212,0,31,.8);transition:transform .2s}
+.vid .pl:hover span{transform:scale(1.07)}
+.vid .pl svg{width:34px;height:34px;margin-left:5px;fill:currentColor}
+.vid figcaption{margin-top:16px;padding:2px 0 2px 16px;border-left:4px solid var(--red);font-size:1.02rem;line-height:1.65;color:var(--ink)}
+@media(max-width:560px){.vid .pl span{width:68px;height:68px}}
 .hero h1{font-size:clamp(1.9rem,1.2rem + 3vw,3.3rem);max-width:17ch}
 .hero p.l{font-size:1.1rem;max-width:56ch;margin:14px 0 24px}
 .ac{display:flex;gap:12px;flex-wrap:wrap}
@@ -134,6 +145,13 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 <main>
 <section class="hero" id="topo"><div class="w">
   <a class="m" id="mk-hero"></a>
+  <figure class="vid" id="vid" hidden>
+    <div class="tela">
+      <video id="video" controls playsinline preload="metadata"></video>
+      <div class="pl" id="play" role="button" tabindex="0" aria-label="Assistir ao vídeo"><span><svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg></span></div>
+    </div>
+    <figcaption>Para a Honda, o destino mais importante é a sua segurança. Preparamos este vídeo com dicas rápidas sobre atenção e gentileza, porque, no trânsito, a calma é o que nos faz chegar mais longe.</figcaption>
+  </figure>
   <h1>Cada detalhe conferido antes de você dar a partida.</h1>
   <p class="l">Documentação conferida, checklist completo e todas as orientações de uso e manutenção antes de você sair com a moto.</p>
   <div class="ac"><a class="btn" href="#avaliar">Avaliar a entrega</a><a class="btn o" href="#revisoes">Revisões e cuidados</a></div>
@@ -168,9 +186,11 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
   <div class="sub">Cuidados essenciais</div>
   <div class="g g3" id="cui"></div>
 
-  <div class="g g2" style="margin-top:16px">
+  <div class="g g3" style="margin-top:16px">
     <div class="c"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7 6.6 9.5a7 7 0 1 0 10.8 0z"/></svg></span>
       <h3>Óleo Pro Honda</h3><p>Semissintético, com boa resistência e proteção ao motor. O intervalo de troca segue o Manual do Proprietário.</p></div>
+    <div class="c" style="border-color:var(--red);box-shadow:0 0 0 3px var(--soft),var(--sh)"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v17"/><path d="M2 22h14"/><path d="M5 9h7"/><path d="M14 10h2a2 2 0 0 1 2 2v3a1.5 1.5 0 0 0 3 0V8l-3-3"/></svg></span>
+      <h3>Combustível</h3><p>Abasteça <strong>somente com gasolina comum</strong>.</p></div>
     <div class="c"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6v4H9z"/><path d="M5 4h2v18h10V4h2"/><path d="m9 14 2 2 4-4"/></svg></span>
       <h3>Itens da entrega técnica</h3><ul class="tg" id="top"></ul></div>
   </div>
@@ -226,8 +246,9 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 <script>
 const CFG={
   logo:'logo-honda.png',                      // opcional: arquivo ao lado do index.html
-  url:'https://vbzxmliwayxczxarwtgh.supabase.co',
-  key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZienhtbGl3YXl4Y3p4YXJ3dGdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4MTQ4NTYsImV4cCI6MjEwNjM5MDg1Nn0.3IbBrl1IrHgVR_krvlMVCogJI3ZIoU1WHwe8i1T4cdI',
+  video:'video.mp4',                          // seu vídeo, na mesma pasta do index.html ('' = sem vídeo)
+  url:'https://kbienvekhnwnqplwkwrv.supabase.co',
+  key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiaWVudmVraG53bnFwbHdrd3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTA0MDMsImV4cCI6MjEwMDg2NjQwM30.G2jo07NWVoNe3BWVd63jr0Pl5Xxfb4izQ12_eRhXbY0',
   grupo:'GRUPO', star:'Star', resto:'Motos'
 };
 const $=(s,e=document)=>e.querySelector(s), esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -256,6 +277,21 @@ function marca(sel){
   const im=new Image(); im.alt=''; im.onload=()=>a.prepend(im); im.src=CFG.logo;
 }
 ['#mk-nav','#mk-hero','#mk-foot'].forEach(marca);
+
+
+/* ---------- vídeo ---------- */
+(()=>{
+  if(!CFG.video) return;
+  const fig=$('#vid'), v=$('#video'), pl=$('#play');
+  v.addEventListener('loadedmetadata',()=>fig.hidden=false,{once:true});   // só aparece se o arquivo existir
+  v.addEventListener('error',()=>fig.hidden=true);
+  v.src=CFG.video+'#t=0.1';                                                // primeiro quadro como capa
+  const tocar=()=>v.play().catch(()=>{});
+  pl.onclick=tocar; pl.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tocar()}};
+  v.addEventListener('play',()=>pl.classList.add('fora'));
+  v.addEventListener('pause',()=>{ if(!v.seeking) pl.classList.remove('fora') });
+  v.addEventListener('ended',()=>pl.classList.remove('fora'));
+})();
 
 /* ---------- conteúdo ---------- */
 $('#rev').innerHTML=REV.map(r=>`<article class="c rev${r.d?' p':''}"><span class="n">${r.n}</span><div class="km">${r.km}</div><p>${r.p}</p>
