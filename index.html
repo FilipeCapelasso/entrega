@@ -389,10 +389,11 @@ const base=()=>CFG.url.replace(/\/+$/,'');
 
 function entrar(msg){
   $('#adm-in').innerHTML=`<div class="c" style="max-width:380px;margin:30px auto"><h3>Acesso restrito</h3>
-   <input class="f" id="ch" type="password" placeholder="Senha do painel" style="margin-top:14px" autocomplete="current-password">
+   <div style="display:flex;gap:8px;margin-top:14px"><input class="f" id="ch" name="painel-chave" type="password" placeholder="Senha do painel" autocomplete="new-password" autocapitalize="off" spellcheck="false"><button type="button" class="btn o s" id="ver" style="min-height:50px">Mostrar</button></div>
    ${msg?`<p class="er">${msg}</p>`:''}<button class="btn" id="go" style="width:100%;margin-top:14px">Entrar</button></div>`;
   const ir=async()=>{AD.chave=$('#ch').value; try{await carregar(); sessionStorage.setItem('ch',AD.chave)}catch(_){entrar('Senha inválida.')}};
-  $('#go').onclick=ir; $('#ch').onkeydown=e=>e.key==='Enter'&&ir(); $('#ch').focus();
+  $('#go').onclick=ir; $('#ch').onkeydown=e=>e.key==='Enter'&&ir(); $('#ch').value=''; $('#ch').focus();
+  $('#ver').onclick=()=>{const c=$('#ch'),m=c.type==='password';c.type=m?'text':'password';$('#ver').textContent=m?'Ocultar':'Mostrar'};
 }
 async function carregar(){
   AD.lista=await rpc('listar_avaliacoes');
