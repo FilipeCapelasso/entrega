@@ -130,6 +130,10 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 .it .ab{display:flex;gap:8px;flex-wrap:wrap}
 .tag{font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:99px}.tag.pendente{background:#FFF2CC;color:#8A6200}.tag.aprovado{background:#E4F6EE;color:#13734C}.tag.oculto{background:#EEF0F4;color:var(--mut)}
 #av{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-size:.92rem;z-index:50;box-shadow:var(--sh)}
+.fm{display:grid;gap:4px}.fm .lb{margin:12px 0 4px}.fm .ab{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.vprev{position:relative;aspect-ratio:16/9;max-width:560px;border-radius:12px;overflow:hidden;background:#E9E4DC}
+.vprev video,.vprev iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.prog{height:8px;border-radius:9px;background:var(--line);overflow:hidden;margin-top:10px}.prog i{display:block;height:100%;width:0;background:var(--red);transition:width .2s}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -152,8 +156,8 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
     </div>
     <figcaption>Para a Honda, o destino mais importante é a sua segurança. Preparamos este vídeo com dicas rápidas sobre atenção e gentileza, porque, no trânsito, a calma é o que nos faz chegar mais longe.</figcaption>
   </figure>
-  <h1>Cada detalhe conferido antes de você dar a partida.</h1>
-  <p class="l">Documentação conferida, checklist completo e todas as orientações de uso e manutenção antes de você sair com a moto.</p>
+  <h1 id="h1">Cada detalhe conferido antes de você dar a partida.</h1>
+  <p class="l" id="sub">Documentação conferida, checklist completo e todas as orientações de uso e manutenção antes de você sair com a moto.</p>
   <div class="ac"><a class="btn" href="#avaliar">Avaliar a entrega</a><a class="btn o" href="#revisoes">Revisões e cuidados</a></div>
   <div class="info">
     <div><span>Checklist</span><b>10 itens conferidos</b><em>Documentos, painel e funcionamento</em></div>
@@ -236,17 +240,17 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 <footer class="rd"><div class="w"><a class="m" id="mk-foot"></a><p>Setor de Entrega Técnica · Pilote com segurança.</p></div></footer>
 </div>
 
-<!-- PAINEL INTERNO: abra com  seusite/#admin -->
+<!-- PAINEL INTERNO: abra com  seusite/admin -->
 <section id="adm" hidden><div class="w">
-  <div class="hd" style="justify-content:space-between"><h2 style="margin:0">Painel de avaliações</h2><a class="btn o s" href="#topo">Voltar ao site</a></div>
+  <div class="hd" style="justify-content:space-between"><h2 style="margin:0">Painel de avaliações</h2><a class="btn o s" href="/">Voltar ao site</a></div>
   <div id="adm-in"></div>
 </div></section>
 <div id="av" hidden></div>
 
 <script>
 const CFG={
-  logo:'logo-honda.png',                      // opcional: arquivo ao lado do index.html
-  video:'video.mp4',                          // seu vídeo, na mesma pasta do index.html ('' = sem vídeo)
+  logo:'/logo-honda.png',                      // opcional: arquivo ao lado do index.html
+  video:'',                                   // vídeo padrão (opcional). O normal é enviar pelo painel /admin
   url:'https://kbienvekhnwnqplwkwrv.supabase.co',
   key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiaWVudmVraG53bnFwbHdrd3J2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTA0MDMsImV4cCI6MjEwMDg2NjQwM30.G2jo07NWVoNe3BWVd63jr0Pl5Xxfb4izQ12_eRhXbY0',
   grupo:'GRUPO', star:'Star', resto:'Motos'
@@ -279,19 +283,39 @@ function marca(sel){
 ['#mk-nav','#mk-hero','#mk-foot'].forEach(marca);
 
 
-/* ---------- vídeo ---------- */
-(()=>{
-  if(!CFG.video) return;
-  const fig=$('#vid'), v=$('#video'), pl=$('#play');
+/* ---------- vídeo (arquivo enviado, YouTube, Vimeo ou link .mp4) ---------- */
+const PLAY='<svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>';
+const embedUrl=u=>{
+  let m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if(m) return 'https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0';
+  m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/); return m?'https://player.vimeo.com/video/'+m[1]:'';
+};
+const previa=u=>{const e=embedUrl(u);
+  return e?`<iframe src="${esc(e)}" title="Vídeo" allowfullscreen allow="encrypted-media; picture-in-picture; fullscreen"></iframe>`
+          :`<video controls playsinline preload="metadata" src="${esc(u)}#t=0.1"></video>`};
+function montarVideo(url,legenda){
+  const fig=$('#vid'), tela=$('.tela',fig);
+  if(legenda) $('figcaption',fig).textContent=legenda;
+  tela.innerHTML=''; fig.hidden=true;
+  if(!url) return;
+  if(embedUrl(url)){ tela.innerHTML=previa(url).replace('<iframe','<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0"'); fig.hidden=false; return }
+  tela.innerHTML=`<video controls playsinline preload="metadata"></video><div class="pl" role="button" tabindex="0" aria-label="Assistir ao vídeo"><span>${PLAY}</span></div>`;
+  const v=$('video',tela), pl=$('.pl',tela);
   v.addEventListener('loadedmetadata',()=>fig.hidden=false,{once:true});   // só aparece se o arquivo existir
   v.addEventListener('error',()=>fig.hidden=true);
-  v.src=CFG.video+'#t=0.1';                                                // primeiro quadro como capa
+  v.src=url+'#t=0.1';
   const tocar=()=>v.play().catch(()=>{});
   pl.onclick=tocar; pl.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tocar()}};
   v.addEventListener('play',()=>pl.classList.add('fora'));
   v.addEventListener('pause',()=>{ if(!v.seeking) pl.classList.remove('fora') });
   v.addEventListener('ended',()=>pl.classList.remove('fora'));
-})();
+}
+async function aplicarConfig(){
+  let c={}; try{c=await api('rpc/site_config_publica')||{}}catch(_){}
+  if(c.titulo) $('#h1').textContent=c.titulo;
+  if(c.subtitulo) $('#sub').textContent=c.subtitulo;
+  montarVideo('video_url' in c?c.video_url:CFG.video, c.legenda);
+}
 
 /* ---------- conteúdo ---------- */
 $('#rev').innerHTML=REV.map(r=>`<article class="c rev${r.d?' p':''}"><span class="n">${r.n}</span><div class="km">${r.km}</div><p>${r.p}</p>
@@ -357,10 +381,11 @@ $('#form').onsubmit=async e=>{
   }finally{b.disabled=false;b.textContent='Enviar avaliação'}
 };
 
-/* ---------- painel (#admin) ---------- */
-const aviso=t=>{const a=$('#av');a.textContent=t;a.hidden=false;clearTimeout(aviso.t);aviso.t=setTimeout(()=>a.hidden=true,2600)};
-let AD={chave:'',lista:[],filtro:'todas'};
+/* ---------- painel (/admin) ---------- */
+const aviso=t=>{const a=$('#av');a.textContent=t;a.hidden=false;clearTimeout(aviso.t);aviso.t=setTimeout(()=>a.hidden=true,3200)};
+let AD={chave:'',lista:[],filtro:'todas',aba:'aval',cfg:{}};
 const rpc=(f,b)=>api('rpc/'+f,{chave:AD.chave,...b});
+const base=()=>CFG.url.replace(/\/+$/,'');
 
 function entrar(msg){
   $('#adm-in').innerHTML=`<div class="c" style="max-width:380px;margin:30px auto"><h3>Acesso restrito</h3>
@@ -369,13 +394,68 @@ function entrar(msg){
   const ir=async()=>{AD.chave=$('#ch').value; try{await carregar(); sessionStorage.setItem('ch',AD.chave)}catch(_){entrar('Senha inválida.')}};
   $('#go').onclick=ir; $('#ch').onkeydown=e=>e.key==='Enter'&&ir(); $('#ch').focus();
 }
-async function carregar(){ AD.lista=await rpc('listar_avaliacoes'); desenhar(); }
+async function carregar(){
+  AD.lista=await rpc('listar_avaliacoes');
+  try{AD.cfg=await api('rpc/site_config_publica')||{}}catch(_){AD.cfg={}}
+  painel();
+}
+function painel(){
+  $('#adm-in').innerHTML=`<div class="bar">${[['aval','Avaliações'],['midia','Vídeo e textos']].map(a=>`<button class="${AD.aba===a[0]?'on':''}" data-aba="${a[0]}">${a[1]}</button>`).join('')}<button id="sair" style="margin-left:auto">Sair</button></div><div id="adm-body"></div>`;
+  document.querySelectorAll('[data-aba]').forEach(b=>b.onclick=()=>{AD.aba=b.dataset.aba;painel()});
+  $('#sair').onclick=()=>{sessionStorage.removeItem('ch');AD.chave='';entrar()};
+  AD.aba==='aval'?desenhar():midia();
+}
+
+/* ----- aba vídeo e textos ----- */
+function enviar(caminho,f,ext){return new Promise((ok,no)=>{
+  const x=new XMLHttpRequest(); x.open('POST',base()+'/storage/v1/object/site-media/'+caminho);
+  x.setRequestHeader('apikey',CFG.key); x.setRequestHeader('Authorization','Bearer '+CFG.key);
+  x.setRequestHeader('Content-Type',f.type||{mp4:'video/mp4',webm:'video/webm',mov:'video/quicktime'}[ext]);
+  x.setRequestHeader('cache-control','max-age=31536000');
+  x.upload.onprogress=e=>{if(e.lengthComputable)$('#pb').style.width=(e.loaded/e.total*100)+'%'};
+  x.onload=()=>x.status<300?ok():no(new Error('Falha no envio ('+x.status+'). Confira o script do Supabase.'));
+  x.onerror=()=>no(new Error('Sem conexão.')); x.send(f)})}
+const salvarCfg=async(d,msg)=>{try{await rpc('admin_salvar_config',{p_dados:d});aviso(msg);await carregar()}catch(e){aviso('Erro: '+e.message)}};
+function midia(){
+  const c=AD.cfg, u=c.video_url||'';
+  $('#adm-body').innerHTML=`<div class="c fm"><h3>Vídeo da página inicial</h3>
+   <div class="vprev">${u?previa(u):'<p class="vz" style="position:absolute;inset:0;display:grid;place-items:center">Nenhum vídeo definido.</p>'}</div>
+   <label class="lb" for="arq">Enviar arquivo <span>MP4, WebM ou MOV · até 50 MB</span></label>
+   <input class="f" type="file" id="arq" accept="video/mp4,video/webm,video/quicktime,.mp4,.webm,.mov">
+   <div class="prog" id="prog" hidden><i id="pb"></i></div>
+   <label class="lb" for="lnk">Ou colar um link <span>YouTube, Vimeo ou .mp4</span></label>
+   <input class="f" id="lnk" placeholder="https://" value="${esc(u)}">
+   <div class="ab"><button class="btn s" id="sl">Salvar link</button><button class="btn o s" id="rv" style="color:var(--red)">Remover vídeo</button></div></div>
+   <div class="c fm" style="margin-top:16px"><h3>Textos do topo do site</h3>
+   <label class="lb" for="t1">Título</label><input class="f" id="t1" maxlength="120" value="${esc(c.titulo||'')}" placeholder="Cada detalhe conferido antes de você dar a partida.">
+   <label class="lb" for="t2">Subtítulo</label><textarea class="f" id="t2" maxlength="400" placeholder="Documentação conferida, checklist completo…">${esc(c.subtitulo||'')}</textarea>
+   <label class="lb" for="t3">Legenda do vídeo</label><textarea class="f" id="t3" maxlength="400" placeholder="Para a Honda, o destino mais importante é a sua segurança…">${esc(c.legenda||'')}</textarea>
+   <p style="font-size:.85rem">Campo vazio = usa o texto original do site.</p>
+   <div class="ab"><button class="btn s" id="st3">Salvar textos</button></div></div>`;
+  $('#arq').onchange=async e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const ext=(f.name.split('.').pop()||'').toLowerCase();
+    if(!['mp4','webm','mov'].includes(ext)) return aviso('Use MP4, WebM ou MOV.');
+    if(f.size>50*1048576) return aviso('Acima de 50 MB. Comprima o vídeo ou use um link do YouTube.');
+    $('#prog').hidden=false; aviso('Enviando… não feche a página.');
+    try{
+      const cam=await rpc('admin_preparar_upload',{p_ext:ext});
+      await enviar(cam,f,ext);
+      await salvarCfg({video_url:base()+'/storage/v1/object/public/site-media/'+cam},'Vídeo publicado no site!');
+    }catch(err){aviso('Erro: '+err.message);$('#prog').hidden=true}
+  };
+  $('#sl').onclick=()=>{const v=$('#lnk').value.trim(); if(!/^https:\/\//i.test(v)) return aviso('Cole um link começando com https://'); salvarCfg({video_url:v},'Link salvo.')};
+  $('#rv').onclick=()=>confirm('Remover o vídeo do site?')&&salvarCfg({video_url:''},'Vídeo removido.');
+  $('#st3').onclick=()=>salvarCfg({titulo:$('#t1').value.trim(),subtitulo:$('#t2').value.trim(),legenda:$('#t3').value.trim()},'Textos salvos.');
+}
+
+/* ----- aba avaliações ----- */
 function desenhar(){
   const L=AD.lista, pend=L.filter(a=>a.status==='pendente').length;
   const media=L.length?(L.reduce((s,a)=>s+a.estrelas,0)/L.length).toFixed(1):'—';
   const F=[['todas','Todas'],['pendente','Pendentes ('+pend+')'],['aprovado','Aprovadas'],['oculto','Ocultas']];
   const v=L.filter(a=>AD.filtro==='todas'||a.status===AD.filtro);
-  $('#adm-in').innerHTML=`<p><strong>${L.length}</strong> avaliações · média <strong>${media}</strong> ★</p>
+  $('#adm-body').innerHTML=`<p><strong>${L.length}</strong> avaliações · média <strong>${media}</strong> ★</p>
    <div class="bar">${F.map(f=>`<button class="${AD.filtro===f[0]?'on':''}" data-f="${f[0]}">${f[1]}</button>`).join('')}
    ${pend?'<button id="apr" style="border-color:var(--red);color:var(--red)">Aprovar todas pendentes</button>':''}</div>
    ${v.map(a=>`<article class="c it"><div class="tp"><div><strong>${esc(a.nome)}</strong> · ${a.estrelas} ★ · <span style="color:var(--mut);font-size:.88rem">${data(a.criado_em)}</span></div><span class="tag ${a.status}">${a.status}</span></div>
@@ -389,14 +469,17 @@ function desenhar(){
   agir('[data-x]',b=>confirm('Excluir esta avaliação para sempre?')?rpc('excluir_avaliacao',{p_id:b.dataset.x}):0);
   if($('#apr')) $('#apr').onclick=async()=>{try{aviso((await rpc('aprovar_pendentes'))+' aprovadas');await carregar()}catch(e){aviso('Erro: '+e.message)}};
 }
+
+/* ---------- rota: seusite/admin (também aceita /#admin) ---------- */
 function rota(){
-  const adm=location.hash==='#admin';
+  const adm=/^\/admin\/?$/.test(location.pathname)||location.hash==='#admin';
   $('#adm').hidden=!adm; $('#site').hidden=adm;
+  document.title=adm?'Painel | Grupo Star Motos':'Entrega Técnica | Grupo Star Motos';
   if(!adm) return;
   scrollTo(0,0); AD.chave=sessionStorage.getItem('ch')||'';
   AD.chave?carregar().catch(()=>entrar()):entrar();
 }
-addEventListener('hashchange',rota); rota(); mural();
+addEventListener('hashchange',rota); rota(); mural(); aplicarConfig();
 </script>
 </body>
 </html>
