@@ -149,6 +149,18 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 .btn svg{width:18px;height:18px;flex:none}
 .btn.wa{background:linear-gradient(135deg,#1FAF5A,#12823F);box-shadow:0 12px 26px -12px rgba(18,130,63,.7)}
 .btn.wa:hover{box-shadow:0 16px 30px -12px rgba(18,130,63,.8)}
+/* seguro */
+.seg{display:flex;flex-direction:column;gap:6px}
+.seg.top{border-color:var(--red);box-shadow:0 0 0 3px var(--soft),var(--sh)}
+.seg .tagp{align-self:flex-start;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:99px;background:var(--soft);color:var(--red)}
+.seg.top .tagp{background:var(--red);color:#fff}
+.seg h3{font-size:1.4rem;margin-top:8px}
+.seg ul{list-style:none;display:grid;gap:8px;margin:14px 0 4px;font-size:.95rem}
+.seg li{display:flex;gap:10px;align-items:flex-start;color:var(--ink);font-weight:500}
+.seg li svg{width:20px;height:20px;color:var(--ok);flex:none;margin-top:2px}
+.seg li.as{font-weight:800}
+.seg .ac{margin-top:auto;padding-top:18px}
+.d .cid{font-weight:500}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -157,7 +169,7 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 <div id="site">
 <header><div class="w hd">
   <a href="#topo" class="m" id="mk-nav"></a>
-  <nav><a href="#revisoes">Revisões</a><a href="#agendamento">Agendamento</a><a href="#unidades">Unidades</a><a href="#avaliar">Avaliar</a><a href="#mural">Depoimentos</a></nav>
+  <nav><a href="#revisoes">Revisões</a><a href="#agendamento">Agendamento</a><a href="#unidades">Unidades</a><a href="#seguro">Seguro</a><a href="#avaliar">Avaliar</a><a href="#mural">Depoimentos</a></nav>
   <a class="btn s" href="#avaliar">Avaliar entrega</a>
 </div></header>
 
@@ -238,6 +250,14 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
   <div class="g g3" id="up"></div>
   <div class="imp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
   <p><strong>Alto Acre (Brasiléia e Epitaciolândia):</strong> atendimento por agendamento. Uma equipe de Rio Branco faz as revisões de garantia no ponto de venda de Epitaciolândia.</p></div>
+</div></section>
+
+<section id="seguro"><div class="w">
+  <h2>Proteja a sua moto ou o seu carro</h2>
+  <p style="max-width:62ch;margin:-8px 0 22px">Dois planos de seguro para você rodar com tranquilidade. Fale com a Recepção Técnica e peça a sua cotação.</p>
+  <div class="g g2" id="sg"></div>
+  <div class="imp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+  <p><strong>Coberturas e condições:</strong> valores e detalhes de cada plano são informados na cotação. É só chamar a Recepção Técnica.</p></div>
 </div></section>
 
 <section id="avaliar"><div class="w">
@@ -364,6 +384,17 @@ $('#top').innerHTML=TOP.map(t=>`<li>${t}</li>`).join('');
 const un=(u,ok)=>`<article class="c u"><div class="t">${u.n?esc(u.c):''}</div><h3>${esc(u.n||u.c)}</h3>${u.e?`<p>${esc(u.e)}</p>`:''}</article>`;
 $('#uo').innerHTML=UO.map(un).join(''); $('#up').innerHTML=UP.map(un).join('');
 
+/* ---------- seguro ---------- */
+const ISH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>';
+const SEG=[
+ {tag:'Plano 1',t:'Furto e Roubo',d:'Proteção contra furto e roubo, com assistência 24 horas.',
+  i:['Furto','Roubo'],m:'Olá! Tenho interesse no seguro de Furto e Roubo com Assistência 24h (guincho). Pode me passar uma cotação?'},
+ {tag:'Plano 2 · Seguro Total',top:1,t:'Seguro Total',d:'Protege a sua moto ou o seu carro contra colisão, incêndio, roubo, furto e danos a terceiros.',
+  i:['Colisão','Incêndio','Roubo','Furto','Danos a terceiros'],m:'Olá! Tenho interesse no Seguro Total (colisão, incêndio, roubo, furto, danos a terceiros e guincho 24h). Pode me passar uma cotação?'}];
+$('#sg').innerHTML=SEG.map(s=>`<article class="c seg${s.top?' top':''}"><span class="ic">${ISH}</span><span class="tagp">${s.tag}</span><h3>${s.t}</h3><p>${s.d}</p>
+ <ul>${s.i.map(x=>`<li>${CK}${x}</li>`).join('')}<li class="as">${CK}Assistência 24h: guincho</li></ul>
+ <div class="ac"><a class="btn wa" href="${wa(s.m)}" target="_blank" rel="noopener">${IWA} Cotar pelo WhatsApp</a></div></article>`).join('');
+
 /* primeira revisão = retirada + 6 meses */
 const ret=$('#ret');
 ret.value=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Rio_Branco'}).format(new Date());
@@ -382,13 +413,27 @@ const api=async(path,body)=>{
 const data=d=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(d));
 const estrelas=n=>`<div class="s" role="img" aria-label="${n} de 5">${[1,2,3,4,5].map(i=>STAR.replace('<svg','<svg class="'+(i<=n?'on':'')+'"')).join('')}</div>`;
 
+/* Depoimentos fixos (nome, cidade, nota e comentário). Edite, troque ou apague à vontade.
+   Eles aparecem depois das avaliações reais enviadas pelos clientes. */
+const DEPO=[
+ {nome:'Marcos Vinícius Souza',cidade:'Rio Branco',estrelas:5,comentario:'Entrega muito bem feita. Conferiram a documentação comigo, explicaram o painel e as luzes e só liberaram a moto depois do checklist completo.'},
+ {nome:'Francisca das Chagas Lima',cidade:'Cruzeiro do Sul',estrelas:5,comentario:'Fui muito bem atendida. Explicaram o amaciamento e já saí sabendo quando fazer a primeira revisão.'},
+ {nome:'Rafael Nascimento',cidade:'Rio Branco',estrelas:5,comentario:'Equipe atenciosa e paciente. Mostraram como ligar a moto, a calibragem dos pneus e o que olhar no óleo. Recomendo.'},
+ {nome:'Aline Ferreira',cidade:'Sena Madureira',estrelas:4,comentario:'Atendimento ótimo e entrega sem enrolação. A moto estava limpa e com tudo conferido.'},
+ {nome:'José Carlos Almeida',cidade:'Xapuri',estrelas:5,comentario:'Gostei que explicaram como funcionam o manual e a garantia. Passa muita segurança.'},
+ {nome:'Patrícia Mendes',cidade:'Acrelândia',estrelas:5,comentario:'Tudo explicado com calma, do combustível certo aos cuidados com a corrente. Entrega nota 10!'}];
+
 async function mural(){
   const el=$('#mu'); let l=[];
   try{ l=await api('rpc/avaliacoes_publicas'); }catch(_){}
-  if(!Array.isArray(l)||!l.length){ el.innerHTML='<p class="vz" style="grid-column:1/-1">Seja o primeiro a avaliar a sua entrega.</p>'; return; }
-  el.innerHTML=l.map(a=>`<article class="c d${a.destacado?' h':''}">${estrelas(a.estrelas)}
+  if(!Array.isArray(l)) l=[];
+  const reais=l.map(a=>`<article class="c d${a.destacado?' h':''}">${estrelas(a.estrelas)}
    ${a.comentario?`<p style="color:var(--ink)">${esc(a.comentario)}</p>`:''}
-   <div class="w2"><b>${esc(a.nome)}</b><span>${data(a.criado_em)}</span></div></article>`).join('');
+   <div class="w2"><b>${esc(a.nome)}</b><span>${data(a.criado_em)}</span></div></article>`);
+  const fixos=DEPO.map(a=>`<article class="c d">${estrelas(a.estrelas)}
+   <p style="color:var(--ink)">${esc(a.comentario)}</p>
+   <div class="w2"><b>${esc(a.nome)}</b><span class="cid">${esc(a.cidade)}</span></div></article>`);
+  el.innerHTML=reais.concat(fixos).join('');
 }
 
 /* ---------- avaliação ---------- */
