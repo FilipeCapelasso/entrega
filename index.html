@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#D4001F">
 <meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Entrega técnica, revisões, unidades e seguro do Grupo Star Motos.">
 <title>Entrega Técnica | Grupo Star Motos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,6 +162,13 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 .seg li.as{font-weight:800}
 .seg .ac{margin-top:auto;padding-top:18px}
 .d .cid{font-weight:500}
+:focus-visible{outline:3px solid rgba(212,0,31,.45);outline-offset:2px}
+nav a{transition:color .2s}nav a.on{color:var(--red)}
+.mn{display:none}
+@media(max-width:760px){html{scroll-padding-top:122px}.mn{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}.mn::-webkit-scrollbar{display:none}
+.mn a{flex:none;padding:6px 14px;border:1px solid var(--line);border-radius:99px;font-size:.85rem;font-weight:600;background:#fff;color:var(--mut)}.mn a.on{background:var(--red);border-color:var(--red);color:#fff}}
+.rs{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:-8px 0 20px}.rs b{font-size:1.8rem;font-weight:800;letter-spacing:-.02em;color:var(--ink)}.rs span{color:var(--mut);font-size:.9rem}
+.rs .s{display:flex;gap:2px;color:#E2DDD4}.rs .s svg{width:20px;height:20px;fill:currentColor}.rs .s .on{color:var(--gold)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -168,10 +176,11 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 
 <div id="site">
 <header><div class="w hd">
-  <a href="#topo" class="m" id="mk-nav"></a>
+  <a href="#topo" class="m" id="mk-nav" aria-label="Grupo Star Motos, início"></a>
   <nav><a href="#revisoes">Revisões</a><a href="#agendamento">Agendamento</a><a href="#unidades">Unidades</a><a href="#seguro">Seguro</a><a href="#avaliar">Avaliar</a><a href="#mural">Depoimentos</a></nav>
   <a class="btn s" href="#avaliar">Avaliar entrega</a>
-</div></header>
+</div>
+<div class="w mn"><a href="#revisoes">Revisões</a><a href="#agendamento">Agendamento</a><a href="#unidades">Unidades</a><a href="#seguro">Seguro</a><a href="#avaliar">Avaliar</a><a href="#mural">Depoimentos</a></div></header>
 
 <main>
 <section class="hero" id="topo"><div class="w">
@@ -181,6 +190,7 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
       <video id="video" controls playsinline preload="metadata"></video>
       <div class="pl" id="play" role="button" tabindex="0" aria-label="Assistir ao vídeo"><span><svg viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg></span></div>
     </div>
+    <figcaption id="leg" hidden></figcaption>
   </figure>
   <h1 id="h1">Cada detalhe conferido antes de você dar a partida.</h1>
   <p class="l" id="sub">Documentação conferida, checklist completo e todas as orientações de uso e manutenção antes de você sair com a moto.</p>
@@ -283,11 +293,12 @@ footer.rd .m small,footer.rd .m b,footer.rd .m i{color:#fff}footer.rd p{color:#F
 
 <section id="mural" style="padding-top:0"><div class="w">
   <h2>Depoimentos</h2>
-  <div class="mu" id="mu"></div>
+  <div id="resumo"></div>
+  <div class="mu" id="mu"><p class="vz">Carregando depoimentos…</p></div>
 </div></section>
 </main>
 
-<footer class="rd"><div class="w"><a class="m" id="mk-foot"></a><p>Setor de Entrega Técnica · Pilote com segurança.<br>Recepção Técnica: <a href="tel:+556884031001" style="color:#fff;font-weight:700;text-decoration:underline">+55 68 8403-1001</a></p></div></footer>
+<footer class="rd"><div class="w"><a class="m" id="mk-foot"></a><p>Setor de Entrega Técnica · Pilote com segurança.<br>Recepção Técnica: <a href="tel:+556884031001" style="color:#fff;font-weight:700;text-decoration:underline">+55 68 8403-1001</a><br>Setor de Seguros: <a href="tel:+556899374863" style="color:#fff;font-weight:700;text-decoration:underline">+55 68 9937-4863</a></p></div></footer>
 </div>
 
 <!-- PAINEL INTERNO: abra com  seusite/admin -->
@@ -347,7 +358,7 @@ const previa=u=>{const e=embedUrl(u);
           :`<video controls playsinline preload="metadata" src="${esc(u)}#t=0.1"></video>`};
 function montarVideo(url,legenda){
   const fig=$('#vid'), tela=$('.tela',fig);
-  if(legenda) $('figcaption',fig).textContent=legenda;
+  const lg=$('#leg'); lg.textContent=legenda||''; lg.hidden=!legenda;
   tela.innerHTML=''; fig.hidden=true;
   if(!url) return;
   if(embedUrl(url)){ tela.innerHTML=previa(url).replace('<iframe','<iframe style="position:absolute;inset:0;width:100%;height:100%;border:0"'); fig.hidden=false; return }
@@ -402,7 +413,7 @@ const ret=$('#ret');
 ret.value=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Rio_Branco'}).format(new Date());
 const calc=()=>{ if(!ret.value){$('#prazo').textContent='—';return}
   const [a,m,d]=ret.value.split('-').map(Number);
-  $('#prazo').textContent=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long',year:'numeric'}).format(new Date(a,m+5,d)); };
+  $('#prazo').textContent=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long',year:'numeric'}).format((()=>{const t=new Date(a,m+5,1);t.setDate(Math.min(d,new Date(a,m+6,0).getDate()));return t})()); };
 ret.oninput=ret.onchange=calc; calc();
 
 /* ---------- supabase ---------- */
@@ -429,6 +440,8 @@ async function mural(){
   const el=$('#mu'); let l=[];
   try{ l=await api('rpc/avaliacoes_publicas'); }catch(_){}
   if(!Array.isArray(l)) l=[];
+  if(l.length){const md=l.reduce((t,a)=>t+a.estrelas,0)/l.length;
+    $('#resumo').innerHTML=`<p class="rs"><b>${md.toFixed(1).replace('.',',')}</b>${estrelas(Math.round(md))}<span>${l.length} ${l.length===1?'avaliação':'avaliações'} de clientes</span></p>`}
   const reais=l.map(a=>`<article class="c d${a.destacado?' h':''}">${estrelas(a.estrelas)}
    ${a.comentario?`<p style="color:var(--ink)">${esc(a.comentario)}</p>`:''}
    <div class="w2"><b>${esc(a.nome)}</b><span>${data(a.criado_em)}</span></div></article>`);
@@ -569,6 +582,9 @@ function rota(){
   scrollTo(0,0); AD.chave=sessionStorage.getItem('ch')||'';
   AD.chave?carregar().catch(()=>entrar()):entrar();
 }
+const lks=[...document.querySelectorAll('nav a,.mn a')];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)lks.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+['revisoes','agendamento','unidades','seguro','avaliar','mural'].forEach(i=>{const x=document.getElementById(i);x&&io.observe(x)});
 addEventListener('hashchange',rota); rota(); mural(); aplicarConfig();
 </script>
 </body>
