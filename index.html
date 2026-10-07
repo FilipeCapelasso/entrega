@@ -12,7 +12,7 @@
 <meta property="og:title" content="Entrega Técnica | Grupo Star Motos">
 <meta property="og:description" content="Revisões, agendamento, unidades e seguro para a sua moto.">
 <title>Entrega Técnica | Grupo Star Motos</title>
-<script>(function(d){if(/^\/admin\/?$/.test(location.pathname)||location.hash==='#admin'){location.replace('/admin.html');return}d.classList.add('intro-on');setTimeout(function(){d.classList.remove('intro-on')},6500)})(document.documentElement)</script>
+<script>(function(d){if(/^\/admin\/?$/.test(location.pathname)||location.hash==='#admin'){location.replace('/admin.html');return}try{if(sessionStorage.getItem('intro')==='1')return;sessionStorage.setItem('intro','1')}catch(e){}d.classList.add('intro-on');setTimeout(function(){d.classList.remove('intro-on')},6500)})(document.documentElement)</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -309,7 +309,7 @@ details.fq{background:#fff;border:1px solid var(--line);border-radius:14px;paddi
   </figure>
   <h1 id="h1">Cada detalhe conferido antes de você dar a partida.</h1>
   <p class="l" id="sub">Documentação conferida, checklist completo e todas as orientações de uso e manutenção antes de você sair com a moto.</p>
-  <div class="ac"><a class="btn" href="#avaliar">Avaliar a entrega</a><a class="btn o" href="#revisoes">Revisões e cuidados</a></div>
+  <div class="ac"><a class="btn" href="#avaliar">Avaliar a entrega</a><a class="btn o" href="#revisoes">Revisões e cuidados</a><a class="btn o" href="#seguro">Cotar seguro</a></div>
   <div class="info">
     <div><span>Checklist</span><b>10 itens conferidos</b><em>Documentos, painel e funcionamento</em></div>
     <div><span>1ª revisão · sem agendar</span><b>900 a 1.100 km</b><em>ou 6 meses · basta comparecer</em></div>
@@ -562,15 +562,8 @@ const api=async(path,body)=>{
 const data=d=>new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(d));
 const estrelas=n=>`<div class="s" role="img" aria-label="${n} de 5">${[1,2,3,4,5].map(i=>STAR.replace('<svg','<svg class="'+(i<=n?'on':'')+'"')).join('')}</div>`;
 
-/* Depoimentos fixos (nome, cidade, nota e comentário). Edite, troque ou apague à vontade.
-   Eles aparecem depois das avaliações reais enviadas pelos clientes. */
-const DEPO=[
- {nome:'Marcos Vinícius Souza',cidade:'Rio Branco',estrelas:5,comentario:'Entrega muito bem feita. Conferiram a documentação comigo, explicaram o painel e as luzes e só liberaram a moto depois do checklist completo.'},
- {nome:'Francisca das Chagas Lima',cidade:'Rio Branco',estrelas:5,comentario:'Fui muito bem atendida. Explicaram o amaciamento e já saí sabendo quando fazer a primeira revisão.'},
- {nome:'Rafael Nascimento',cidade:'Rio Branco',estrelas:5,comentario:'Equipe atenciosa e paciente. Mostraram como ligar a moto, a calibragem dos pneus e o que olhar no óleo. Recomendo.'},
- {nome:'Aline Ferreira',cidade:'Rio Branco',estrelas:4,comentario:'Atendimento ótimo e entrega sem enrolação. A moto estava limpa e com tudo conferido.'},
- {nome:'José Carlos Almeida',cidade:'Rio Branco',estrelas:5,comentario:'Gostei que explicaram como funcionam o manual e a garantia. Passa muita segurança.'},
- {nome:'Patrícia Mendes',cidade:'Rio Branco',estrelas:5,comentario:'Tudo explicado com calma, do combustível certo aos cuidados com a corrente. Entrega nota 10!'}];
+/* Depoimentos fixos (opcional): só use avaliações reais de clientes, com autorização. */
+const DEPO=[];
 
 async function mural(){
   const el=$('#mu'); let l=[];
@@ -584,7 +577,7 @@ async function mural(){
   const fixos=DEPO.map(a=>`<article class="c d">${estrelas(a.estrelas)}
    <p style="color:var(--ink)">${esc(a.comentario)}</p>
    <div class="w2"><b>${esc(a.nome)}</b><span class="cid">${esc(a.cidade)}</span></div></article>`);
-  el.innerHTML=reais.concat(fixos).join('');
+  el.innerHTML=reais.concat(fixos).join('')||'<p class="vz">Ainda não há avaliações. <a href="#avaliar" class="red"><strong>Avalie a sua entrega</strong></a> e apareça aqui.</p>';
 }
 
 /* ---------- avaliação ---------- */
@@ -658,12 +651,16 @@ function ctt(l){[['recepcao','fone','tel'],['seguros','foneSeg','telSeg']].forEa
   while(n=w.nextNode()) if(n.nodeValue.includes(CFG[kf])) n.nodeValue=n.nodeValue.split(CFG[kf]).join(nf);
   document.querySelectorAll('a[href]').forEach(a=>a.setAttribute('href',a.getAttribute('href').split(od).join(nn)));
   CFG[kf]=nf; CFG[kt]='+'+nn})}
+const AC=r=>/nome completo/i.test(r)?'name':/telefone/i.test(r)?'tel':/e-mail/i.test(r)?'email':/nascimento/i.test(r)?'bday':/cidade/i.test(r)?'address-level2':'off';
 const campo=(p,i)=>{const n='q'+i,r=' required',
   l=`<label for="${n}">${esc(p.rotulo)}${' <i>*</i>'}</label>`; let h;
   if(p.tipo==='select') h=`<select class="f" id="${n}"${r}><option value="">Selecione</option>${String(p.opcoes||'').split(',').map(o=>o.trim()).filter(Boolean).map(o=>`<option${o[0]==='!'?' data-b="1"':''}>${esc(o.replace(/^!/,''))}</option>`).join('')}</select>`;
   else if(p.tipo==='area') h=`<textarea class="f" id="${n}" rows="3" maxlength="500"${r}></textarea>`;
-  else h=`<input class="f" id="${n}" data-m="${esc(p.tipo)}" type="${{date:'date',email:'email',number:'number'}[p.tipo]||'text'}" inputmode="${{tel:'tel',cpf:'numeric',number:'numeric'}[p.tipo]||'text'}" maxlength="120"${r} autocomplete="off">`;
+  else h=`<input class="f" id="${n}" data-m="${esc(p.tipo)}" type="${{date:'date',email:'email',number:'number'}[p.tipo]||'text'}" inputmode="${{tel:'tel',cpf:'numeric',number:'numeric'}[p.tipo]||'text'}" maxlength="120"${r} autocomplete="${AC(p.rotulo)}">`;
   return `<div class="qf${p.tipo==='area'?' full':''}">${l}${h}${p.ajuda?`<small>${esc(p.ajuda)}</small>`:''}</div>`};
+const EST=[{ordem:98,rotulo:'Você estuda?',tipo:'select',obrigatoria:true,opcoes:'Não,Sim'},
+ {ordem:99,rotulo:'Se sim, em qual período do dia?',tipo:'select',obrigatoria:true,opcoes:'Manhã,Tarde,Noite,Integral (manhã e tarde)'}];
+const comEstudo=l=>l.some(p=>/estuda/i.test(p.rotulo))?l:l.concat(EST);
 const PLS=['Furto e Roubo','Seguro Total'];let BLQ=false;
 const cpfOk=v=>{v=dig(v);if(v.length!==11||/^(\d)\1+$/.test(v))return false;for(const t of[9,10]){let c=0;for(let i=0;i<t;i++)c+=v[i]*(t+1-i);if((c*10%11)%10!=v[t])return false}return true};
 const inval=(p,v,idade)=>{if(!v)return true;const n=+v,r=p.rotulo;
@@ -676,21 +673,22 @@ const inval=(p,v,idade)=>{if(!v)return true;const n=+v,r=p.rotulo;
   return p.tipo==='text'&&v.length<2};
 function cond(){BLQ=false;let msg='';
   CUR.forEach((p,i)=>{const el=$('#q'+i);
-    if(/^se sim/i.test(p.rotulo)&&i){const a=$('#q'+(i-1)),sim=a.value==='Sim';   // "Se sim, ..." só é preenchida quando a anterior = Sim
+    if(/^se sim/i.test(p.rotulo)&&i){const a=$('#q'+(i-1)),sim=a.value==='Sim',au=/per[ií]odo/i.test(p.rotulo)?'Não estuda':'Ninguém (só o titular)';
+      if(el.tagName==='SELECT'){const x=[...el.options].find(o=>o.dataset.au);if(x&&sim)x.remove();if(!x&&!sim){const o=new Option(au);o.dataset.au=1;o.hidden=true;el.add(o)}}   // "Se sim, ..." só é preenchida quando a anterior = Sim
       if(sim&&el.dataset.auto){el.value='';delete el.dataset.auto}
-      if(!sim){el.value=a.value?'Ninguém (só o titular)':'';el.dataset.auto=1}
+      if(!sim){el.value=a.value?au:'';el.dataset.auto=1}
       el.disabled=!sim}
     const o=el.selectedOptions&&el.selectedOptions[0];
     if(p.tipo==='select'&&o&&o.dataset.b&&!BLQ){BLQ=true;msg='Não conseguimos seguir com esta cotação ('+p.rotulo+' → '+o.textContent+'). '+(p.ajuda||'')+' Se tiver dúvidas, fale com o Setor de Seguros.'}});
   const b=$('#cb');b.hidden=!BLQ;b.textContent=msg;$('#cs').disabled=BLQ}
-function montar(keep){CUR=CPL?(PQ.length?PQ:FB).filter(p=>!p.plano||p.plano===CPL):[];
+function montar(keep){CUR=CPL?comEstudo(PQ.length?PQ:FB).filter(p=>!p.plano||p.plano===CPL):[];
   $('#cq').innerHTML=CUR.map(campo).join('');
   CUR.forEach((p,i)=>{if(keep&&keep[p.rotulo]!==undefined)$('#q'+i).value=keep[p.rotulo]});cond()}
 function abrir(plano,vid){
   CPL=PLS.includes(plano)?plano:''; CVD=vid||CVD||''; $('#cot-t').textContent=plano?'Cotação · '+plano:'Cotação de seguro';
   $('#cf').hidden=false; $('#cok').hidden=true; $('#ce').hidden=true; montar();
   $('#cv').innerHTML='<option value="">Sem preferência</option>'+EQ.map(v=>`<option value="${esc(v.id)}"${v.id===CVD?' selected':''}>${esc(v.nome)}</option>`).join('');
-  $('#cvw').hidden=!EQ.length; $('#cot').showModal()}
+  $('#cvw').hidden=!EQ.length; $('#cot').showModal();$('#cot').scrollTop=0}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cot]'); if(!b) return; if(!b.dataset.cot){CVD=b.dataset.v||'';$('#seguro').scrollIntoView({behavior:'smooth'});return} abrir(b.dataset.cot,b.dataset.v)});
 $('#cx').onclick=$('#cf2').onclick=()=>$('#cot').close();
 $('#cot').addEventListener('click',e=>{if(e.target.id==='cot')e.target.close()});
