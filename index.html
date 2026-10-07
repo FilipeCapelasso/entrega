@@ -433,9 +433,11 @@ details.fq{background:#fff;border:1px solid var(--line);border-radius:14px;paddi
 
 <dialog id="cot" aria-labelledby="cot-t"><button class="cx" type="button" id="cx" aria-label="Fechar">×</button>
  <form id="cf" novalidate><h3 id="cot-t" style="font-size:1.5rem;padding-right:40px">Cotação de seguro</h3>
-  <p style="margin-top:6px">Preencha seus dados. Nossa equipe retorna com a cotação.</p>
+  <p style="margin-top:6px">Todos os campos são obrigatórios. Nossa equipe retorna com a cotação.</p>
+  <div class="qf"><label for="cp">Plano <i>*</i></label><select class="f" id="cp" required><option value="">Selecione</option><option>Furto e Roubo</option><option>Seguro Total</option></select></div>
+  <p class="er" id="cb" hidden role="alert"></p>
   <div class="qg" id="cq"></div>
-  <div class="qf" id="cvw"><label for="cv">Quer falar com algum consultor? <span>(opcional)</span></label><select class="f" id="cv"></select></div>
+  <div class="qf" id="cvw"><label for="cv">Com qual consultor prefere falar?</label><select class="f" id="cv"></select></div>
   <p class="er" id="ce" hidden></p>
   <button class="btn" id="cs" type="submit" style="width:100%;margin-top:18px">Enviar pedido de cotação</button>
   <p class="lgpd">Ao enviar, o WhatsApp do setor abre com a mensagem pronta. É só tocar em enviar. Seus dados são usados apenas para a cotação.</p></form>
@@ -630,13 +632,17 @@ addEventListener('hashchange',rota); rota(); mural(); aplicarConfig();
 const dig=x=>String(x||'').replace(/\D/g,''), n55=d=>d.startsWith('55')?d:'55'+d;
 const MK={cpf:v=>dig(v).slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2'),
  tel:v=>{v=dig(v).slice(0,11);return v.length>10?v.replace(/(\d\d)(\d{5})(\d{0,4})/,'($1) $2-$3'):v.length>6?v.replace(/(\d\d)(\d{4})(\d{0,4})/,'($1) $2-$3'):v},
- placa:v=>v.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,7)};
-const FB=[[1,'Nome completo','text',1],[2,'CPF','cpf',1],[3,'Data de nascimento','date',1],[4,'Telefone / WhatsApp','tel',1],[5,'E-mail','email',0],
- [6,'Cidade onde mora','text',1],[7,'Marca e modelo da moto','text',1,'','Ex.: Honda CG 160 Fan'],[8,'Ano de fabricação','number',1],[9,'Placa (se já tiver)','placa',0],
- [10,'Onde a moto dorme?','select',1,'Garagem fechada,Garagem aberta,Rua'],[11,'Em que você trabalha?','text',1,'','Profissão ou ocupação'],
- [12,'Distância de casa até o trabalho (km)','number',1,'','Aproximado, em km'],
- [13,'Como é o local onde a moto fica no trabalho?','select',1,'Portão manual,Portão eletrônico,Na rua,Estacionamento'],[14,'Observações','area',0]]
- .map(a=>({ordem:a[0],rotulo:a[1],tipo:a[2],obrigatoria:!!a[3],opcoes:a[4],ajuda:a[5]}));
+ placa:v=>{v=v.toUpperCase().replace(/[^A-Z0-9 ]/g,'');return /^SEM$|^SEM[ A-Z]/.test(v)||/^SE?$/.test(v)?v.slice(0,10):v.replace(/ /g,'').slice(0,7)}};
+const FB=[[1,'Nome completo','text'],[2,'CPF','cpf'],[3,'Data de nascimento','date'],[4,'Telefone / WhatsApp','tel'],[5,'E-mail','email'],[6,'Cidade onde mora','text'],[7,'Bairro e CEP','text'],
+ [8,'Marca e modelo da moto','text','','Ex.: Honda CG 160 Fan'],[9,'Ano de fabricação','number'],[10,'Placa da moto','placa','','Se ainda não tiver, escreva: sem placa'],
+ [11,'Possui CNH (carteira de habilitação)?','select','Sim,!Não','Sem CNH o seguro não cobre: em caso de acidente o condutor é considerado culpado automaticamente.','Seguro Total'],
+ [11,'Possui CNH (carteira de habilitação)?','select','Sim,Não','','Furto e Roubo'],
+ [12,'Tempo de habilitação (anos)','number','','Em anos. Se menos de 1 ano ou sem CNH, digite 0'],[13,'Quantos filhos você tem?','number','','Se não tiver, digite 0'],
+ [14,'Mais alguém vai conduzir a moto?','select','Não,Sim'],[15,'Se sim, quem vai conduzir?','text','','Nome e parentesco'],
+ [16,'Onde a moto fica guardada em casa?','select','Portão manual,Portão eletrônico,Sem portão,Na rua'],[17,'Em que você trabalha?','text','','Profissão ou ocupação'],
+ [18,'Distância de casa até o trabalho (km)','number','','Aproximado, em km'],[19,'Como é o local onde a moto fica no trabalho?','select','Portão manual,Portão eletrônico,Na rua,Estacionamento'],
+ [20,'Usa a moto para trabalhar / aplicativo?','select','Não,Sim']]
+ .map(a=>({ordem:a[0],rotulo:a[1],tipo:a[2],obrigatoria:true,opcoes:a[3],ajuda:a[4],plano:a[5]}));
 let EQ=[],PQ=[],CUR=[],CPL='',CVD='';
 const ini=n=>n.split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase();
 function equipe(){
@@ -653,29 +659,53 @@ function ctt(l){[['recepcao','fone','tel'],['seguros','foneSeg','telSeg']].forEa
   while(n=w.nextNode()) if(n.nodeValue.includes(CFG[kf])) n.nodeValue=n.nodeValue.split(CFG[kf]).join(nf);
   document.querySelectorAll('a[href]').forEach(a=>a.setAttribute('href',a.getAttribute('href').split(od).join(nn)));
   CFG[kf]=nf; CFG[kt]='+'+nn})}
-const campo=(p,i)=>{const n='q'+i,r=p.obrigatoria?' required':'',
-  l=`<label for="${n}">${esc(p.rotulo)}${p.obrigatoria?' <i>*</i>':' <span>(opcional)</span>'}</label>`; let h;
-  if(p.tipo==='select') h=`<select class="f" id="${n}"${r}><option value="">Selecione</option>${String(p.opcoes||'').split(',').map(o=>o.trim()).filter(Boolean).map(o=>`<option>${esc(o)}</option>`).join('')}</select>`;
+const campo=(p,i)=>{const n='q'+i,r=' required',
+  l=`<label for="${n}">${esc(p.rotulo)}${' <i>*</i>'}</label>`; let h;
+  if(p.tipo==='select') h=`<select class="f" id="${n}"${r}><option value="">Selecione</option>${String(p.opcoes||'').split(',').map(o=>o.trim()).filter(Boolean).map(o=>`<option${o[0]==='!'?' data-b="1"':''}>${esc(o.replace(/^!/,''))}</option>`).join('')}</select>`;
   else if(p.tipo==='area') h=`<textarea class="f" id="${n}" rows="3" maxlength="500"${r}></textarea>`;
-  else h=`<input class="f" id="${n}" data-m="${esc(p.tipo)}" type="${{date:'date',email:'email',number:'number'}[p.tipo]||'text'}" inputmode="${{tel:'tel',cpf:'numeric',number:'numeric'}[p.tipo]||'text'}" maxlength="120"${r} placeholder="${esc(p.ajuda||'')}" autocomplete="off">`;
-  return `<div class="qf${p.tipo==='area'?' full':''}">${l}${h}${p.ajuda&&p.tipo==='select'?`<small>${esc(p.ajuda)}</small>`:''}</div>`};
-function abrir(plano,vid){
-  CPL=plano||''; CVD=vid||''; CUR=(PQ.length?PQ:FB).filter(p=>!p.plano||!plano||p.plano===plano);
-  $('#cot-t').textContent=plano?'Cotação · '+plano:'Cotação de seguro';
-  $('#cf').hidden=false; $('#cok').hidden=true; $('#ce').hidden=true;
+  else h=`<input class="f" id="${n}" data-m="${esc(p.tipo)}" type="${{date:'date',email:'email',number:'number'}[p.tipo]||'text'}" inputmode="${{tel:'tel',cpf:'numeric',number:'numeric'}[p.tipo]||'text'}" maxlength="120"${r} autocomplete="off">`;
+  return `<div class="qf${p.tipo==='area'?' full':''}">${l}${h}${p.ajuda?`<small>${esc(p.ajuda)}</small>`:''}</div>`};
+const PLS=['Furto e Roubo','Seguro Total'];let BLQ=false;
+const cpfOk=v=>{v=dig(v);if(v.length!==11||/^(\d)\1+$/.test(v))return false;for(const t of[9,10]){let c=0;for(let i=0;i<t;i++)c+=v[i]*(t+1-i);if((c*10%11)%10!=v[t])return false}return true};
+const inval=(p,v,idade)=>{if(!v)return true;const n=+v,r=p.rotulo;
+  if(p.tipo==='cpf')return !cpfOk(v);if(p.tipo==='tel')return dig(v).length<10;if(p.tipo==='email')return !/^\S+@\S+\.\S+$/.test(v);
+  if(p.tipo==='placa')return !/^[A-Z]{3}\d[A-Z0-9]\d{2}$/.test(v)&&!/^SEM\s*PLACA$/.test(v);
+  if(p.tipo==='date'){const a=(Date.now()-new Date(v))/31557600000;return isNaN(a)||a<18||a>100}
+  if(p.tipo==='number'){if(!/^\d+$/.test(v))return true;
+    if(/ano de fabrica/i.test(r))return n<1980||n>new Date().getFullYear()+1;if(/filhos/i.test(r))return n>20;
+    if(/habilita/i.test(r))return n>60||(idade!=null&&n>idade-18);if(/dist[aâ]ncia/i.test(r))return n>500}
+  return p.tipo==='text'&&v.length<2};
+function cond(){BLQ=false;let msg='';
+  CUR.forEach((p,i)=>{const el=$('#q'+i);
+    if(/^se sim/i.test(p.rotulo)&&i){const a=$('#q'+(i-1)),sim=a.value==='Sim';   // "Se sim, ..." só é preenchida quando a anterior = Sim
+      if(sim&&el.dataset.auto){el.value='';delete el.dataset.auto}
+      if(!sim){el.value=a.value?'Ninguém (só o titular)':'';el.dataset.auto=1}
+      el.disabled=!sim}
+    const o=el.selectedOptions&&el.selectedOptions[0];
+    if(p.tipo==='select'&&o&&o.dataset.b&&!BLQ){BLQ=true;msg='Não conseguimos seguir com esta cotação ('+p.rotulo+' → '+o.textContent+'). '+(p.ajuda||'')+' Se tiver dúvidas, fale com o Setor de Seguros.'}});
+  const b=$('#cb');b.hidden=!BLQ;b.textContent=msg;$('#cs').disabled=BLQ}
+function montar(keep){CPL=$('#cp').value;CUR=CPL?(PQ.length?PQ:FB).filter(p=>!p.plano||p.plano===CPL):[];
   $('#cq').innerHTML=CUR.map(campo).join('');
+  CUR.forEach((p,i)=>{if(keep&&keep[p.rotulo]!==undefined)$('#q'+i).value=keep[p.rotulo]});cond()}
+function abrir(plano,vid){
+  CVD=vid||''; $('#cot-t').textContent=plano?'Cotação · '+plano:'Cotação de seguro';
+  $('#cf').hidden=false; $('#cok').hidden=true; $('#ce').hidden=true; $('#cp').value=PLS.includes(plano)?plano:''; montar();
   $('#cv').innerHTML='<option value="">Sem preferência</option>'+EQ.map(v=>`<option value="${esc(v.id)}"${v.id===CVD?' selected':''}>${esc(v.nome)}</option>`).join('');
   $('#cvw').hidden=!EQ.length; $('#cot').showModal()}
+$('#cp').onchange=()=>{const k={};CUR.forEach((p,i)=>{k[p.rotulo]=$('#q'+i).value});montar(k)};
 document.addEventListener('click',e=>{const b=e.target.closest('[data-cot]'); if(b) abrir(b.dataset.cot,b.dataset.v)});
 $('#cx').onclick=$('#cf2').onclick=()=>$('#cot').close();
 $('#cot').addEventListener('click',e=>{if(e.target.id==='cot')e.target.close()});
-$('#cq').addEventListener('input',e=>{const m=MK[e.target.dataset.m]; if(m) e.target.value=m(e.target.value); e.target.classList.remove('bad')});
+$('#cq').addEventListener('change',cond);
+$('#cq').addEventListener('input',e=>{cond();const m=MK[e.target.dataset.m]; if(m) e.target.value=m(e.target.value); e.target.classList.remove('bad')});
 $('#cf').onsubmit=async e=>{
   e.preventDefault(); const er=$('#ce'); er.hidden=true; let bad=null; const it=[];
+  if(!CPL){er.textContent='Escolha o plano.';er.hidden=false;$('#cp').focus();return}
+  if(BLQ)return;
+  const di=CUR.findIndex(p=>p.tipo==='date'),dv=di>=0?$('#q'+di).value:'',idade=dv?Math.floor((Date.now()-new Date(dv))/31557600000):null;
   CUR.forEach((p,i)=>{const el=$('#q'+i),v=el.value.trim(); el.classList.remove('bad');
-    const x=(p.obrigatoria&&!v)||(v&&((p.tipo==='cpf'&&dig(v).length!==11)||(p.tipo==='tel'&&dig(v).length<10)||(p.tipo==='email'&&!/^\S+@\S+\.\S+$/.test(v))));
-    if(x){el.classList.add('bad'); bad=bad||el} it.push({r:p.rotulo,v,t:p.tipo})});
-  if(bad){er.textContent='Confira os campos marcados em vermelho.';er.hidden=false;bad.focus();return}
+    if(inval(p,v,idade)){el.classList.add('bad'); bad=bad||el} it.push({r:p.rotulo,v,t:p.tipo})});
+  if(bad){er.textContent='Preencha todos os campos corretamente (marcados em vermelho). É preciso ter 18 anos ou mais.';er.hidden=false;bad.focus();return}
   const b=$('#cs'); b.disabled=true; b.textContent='Abrindo o WhatsApp…';
   const vid=$('#cv').value, vd=EQ.find(v=>v.id===vid), num=n55(dig(vd&&(vd.whatsapp||vd.telefone)||CFG.telSeg));
   const fx=x=>x.t==='date'&&/^\d{4}-\d\d-\d\d$/.test(x.v)?x.v.split('-').reverse().join('/'):x.v;
